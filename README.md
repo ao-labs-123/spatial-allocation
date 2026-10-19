@@ -1,4 +1,7 @@
-# Micro—ACT-R (tentative)
+# Current Phase:Spatial-Allocation
+"Algorithmic spatial allocation and coordinate determination for semantic event networks and cognitive topology."
+
+## Micro—ACT-R (tentative)
 > "ACT-R at a Micro-Scale"
 ## What makes this different from standard ACT-R?
 
@@ -16,14 +19,10 @@ The system then validates consistency between the category of knowledge and past
 ## Micro-ACT-R Pipeline Architecture
 <img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/89f34fcc-b544-4fc1-b36d-fccdd794e3dc" />
 
-
 1. [input-parser](https://github.com/ao-labs-123/input-parser)
 2. [particle-encapsulation](https://github.com/ao-labs-123/particle-encapsulation)
 3. [topological-mapper](https://github.com/ao-labs-123/topological-mapper)
 4. [spatial-allocation](https://github.com/ao-labs-123/spatial-allocation)※Current Position
-
-# Current Phase:Spatial-Allocation
-"Algorithmic spatial allocation and coordinate determination for semantic event networks and cognitive topology."
 
 ## Repository Structure
 ```text
