@@ -2,7 +2,7 @@
 "Algorithmic spatial allocation and coordinate determination for semantic event networks and cognitive topology."
 
 ## Repository Structure
-
+```text
 Spatial-allocation/
 ├── README.md                  # 設計思想・仕様・使い方
 ├── requirements.txt           # 依存ライブラリ (numpy, networkx, pyvis など)
@@ -22,3 +22,4 @@ Spatial-allocation/
 │
 └── tests/                     # 単体テスト
     └── test_allocator.py
+```
