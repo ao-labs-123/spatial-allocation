@@ -1,4 +1,4 @@
-# spatial-allocation
+# Current Phase:Spatial-Allocation
 "Algorithmic spatial allocation and coordinate determination for semantic event networks and cognitive topology."
 
 ## Repository Structure
