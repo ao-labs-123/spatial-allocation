@@ -17,7 +17,7 @@ Next, during **Reasoning**, the system uses **Topological Mapping** to define re
 The system then validates consistency between the category of knowledge and past experiences **(Match & Select)**, selects the appropriate action based on this consistency **(Execution)**, and finally produces the **Output**.
 
 ## Micro-ACT-R Pipeline Architecture
-<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/89f34fcc-b544-4fc1-b36d-fccdd794e3dc" />
+<img width="1111" height="1486" alt="image" src="https://github.com/user-attachments/assets/8e3de07e-693f-4315-88e0-0c7bbf39ba1f" />
 
 1. [input-parser](https://github.com/ao-labs-123/input-parser)
 2. [particle-encapsulation](https://github.com/ao-labs-123/particle-encapsulation)
