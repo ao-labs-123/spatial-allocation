@@ -37,6 +37,13 @@ Spatial-allocation/
 │
 └── tests/                     # Unit tests
     └── test_allocator.py
+```
 
-
-
+## Getting Started
+1. Installation
+Clone the repository and install the required dependencies:
+```text
+git clone [https://github.com/your-username/Spatial-allocation.git](https://github.com/your-username/Spatial-allocation.git)
+cd Spatial-allocation
+pip install -r requirements.txt
+```
