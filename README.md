@@ -43,8 +43,8 @@ Spatial-allocation/
 1. Installation
 Clone the repository and install the required dependencies:
 ```text
-git clone [https://github.com/your-username/Spatial-allocation.git](https://github.com/your-username/Spatial-allocation.git)
-cd Spatial-allocation
+git clone [https://github.com/ao-labs-123/spatial-allocation.git](https://github.com/ao-labs-123/spatial-allocation.git)
+cd spatial-allocation
 pip install -r requirements.txt
 ```
 2. Usage
