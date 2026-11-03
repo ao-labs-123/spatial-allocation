@@ -1,0 +1,1918 @@
+{
+  "nodes": [
+    {
+      "id": "p_agent_0520d73d3ccc",
+      "label": "He",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "He",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.005964412198418801,
+        0.6178269012401123,
+        0.5130507830413814
+      ]
+    },
+    {
+      "id": "p_event_9faf6dd6fc2b",
+      "label": "succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "He",
+        "what": "succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "because I helped",
+        "how": "Unspecified",
+        "stage2_mapping": "I helped -> Cause -> He succeeded; He -> Action -> succeeded"
+      },
+      "position": [
+        -0.0057812425039904984,
+        0.5817727237499484,
+        0.5288663120582449
+      ]
+    },
+    {
+      "id": "p_cause_d452fea9db1b",
+      "label": "I helped",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "I helped",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.35045817486668057,
+        0.8517137572677248,
+        0.37163644601389584
+      ]
+    },
+    {
+      "id": "p_effect_808a9c8f40ae",
+      "label": "He succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "He succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.33038986077471444,
+        0.8052792328204545,
+        0.34580571830591755
+      ]
+    },
+    {
+      "id": "p_agent_66701c013f50",
+      "label": "You",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "You",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.2549479540104439,
+        -0.7395817729184585,
+        0.28913180055483606
+      ]
+    },
+    {
+      "id": "p_event_aa28c4293a0b",
+      "label": "review the document",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "You",
+        "what": "review the document",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "You -> Action -> review the document"
+      },
+      "position": [
+        0.2909291390024606,
+        -0.7340521502370742,
+        0.27394698659285255
+      ]
+    },
+    {
+      "id": "p_agent_eae1a5ebeee4",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.3896681747615053,
+        0.5334945913224526,
+        -0.6241353630873039
+      ]
+    },
+    {
+      "id": "p_event_d7114036910f",
+      "label": "thought was strange",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "thought was strange",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> State -> strange"
+      },
+      "position": [
+        0.4128596119622222,
+        0.563279241274757,
+        -0.664851562918753
+      ]
+    },
+    {
+      "id": "p_agent_d8de13d6ba9c",
+      "label": "He/She/They",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "He/She/They",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.5300515483651097,
+        0.7907472365087638,
+        -0.22633931334078644
+      ]
+    },
+    {
+      "id": "p_event_9351a50972a9",
+      "label": "thought it was strange",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "He/She/They",
+        "what": "thought it was strange",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "apparently",
+        "stage2_mapping": "He/She/They -> State -> strange",
+        "stage3_mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)"
+      },
+      "position": [
+        -0.5089482410749265,
+        0.75844349180385,
+        -0.2452480055579093
+      ]
+    },
+    {
+      "id": "p_modifier_a6c3b8cb8835",
+      "label": "Degree modifier",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Degree modifier",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)"
+      },
+      "position": [
+        -0.4794511497705561,
+        0.7081345989496176,
+        -0.23229483659980488
+      ]
+    },
+    {
+      "id": "p_agent_1148288f30b0",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.9091521640442822,
+        0.08841415885393193,
+        0.03354993553012077
+      ]
+    },
+    {
+      "id": "p_event_85ef8600654e",
+      "label": "went",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "went",
+        "when": "yesterday",
+        "where": "cafe",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "Unspecified -> Action -> went"
+      },
+      "position": [
+        0.8846539024689107,
+        0.11424050148290871,
+        0.050761674068823225
+      ]
+    },
+    {
+      "id": "p_agent_91d510e01871",
+      "label": "you",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "you",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.7172586691602568,
+        -0.39445155832909967,
+        0.017503457505367623
+      ]
+    },
+    {
+      "id": "p_event_e7a691f87f38",
+      "label": "submit the form",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "you",
+        "what": "submit the form",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "you -> Action -> submit the form"
+      },
+      "position": [
+        0.7108134995001211,
+        -0.3691661554892477,
+        0.047147887069368614
+      ]
+    },
+    {
+      "id": "p_agent_605af38b027a",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.29486339498878594,
+        0.4046989808473435,
+        0.7259478093977911
+      ]
+    },
+    {
+      "id": "p_event_b6f30004a7cc",
+      "label": "submitted the form",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "submitted the form",
+        "when": "yesterday",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> Action -> submitted the form"
+      },
+      "position": [
+        0.31535910617097496,
+        0.4345232136624504,
+        0.7735350219081834
+      ]
+    },
+    {
+      "id": "p_agent_31cd2dbae9c1",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.7315374126783178,
+        0.6116728821624798,
+        0.00806986342440163
+      ]
+    },
+    {
+      "id": "p_event_b03c96326b69",
+      "label": "wrote the report",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "wrote the report",
+        "when": "Unspecified",
+        "where": "at the office",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> Action -> wrote the report"
+      },
+      "position": [
+        -0.7437507346893564,
+        0.6021390616141434,
+        -0.02869220202518551
+      ]
+    },
+    {
+      "id": "p_agent_2c695ab7ee29",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.41097904642885147,
+        -0.8679416448134095,
+        0.0029422781489969406
+      ]
+    },
+    {
+      "id": "p_event_c6c4635a1cb8",
+      "label": "succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "because you helped",
+        "how": "Unspecified",
+        "stage2_mapping": "you helped -> Cause -> Succeeded; Unspecified -> Action -> succeeded"
+      },
+      "position": [
+        0.3755432220696659,
+        -0.8525083916620998,
+        -0.005881759197800191
+      ]
+    },
+    {
+      "id": "p_cause_6332939e7b94",
+      "label": "you helped",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "you helped",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.46620395398837916,
+        -0.316278641475279,
+        -0.7122645177955698
+      ]
+    },
+    {
+      "id": "p_effect_c9302f7d21a4",
+      "label": "Succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.4361563224594282,
+        -0.34163035131706093,
+        -0.7074672310581216
+      ]
+    },
+    {
+      "id": "p_agent_cecd48c3ed7d",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.3851204285772211,
+        0.20958303160307154,
+        -0.8094781433772522
+      ]
+    },
+    {
+      "id": "p_event_f140f3aa8492",
+      "label": "failed",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "failed",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "the effort -> Concession -> Failed; Unspecified -> Action -> failed"
+      },
+      "position": [
+        -0.4148403020244212,
+        0.19829829234753846,
+        -0.779055533931142
+      ]
+    },
+    {
+      "id": "p_concession_55c9430515c1",
+      "label": "the effort",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "the effort",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.4040454831634786,
+        0.18576385300447532,
+        -0.7278403276151448
+      ]
+    },
+    {
+      "id": "p_agent_36dc7c18d025",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.39762530277187325,
+        -0.3752406505975917,
+        0.7274654754722175
+      ]
+    },
+    {
+      "id": "p_event_bfcc0ff31474",
+      "label": "required further investigation",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "required further investigation",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "Unspecified -> Action -> further investigation"
+      },
+      "position": [
+        -0.4307630922867533,
+        -0.3553156351197951,
+        0.7356411157669324
+      ]
+    },
+    {
+      "id": "p_agent_b02be8b1a200",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.03598198554155739,
+        -0.9182029705428671,
+        -0.4964973055848583
+      ]
+    },
+    {
+      "id": "p_event_1e5de928020f",
+      "label": "submitted the form",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "submitted the form",
+        "when": "yesterday",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "Unspecified -> Action -> submitted the form"
+      },
+      "position": [
+        -0.0009522596056460575,
+        -0.9331342154399708,
+        -0.507014246114734
+      ]
+    },
+    {
+      "id": "p_agent_da37e426d9fd",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.018859504206801814,
+        1.0,
+        0.06979409152436049
+      ]
+    },
+    {
+      "id": "p_event_17b6cf76e552",
+      "label": "succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "succeeded",
+        "when": "Unspecified",
+        "where": "in the meeting",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "Unspecified -> Action -> succeeded"
+      },
+      "position": [
+        0.05797791644406564,
+        0.9986241441662944,
+        0.075506116027312
+      ]
+    },
+    {
+      "id": "p_agent_bb9fa1735494",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.7375327445937458,
+        -0.021823918478062993,
+        -0.4412606846947905
+      ]
+    },
+    {
+      "id": "p_event_5b17259fa239",
+      "label": "stressed",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "stressed",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "due to the project",
+        "how": "Unspecified",
+        "stage2_mapping": "the project -> Cause -> I'm stressed; I -> State -> stressed"
+      },
+      "position": [
+        0.7810774180343636,
+        -0.023217584869709276,
+        -0.46593316477228397
+      ]
+    },
+    {
+      "id": "p_cause_1cbfce827926",
+      "label": "the project",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "the project",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.001733257712847212,
+        -0.1722477008407458,
+        0.824949839852035
+      ]
+    },
+    {
+      "id": "p_effect_463c9bebc2c5",
+      "label": "I'm stressed",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "I'm stressed",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.003756052899374987,
+        -0.18583263286159213,
+        0.8817974239025379
+      ]
+    },
+    {
+      "id": "p_agent_fea2568ef1d5",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.06744548541357509,
+        0.12378212502834962,
+        0.8588909090830481
+      ]
+    },
+    {
+      "id": "p_event_ce8e617207d6",
+      "label": "succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "because you helped",
+        "how": "Unspecified",
+        "stage2_mapping": "you helped -> Cause -> I succeeded; I -> Action -> succeeded"
+      },
+      "position": [
+        0.03331205126802696,
+        0.1382948159514118,
+        0.873119832744708
+      ]
+    },
+    {
+      "id": "p_cause_92946bcb8caa",
+      "label": "you helped",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "you helped",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.1694142035484702,
+        -0.8646431131020196,
+        -0.12614104076144056
+      ]
+    },
+    {
+      "id": "p_effect_1c7d504bd18f",
+      "label": "I succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "I succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.14655364462097772,
+        -0.841431571575034,
+        -0.1486397584960667
+      ]
+    },
+    {
+      "id": "p_agent_917aef0aef4f",
+      "label": "He",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "He",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.8399054446851673,
+        0.3008607474196885,
+        0.0034460289960520476
+      ]
+    },
+    {
+      "id": "p_event_380252dd4189",
+      "label": "succeeded",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "He",
+        "what": "succeeded",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Hard Work",
+        "stage2_mapping": "He -> Action -> succeeded",
+        "stage3_mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)"
+      },
+      "position": [
+        -0.8627642150057254,
+        0.2836801288047611,
+        -0.032802473247167147
+      ]
+    },
+    {
+      "id": "p_modifier_4dd7643e42eb",
+      "label": "Instrument phrase",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Instrument phrase",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)"
+      },
+      "position": [
+        -0.8842583269417992,
+        0.26572323800054076,
+        -0.06924441726994504
+      ]
+    },
+    {
+      "id": "p_agent_d313d7998a03",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.6272939827657499,
+        -0.6119969902141703,
+        -0.34536987117612106
+      ]
+    },
+    {
+      "id": "p_event_74925654b84e",
+      "label": "stressed",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "stressed",
+        "when": "after the long meeting",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> State -> stressed",
+        "stage3_mapping": "Node(meeting) -> Attribute -> State(Long)"
+      },
+      "position": [
+        -0.582697094746574,
+        -0.619890000932963,
+        -0.36274103748340675
+      ]
+    },
+    {
+      "id": "p_modifier_89dd39a8fc5a",
+      "label": "Adjectival modifier",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Adjectival modifier",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(meeting) -> Attribute -> State(Long)"
+      },
+      "position": [
+        -0.6133468402572236,
+        -0.6666518152163033,
+        -0.393537808983259
+      ]
+    },
+    {
+      "id": "p_agent_f68a1fa4d5d6",
+      "label": "The report",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The report",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.06585385375022362,
+        -0.8161813297405757,
+        0.6119788273632866
+      ]
+    },
+    {
+      "id": "p_event_369797f302ae",
+      "label": "done",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The report",
+        "what": "done",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "The report -> State -> done",
+        "stage3_mapping": "Node(The report) -> Attribute -> State(Long)"
+      },
+      "position": [
+        0.08202924143689116,
+        -0.8417697102932613,
+        0.6551337481574789
+      ]
+    },
+    {
+      "id": "p_relativeclause_bb0a45b4a0b2",
+      "label": "Non-defining clause",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Non-defining clause",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(The report) -> Attribute -> State(Long)"
+      },
+      "position": [
+        0.10816788626945222,
+        -0.8174954649371857,
+        0.6824779159755276
+      ]
+    },
+    {
+      "id": "p_agent_4d4ee5fe2988",
+      "label": "The report",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The report",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.14252181520558396,
+        -0.23167420257662635,
+        -0.9217997934400955
+      ]
+    },
+    {
+      "id": "p_event_c185f8719227",
+      "label": "done",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The report",
+        "what": "done",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "The report -> State -> done",
+        "stage3_mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)"
+      },
+      "position": [
+        0.1423073892104448,
+        -0.18763654156962406,
+        -0.9190055773530198
+      ]
+    },
+    {
+      "id": "p_relativeclause_243a1c340909",
+      "label": "Defining clause",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Defining clause",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)"
+      },
+      "position": [
+        0.13684259732540005,
+        -0.15963790204642112,
+        -0.8746141690507414
+      ]
+    },
+    {
+      "id": "p_agent_ad0e53673670",
+      "label": "The office",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The office",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.8390889932846838,
+        -0.2638948285752298,
+        0.3697415138511411
+      ]
+    },
+    {
+      "id": "p_event_6b2d1ccdf3be",
+      "label": "quiet",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The office",
+        "what": "quiet",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "The office -> State -> quiet",
+        "stage3_mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)"
+      },
+      "position": [
+        -0.8412732627940698,
+        -0.23505837929312523,
+        0.33575534807111646
+      ]
+    },
+    {
+      "id": "p_relativeclause_14e627a2fae6",
+      "label": "Defining clause",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Defining clause",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)"
+      },
+      "position": [
+        -0.8326835134465762,
+        -0.20638374872151652,
+        0.30136485559348003
+      ]
+    },
+    {
+      "id": "p_agent_fd4f86bfbeed",
+      "label": "The day",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The day",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.8057414086524199,
+        0.05887490112254005,
+        0.21564818719138212
+      ]
+    },
+    {
+      "id": "p_event_47689b5b2fc9",
+      "label": "bright",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The day",
+        "what": "bright",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "The day -> State -> bright",
+        "stage3_mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)"
+      },
+      "position": [
+        -0.78930637819609,
+        0.0838313951004492,
+        0.25069592795255813
+      ]
+    },
+    {
+      "id": "p_relativeclause_e8c221ce2a90",
+      "label": "Defining clause",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Defining clause",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)"
+      },
+      "position": [
+        -0.8010990469059391,
+        0.10787598596808616,
+        0.29033178748242416
+      ]
+    },
+    {
+      "id": "p_agent_ec0e6b47120c",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.904177850011235,
+        0.11058101172299263,
+        0.45162083964795574
+      ]
+    },
+    {
+      "id": "p_event_1dbd40acff3d",
+      "label": "have a car",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "have a car",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> Stative -> have a car"
+      },
+      "position": [
+        0.870071780833395,
+        0.09790099023881074,
+        0.43384348609308987
+      ]
+    },
+    {
+      "id": "p_agent_152d0ea1c17f",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.39407079678766477,
+        -0.581842065350087,
+        0.44013758183039
+      ]
+    },
+    {
+      "id": "p_event_0f69793257fe",
+      "label": "having a party",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "having a party",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> Action -> having a party"
+      },
+      "position": [
+        -0.36278322434075166,
+        -0.580736162026086,
+        0.41620602083420893
+      ]
+    },
+    {
+      "id": "p_agent_beb709d70026",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.6318939288713407,
+        -0.139180678937023,
+        0.7139662067886046
+      ]
+    },
+    {
+      "id": "p_event_1a17eb5ef27c",
+      "label": "told me",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "him",
+        "what": "told me",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "him -> Action -> told me"
+      },
+      "position": [
+        0.6210527268183068,
+        -0.17463608492831642,
+        0.7430392294391919
+      ]
+    },
+    {
+      "id": "p_who_5ff223baa118",
+      "label": "him",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "him",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.5789983802872318,
+        -0.1936766770820326,
+        0.727474488331863
+      ]
+    },
+    {
+      "id": "p_agent_25e25932f14f",
+      "label": "The report",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The report",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.1881771703713621,
+        0.6813422249345598,
+        -0.2479797139456302
+      ]
+    },
+    {
+      "id": "p_event_beda054eadfb",
+      "label": "completed the report",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "The report",
+        "what": "completed the report",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "quickly",
+        "stage2_mapping": "Unspecified -> Action -> completed The report",
+        "stage3_mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)"
+      },
+      "position": [
+        0.20386208974199543,
+        0.7356061146089566,
+        -0.264882693924001
+      ]
+    },
+    {
+      "id": "p_modifier_848a5fc5935e",
+      "label": "Manner adverb",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Manner adverb",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)"
+      },
+      "position": [
+        0.21756249715722234,
+        0.779037228906298,
+        -0.2741736948001753
+      ]
+    },
+    {
+      "id": "p_agent_9a377e844b3c",
+      "label": "Unspecified",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        -0.12428333400882702,
+        0.46642213371091906,
+        -0.6505681039600317
+      ]
+    },
+    {
+      "id": "p_event_b1019b80435c",
+      "label": "failed the exam",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "failed the exam",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "because of bad luck",
+        "how": "Unspecified",
+        "stage2_mapping": "bad luck -> Cause -> Failed the exam; Unspecified -> Action -> failed the exam"
+      },
+      "position": [
+        -0.13084919896742048,
+        0.49969547845857454,
+        -0.6978637773913737
+      ]
+    },
+    {
+      "id": "p_cause_a98de6faf41e",
+      "label": "bad luck",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "bad luck",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.8304908426570533,
+        0.4771713941967579,
+        -0.2644269624833685
+      ]
+    },
+    {
+      "id": "p_effect_c262e174b581",
+      "label": "Failed the exam",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Failed the exam",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.8465555092531415,
+        0.44872410876622737,
+        -0.24216331818404951
+      ]
+    },
+    {
+      "id": "p_agent_de1a71eb3250",
+      "label": "I",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.5878882182659905,
+        -0.25152024323951994,
+        -0.6671164622066921
+      ]
+    },
+    {
+      "id": "p_event_c000be03edde",
+      "label": "talked to the manager",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "I",
+        "what": "talked to the manager",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "I -> Action -> talked to the manager",
+        "stage3_mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)"
+      },
+      "position": [
+        0.6191210966897875,
+        -0.27015337969851927,
+        -0.6900677291227097
+      ]
+    },
+    {
+      "id": "p_relativeclause_624584c3613f",
+      "label": "Defining clause",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Defining clause",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)"
+      },
+      "position": [
+        0.656746646202571,
+        -0.2919851904508632,
+        -0.7316129836989125
+      ]
+    },
+    {
+      "id": "p_agent_28f16e6728c5",
+      "label": "You",
+      "category": "Entity",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "You",
+        "what": "Unspecified",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified"
+      },
+      "position": [
+        0.5383074062258909,
+        0.3950978326520764,
+        0.07556189309429108
+      ]
+    },
+    {
+      "id": "p_event_21c4a03c1db3",
+      "label": "review the long report",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "You",
+        "what": "review the long report",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage2_mapping": "You -> Action -> review the long report",
+        "stage3_mapping": "Node(report) -> Attribute -> State(Long)"
+      },
+      "position": [
+        0.5844608030056624,
+        0.4382133117865326,
+        0.08992043297253592
+      ]
+    },
+    {
+      "id": "p_modifier_ae6708c9c06c",
+      "label": "Adjectival modifier",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "who": "Unspecified",
+        "what": "Adjectival modifier",
+        "when": "Unspecified",
+        "where": "Unspecified",
+        "why": "Unspecified",
+        "how": "Unspecified",
+        "stage3_mapping": "Node(report) -> Attribute -> State(Long)"
+      },
+      "position": [
+        0.62466034935059,
+        0.4760704987820082,
+        0.10258512795716179
+      ]
+    },
+    {
+      "id": "context_temporal_78",
+      "label": "the long meeting",
+      "category": "Event",
+      "resolution_state": "Determined",
+      "attributes": {
+        "what": "the long meeting"
+      },
+      "position": [
+        -0.5340589555606516,
+        -0.5787335053442896,
+        -0.3409846409674227
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_cause_p_cause_d452fea9db1b_p_effect_808a9c8f40ae",
+      "source": "p_cause_d452fea9db1b",
+      "target": "p_effect_808a9c8f40ae",
+      "morphism_type": "Cause",
+      "detail": "I helped -> Cause -> He succeeded; He -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_state_p_agent_eae1a5ebeee4_p_event_d7114036910f",
+      "source": "p_agent_eae1a5ebeee4",
+      "target": "p_event_d7114036910f",
+      "morphism_type": "State",
+      "detail": "I -> State -> strange",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_state_p_agent_d8de13d6ba9c_p_event_9351a50972a9",
+      "source": "p_agent_d8de13d6ba9c",
+      "target": "p_event_9351a50972a9",
+      "morphism_type": "State",
+      "detail": "He/She/They -> State -> strange",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_relation_p_modifier_a6c3b8cb8835_p_event_9351a50972a9",
+      "source": "p_modifier_a6c3b8cb8835",
+      "target": "p_event_9351a50972a9",
+      "morphism_type": "Relation",
+      "detail": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_cause_p_cause_6332939e7b94_p_effect_c9302f7d21a4",
+      "source": "p_cause_6332939e7b94",
+      "target": "p_effect_c9302f7d21a4",
+      "morphism_type": "Cause",
+      "detail": "you helped -> Cause -> Succeeded; Unspecified -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_concession_p_concession_55c9430515c1_p_event_f140f3aa8492",
+      "source": "p_concession_55c9430515c1",
+      "target": "p_event_f140f3aa8492",
+      "morphism_type": "Concession",
+      "detail": "the effort -> Concession -> Failed; Unspecified -> Action -> failed",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_cause_p_cause_1cbfce827926_p_effect_463c9bebc2c5",
+      "source": "p_cause_1cbfce827926",
+      "target": "p_effect_463c9bebc2c5",
+      "morphism_type": "Cause",
+      "detail": "the project -> Cause -> I'm stressed; I -> State -> stressed",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_state_p_agent_bb9fa1735494_p_event_5b17259fa239",
+      "source": "p_agent_bb9fa1735494",
+      "target": "p_event_5b17259fa239",
+      "morphism_type": "State",
+      "detail": "the project -> Cause -> I'm stressed; I -> State -> stressed",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_cause_p_cause_92946bcb8caa_p_effect_1c7d504bd18f",
+      "source": "p_cause_92946bcb8caa",
+      "target": "p_effect_1c7d504bd18f",
+      "morphism_type": "Cause",
+      "detail": "you helped -> Cause -> I succeeded; I -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_relation_p_modifier_4dd7643e42eb_p_event_380252dd4189",
+      "source": "p_modifier_4dd7643e42eb",
+      "target": "p_event_380252dd4189",
+      "morphism_type": "Relation",
+      "detail": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_temporal_context_temporal_78_p_event_74925654b84e",
+      "source": "context_temporal_78",
+      "target": "p_event_74925654b84e",
+      "morphism_type": "Temporal",
+      "detail": "Temporal relation (after)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_state_p_agent_d313d7998a03_p_event_74925654b84e",
+      "source": "p_agent_d313d7998a03",
+      "target": "p_event_74925654b84e",
+      "morphism_type": "State",
+      "detail": "I -> State -> stressed",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_relation_p_modifier_89dd39a8fc5a_p_event_74925654b84e",
+      "source": "p_modifier_89dd39a8fc5a",
+      "target": "p_event_74925654b84e",
+      "morphism_type": "Relation",
+      "detail": "Node(meeting) -> Attribute -> State(Long)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_state_p_agent_f68a1fa4d5d6_p_event_369797f302ae",
+      "source": "p_agent_f68a1fa4d5d6",
+      "target": "p_event_369797f302ae",
+      "morphism_type": "State",
+      "detail": "The report -> State -> done",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_relation_p_relativeclause_bb0a45b4a0b2_p_event_369797f302ae",
+      "source": "p_relativeclause_bb0a45b4a0b2",
+      "target": "p_event_369797f302ae",
+      "morphism_type": "Relation",
+      "detail": "Node(The report) -> Attribute -> State(Long)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_state_p_agent_4d4ee5fe2988_p_event_c185f8719227",
+      "source": "p_agent_4d4ee5fe2988",
+      "target": "p_event_c185f8719227",
+      "morphism_type": "State",
+      "detail": "The report -> State -> done",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_constraint_p_relativeclause_243a1c340909_p_event_c185f8719227",
+      "source": "p_relativeclause_243a1c340909",
+      "target": "p_event_c185f8719227",
+      "morphism_type": "Constraint",
+      "detail": "Node(The report) -> Defining Attribute -> Clause(I wrote)",
+      "constraint_type": "ClauseCondition"
+    },
+    {
+      "id": "e_state_p_agent_ad0e53673670_p_event_6b2d1ccdf3be",
+      "source": "p_agent_ad0e53673670",
+      "target": "p_event_6b2d1ccdf3be",
+      "morphism_type": "State",
+      "detail": "The office -> State -> quiet",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_constraint_p_relativeclause_14e627a2fae6_p_event_6b2d1ccdf3be",
+      "source": "p_relativeclause_14e627a2fae6",
+      "target": "p_event_6b2d1ccdf3be",
+      "morphism_type": "Constraint",
+      "detail": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)",
+      "constraint_type": "ClauseCondition"
+    },
+    {
+      "id": "e_state_p_agent_fd4f86bfbeed_p_event_47689b5b2fc9",
+      "source": "p_agent_fd4f86bfbeed",
+      "target": "p_event_47689b5b2fc9",
+      "morphism_type": "State",
+      "detail": "The day -> State -> bright",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_constraint_p_relativeclause_e8c221ce2a90_p_event_47689b5b2fc9",
+      "source": "p_relativeclause_e8c221ce2a90",
+      "target": "p_event_47689b5b2fc9",
+      "morphism_type": "Constraint",
+      "detail": "Node(The day) -> Defining Attribute -> Clause(he succeeded)",
+      "constraint_type": "ClauseCondition"
+    },
+    {
+      "id": "e_relation_p_modifier_848a5fc5935e_p_event_beda054eadfb",
+      "source": "p_modifier_848a5fc5935e",
+      "target": "p_event_beda054eadfb",
+      "morphism_type": "Relation",
+      "detail": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_cause_p_cause_a98de6faf41e_p_effect_c262e174b581",
+      "source": "p_cause_a98de6faf41e",
+      "target": "p_effect_c262e174b581",
+      "morphism_type": "Cause",
+      "detail": "bad luck -> Cause -> Failed the exam; Unspecified -> Action -> failed the exam",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_constraint_p_relativeclause_624584c3613f_p_event_c000be03edde",
+      "source": "p_relativeclause_624584c3613f",
+      "target": "p_event_c000be03edde",
+      "morphism_type": "Constraint",
+      "detail": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)",
+      "constraint_type": "ClauseCondition"
+    },
+    {
+      "id": "e_relation_p_modifier_ae6708c9c06c_p_event_21c4a03c1db3",
+      "source": "p_modifier_ae6708c9c06c",
+      "target": "p_event_21c4a03c1db3",
+      "morphism_type": "Relation",
+      "detail": "Node(report) -> Attribute -> State(Long)",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_0520d73d3ccc_p_event_9faf6dd6fc2b",
+      "source": "p_agent_0520d73d3ccc",
+      "target": "p_event_9faf6dd6fc2b",
+      "morphism_type": "Action",
+      "detail": "I helped -> Cause -> He succeeded; He -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_66701c013f50_p_event_aa28c4293a0b",
+      "source": "p_agent_66701c013f50",
+      "target": "p_event_aa28c4293a0b",
+      "morphism_type": "Action",
+      "detail": "You -> Action -> review the document",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_1148288f30b0_p_event_85ef8600654e",
+      "source": "p_agent_1148288f30b0",
+      "target": "p_event_85ef8600654e",
+      "morphism_type": "Action",
+      "detail": "Unspecified -> Action -> went",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_91d510e01871_p_event_e7a691f87f38",
+      "source": "p_agent_91d510e01871",
+      "target": "p_event_e7a691f87f38",
+      "morphism_type": "Action",
+      "detail": "you -> Action -> submit the form",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_605af38b027a_p_event_b6f30004a7cc",
+      "source": "p_agent_605af38b027a",
+      "target": "p_event_b6f30004a7cc",
+      "morphism_type": "Action",
+      "detail": "I -> Action -> submitted the form",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_31cd2dbae9c1_p_event_b03c96326b69",
+      "source": "p_agent_31cd2dbae9c1",
+      "target": "p_event_b03c96326b69",
+      "morphism_type": "Action",
+      "detail": "I -> Action -> wrote the report",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_2c695ab7ee29_p_event_c6c4635a1cb8",
+      "source": "p_agent_2c695ab7ee29",
+      "target": "p_event_c6c4635a1cb8",
+      "morphism_type": "Action",
+      "detail": "you helped -> Cause -> Succeeded; Unspecified -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_cecd48c3ed7d_p_event_f140f3aa8492",
+      "source": "p_agent_cecd48c3ed7d",
+      "target": "p_event_f140f3aa8492",
+      "morphism_type": "Action",
+      "detail": "the effort -> Concession -> Failed; Unspecified -> Action -> failed",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_36dc7c18d025_p_event_bfcc0ff31474",
+      "source": "p_agent_36dc7c18d025",
+      "target": "p_event_bfcc0ff31474",
+      "morphism_type": "Action",
+      "detail": "Unspecified -> Action -> further investigation",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_b02be8b1a200_p_event_1e5de928020f",
+      "source": "p_agent_b02be8b1a200",
+      "target": "p_event_1e5de928020f",
+      "morphism_type": "Action",
+      "detail": "Unspecified -> Action -> submitted the form",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_da37e426d9fd_p_event_17b6cf76e552",
+      "source": "p_agent_da37e426d9fd",
+      "target": "p_event_17b6cf76e552",
+      "morphism_type": "Action",
+      "detail": "Unspecified -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_fea2568ef1d5_p_event_ce8e617207d6",
+      "source": "p_agent_fea2568ef1d5",
+      "target": "p_event_ce8e617207d6",
+      "morphism_type": "Action",
+      "detail": "you helped -> Cause -> I succeeded; I -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_917aef0aef4f_p_event_380252dd4189",
+      "source": "p_agent_917aef0aef4f",
+      "target": "p_event_380252dd4189",
+      "morphism_type": "Action",
+      "detail": "He -> Action -> succeeded",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_ec0e6b47120c_p_event_1dbd40acff3d",
+      "source": "p_agent_ec0e6b47120c",
+      "target": "p_event_1dbd40acff3d",
+      "morphism_type": "Action",
+      "detail": "I -> Stative -> have a car",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_152d0ea1c17f_p_event_0f69793257fe",
+      "source": "p_agent_152d0ea1c17f",
+      "target": "p_event_0f69793257fe",
+      "morphism_type": "Action",
+      "detail": "I -> Action -> having a party",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_who_5ff223baa118_p_event_1a17eb5ef27c",
+      "source": "p_who_5ff223baa118",
+      "target": "p_event_1a17eb5ef27c",
+      "morphism_type": "Action",
+      "detail": "him -> Action -> told me",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_recipient_p_agent_beb709d70026_p_event_1a17eb5ef27c",
+      "source": "p_agent_beb709d70026",
+      "target": "p_event_1a17eb5ef27c",
+      "morphism_type": "Recipient",
+      "detail": "Recipient: I",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_25e25932f14f_p_event_beda054eadfb",
+      "source": "p_agent_25e25932f14f",
+      "target": "p_event_beda054eadfb",
+      "morphism_type": "Action",
+      "detail": "Unspecified -> Action -> completed The report",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_9a377e844b3c_p_event_b1019b80435c",
+      "source": "p_agent_9a377e844b3c",
+      "target": "p_event_b1019b80435c",
+      "morphism_type": "Action",
+      "detail": "bad luck -> Cause -> Failed the exam; Unspecified -> Action -> failed the exam",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_de1a71eb3250_p_event_c000be03edde",
+      "source": "p_agent_de1a71eb3250",
+      "target": "p_event_c000be03edde",
+      "morphism_type": "Action",
+      "detail": "I -> Action -> talked to the manager",
+      "constraint_type": ""
+    },
+    {
+      "id": "e_action_p_agent_28f16e6728c5_p_event_21c4a03c1db3",
+      "source": "p_agent_28f16e6728c5",
+      "target": "p_event_21c4a03c1db3",
+      "morphism_type": "Action",
+      "detail": "You -> Action -> review the long report",
+      "constraint_type": ""
+    }
+  ]
+}
