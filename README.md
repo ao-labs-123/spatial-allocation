@@ -2,8 +2,7 @@
 "Algorithmic spatial allocation and coordinate determination for semantic event networks and cognitive topology."
 
 ## CCA Architecture
-<img width="912" height="1053" alt="image" src="https://github.com/user-attachments/assets/9c8555f1-7b9e-40e6-ac09-256742664352" />
-
+![alt text](image.jpeg)
 
 1. [input-parser](https://github.com/ao-labs-123/input-parser)
 2. [particle-encapsulation](https://github.com/ao-labs-123/particle-encapsulation)
