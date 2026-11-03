@@ -47,3 +47,19 @@ git clone [https://github.com/your-username/Spatial-allocation.git](https://gith
 cd Spatial-allocation
 pip install -r requirements.txt
 ```
+2. Usage
+Place your ⁠topological_graph.json⁠ (from ⁠topological-mapper⁠) into the ⁠data/⁠ directory, then run the allocation engine:
+```text
+python src/allocator.py
+```
+## Pipeline Workflow
+```text
+[Natural Language Text] 
+       │
+       ▼
+[topological-mapper] ──(Topological Graph JSON)──> [Spatial-allocation] ──(3D Coordinates)──> [3D Visualizer]
+```
+## Tech Stack
+- Language: Python 3.x
+- Graph Processing: NetworkX
+- Layout & Computation: NumPy / Custom Deterministic Physics Engine
