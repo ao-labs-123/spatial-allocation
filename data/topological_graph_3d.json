@@ -14,9 +14,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        2.3760000000000003,
+        -4.925289985387411,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_002"
     },
@@ -35,9 +35,9 @@
         "stage2_mapping": "I helped -> Cause -> He succeeded; He -> Action -> succeeded"
       },
       "position": [
-        0.33592122761867893,
-        0.0,
-        0.0
+        1.9440000000000002,
+        -3.7147100146125895,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_002"
     },
@@ -55,9 +55,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.21787157365440182,
-        0.0,
-        0.0
+        -6.696000000000001,
+        4.925289985387411,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_033"
     },
@@ -75,9 +75,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.2954799228955527,
-        1.0,
-        0.0
+        -6.264,
+        3.714710014612589,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_033"
     },
@@ -95,9 +95,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -2.3760000000000003,
+        -3.7147100146125895,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_012"
     },
@@ -116,9 +116,9 @@
         "stage2_mapping": "You -> Action -> review the document"
       },
       "position": [
-        -0.2597329899574772,
-        0.0,
-        0.0
+        -1.9440000000000002,
+        -4.925289985387411,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_012"
     },
@@ -136,9 +136,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.264,
+        -4.925289985387411,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_024"
     },
@@ -157,9 +157,9 @@
         "stage2_mapping": "I -> State -> strange"
       },
       "position": [
-        0.12954718651003255,
-        0.0,
-        0.0
+        -6.696000000000001,
+        -3.7147100146125895,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_024"
     },
@@ -177,9 +177,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        6.8832,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
       "parent_id": "__container__cluster_021"
     },
@@ -199,9 +199,9 @@
         "stage3_mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)"
       },
       "position": [
-        0.12954718651003255,
-        0.0,
-        0.0
+        6.4794155787204355,
+        4.320923043082102,
+        0.0009230432486795125
       ],
       "parent_id": "__container__cluster_021"
     },
@@ -220,9 +220,9 @@
         "stage3_mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)"
       },
       "position": [
-        0.0835696439976059,
-        0.0,
-        0.0
+        6.077384421279565,
+        4.955896397028733,
+        0.6358963968621534
       ],
       "parent_id": "__container__cluster_021"
     },
@@ -240,9 +240,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        6.264,
+        -3.7147100146125895,
+        0.6052899853874109
       ],
       "parent_id": "__container__cluster_003"
     },
@@ -261,9 +261,9 @@
         "stage2_mapping": "Unspecified -> Action -> went"
       },
       "position": [
-        0.059707533764307714,
-        0.0,
-        0.0
+        6.696000000000001,
+        -4.925289985387411,
+        -0.6052899853874111
       ],
       "parent_id": "__container__cluster_003"
     },
@@ -281,9 +281,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        2.3760000000000003,
+        -4.925289985387411,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_014"
     },
@@ -302,9 +302,9 @@
         "stage2_mapping": "you -> Action -> submit the form"
       },
       "position": [
-        -0.23460247847715224,
-        0.0,
-        0.0
+        1.9440000000000002,
+        -3.7147100146125895,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_014"
     },
@@ -322,9 +322,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        6.696000000000001,
+        -4.925289985387411,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_011"
     },
@@ -343,9 +343,9 @@
         "stage2_mapping": "I -> Action -> submitted the form"
       },
       "position": [
-        -0.2346024784771522,
-        0.0,
-        0.0
+        6.264,
+        -3.7147100146125895,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_011"
     },
@@ -363,9 +363,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.264,
+        -4.925289985387411,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_008"
     },
@@ -384,9 +384,9 @@
         "stage2_mapping": "I -> Action -> wrote the report"
       },
       "position": [
-        -0.3200155995027968,
-        0.0,
-        0.0
+        -6.696000000000001,
+        -3.7147100146125895,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_008"
     },
@@ -404,9 +404,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        6.696000000000001,
+        -4.925289985387411,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_007"
     },
@@ -425,9 +425,9 @@
         "stage2_mapping": "you helped -> Cause -> Succeeded; Unspecified -> Action -> succeeded"
       },
       "position": [
-        0.33592122761867893,
-        0.0,
-        0.0
+        6.264,
+        -3.7147100146125895,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_007"
     },
@@ -445,9 +445,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.12563607300691587,
-        0.0,
-        0.0
+        2.3760000000000003,
+        -0.6052899853874111,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_030"
     },
@@ -465,9 +465,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.33592122761867893,
-        1.0,
-        0.0
+        1.9440000000000002,
+        0.605289985387411,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_030"
     },
@@ -485,9 +485,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        2.5632,
+        4.9568194401108325,
+        -3.6831805598891676
       ],
       "parent_id": "__container__cluster_020"
     },
@@ -506,9 +506,9 @@
         "stage2_mapping": "the effort -> Concession -> Failed; Unspecified -> Action -> failed"
       },
       "position": [
-        -0.01452584342343242,
-        0.0,
-        0.0
+        2.159684847863979,
+        4.319502237492547,
+        -4.320497759026016
       ],
       "parent_id": "__container__cluster_020"
     },
@@ -526,9 +526,9 @@
         "how": "Unspecified"
       },
       "position": [
-        -0.23437387997740725,
-        0.0,
-        0.0
+        1.7571151521360213,
+        3.683678322396621,
+        -4.956321681084818
       ],
       "parent_id": "__container__cluster_020"
     },
@@ -546,9 +546,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -1.9440000000000002,
+        -4.925289985387411,
+        -0.6052899853874111
       ],
       "parent_id": "__container__cluster_009"
     },
@@ -567,9 +567,9 @@
         "stage2_mapping": "Unspecified -> Action -> further investigation"
       },
       "position": [
-        0.059707533764307305,
-        0.0,
-        0.0
+        -2.3760000000000003,
+        -3.7147100146125895,
+        0.6052899853874109
       ],
       "parent_id": "__container__cluster_009"
     },
@@ -587,9 +587,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.264,
+        -0.6052899853874111,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_017"
     },
@@ -608,9 +608,9 @@
         "stage2_mapping": "Unspecified -> Action -> submitted the form"
       },
       "position": [
-        -0.2346024784771522,
-        0.0,
-        0.0
+        -6.696000000000001,
+        0.605289985387411,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_017"
     },
@@ -628,9 +628,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.264,
+        -0.6052899853874111,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_022"
     },
@@ -649,9 +649,9 @@
         "stage2_mapping": "Unspecified -> Action -> succeeded"
       },
       "position": [
-        0.33592122761867893,
-        0.0,
-        0.0
+        -6.696000000000001,
+        0.605289985387411,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_022"
     },
@@ -669,9 +669,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        2.3760000000000003,
+        3.714710014612589,
+        -0.6052899853874111
       ],
       "parent_id": "__container__cluster_018"
     },
@@ -690,9 +690,9 @@
         "stage2_mapping": "the project -> Cause -> I'm stressed; I -> State -> stressed"
       },
       "position": [
-        0.10437375074569831,
-        0.0,
-        0.0
+        1.9440000000000002,
+        4.925289985387411,
+        0.6052899853874109
       ],
       "parent_id": "__container__cluster_018"
     },
@@ -710,9 +710,9 @@
         "how": "Unspecified"
       },
       "position": [
-        -0.2343738799774072,
-        0.0,
-        0.0
+        6.696000000000001,
+        -0.6052899853874111,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_029"
     },
@@ -730,9 +730,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.10437375074569828,
-        1.0,
-        0.0
+        6.264,
+        0.605289985387411,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_029"
     },
@@ -750,9 +750,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -1.9440000000000002,
+        -0.6052899853874111,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_028"
     },
@@ -771,9 +771,9 @@
         "stage2_mapping": "you helped -> Cause -> I succeeded; I -> Action -> succeeded"
       },
       "position": [
-        0.33592122761867893,
-        0.0,
-        0.0
+        -2.3760000000000003,
+        0.605289985387411,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_028"
     },
@@ -791,9 +791,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.12563607300691587,
-        0.0,
-        0.0
+        6.264,
+        0.605289985387411,
+        4.925289985387411
       ],
       "parent_id": "__container__cluster_031"
     },
@@ -811,9 +811,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.35951796812038567,
-        1.0,
-        0.0
+        6.696000000000001,
+        -0.6052899853874111,
+        3.714710014612589
       ],
       "parent_id": "__container__cluster_031"
     },
@@ -831,9 +831,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -2.5632,
+        -4.9568194401108325,
+        3.6831805598891676
       ],
       "parent_id": "__container__cluster_013"
     },
@@ -853,9 +853,9 @@
         "stage3_mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)"
       },
       "position": [
-        0.33592122761867893,
-        0.0,
-        0.0
+        -2.1593548246009244,
+        -4.318980996968026,
+        4.321019002991868
       ],
       "parent_id": "__container__cluster_013"
     },
@@ -874,9 +874,9 @@
         "stage3_mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)"
       },
       "position": [
-        0.05970753376430735,
-        0.0,
-        0.0
+        -1.757445175399076,
+        -3.6841995629211417,
+        4.955800437118966
       ],
       "parent_id": "__container__cluster_013"
     },
@@ -894,9 +894,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        6.845409055294916,
+        4.890923741731507,
+        -3.8744388522626605
       ],
       "parent_id": "__container__cluster_001"
     },
@@ -916,9 +916,9 @@
         "stage3_mapping": "Node(meeting) -> Attribute -> State(Long)"
       },
       "position": [
-        0.10437375074569831,
-        0.0,
-        1.0
+        6.480754402324818,
+        4.317902797983648,
+        -4.319313515216209
       ],
       "parent_id": "__container__cluster_001"
     },
@@ -937,9 +937,9 @@
         "stage3_mapping": "Node(meeting) -> Attribute -> State(Long)"
       },
       "position": [
-        0.08356964399760615,
-        0.0,
-        0.0
+        5.8752,
+        4.414573460284846,
+        -4.9834000000000005
       ],
       "parent_id": "__container__cluster_001"
     },
@@ -957,9 +957,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        6.077384421279565,
+        0.6358963970287319,
+        0.6358963968621534
       ],
       "parent_id": "__container__cluster_026"
     },
@@ -979,9 +979,9 @@
         "stage3_mapping": "Node(The report) -> Attribute -> State(Long)"
       },
       "position": [
-        0.059707533764307326,
-        0.0,
-        0.0
+        6.4794155787204355,
+        0.0009230430821013918,
+        0.0009230432486795125
       ],
       "parent_id": "__container__cluster_026"
     },
@@ -1000,9 +1000,9 @@
         "stage3_mapping": "Node(The report) -> Attribute -> State(Long)"
       },
       "position": [
-        0.08356964399760652,
-        0.0,
-        0.0
+        6.8832,
+        -0.6368194401108326,
+        -0.6368194401108326
       ],
       "parent_id": "__container__cluster_026"
     },
@@ -1020,9 +1020,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.8832,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
       "parent_id": "__container__cluster_010"
     },
@@ -1042,9 +1042,9 @@
         "stage3_mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)"
       },
       "position": [
-        0.059707533764307326,
-        0.0,
-        0.0
+        -6.479354824600924,
+        4.321019003031974,
+        0.0010190029918675473
       ],
       "parent_id": "__container__cluster_010"
     },
@@ -1063,9 +1063,9 @@
         "stage3_mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)"
       },
       "position": [
-        0.0835696439976066,
-        0.0,
-        0.0
+        -6.077445175399077,
+        4.955800437078859,
+        0.6358004371189653
       ],
       "parent_id": "__container__cluster_010"
     },
@@ -1083,9 +1083,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -2.5632,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
       "parent_id": "__container__cluster_016"
     },
@@ -1105,9 +1105,9 @@
         "stage3_mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)"
       },
       "position": [
-        0.059707533764307305,
-        0.0,
-        0.0
+        -2.1593548246009244,
+        4.321019003031974,
+        0.0010190029918675473
       ],
       "parent_id": "__container__cluster_016"
     },
@@ -1126,9 +1126,9 @@
         "stage3_mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)"
       },
       "position": [
-        0.0835696439976066,
-        0.0,
-        0.0
+        -1.757445175399076,
+        4.955800437078859,
+        0.6358004371189653
       ],
       "parent_id": "__container__cluster_016"
     },
@@ -1146,9 +1146,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        1.7568000000000001,
+        -0.6368194401108326,
+        -0.6368194401108326
       ],
       "parent_id": "__container__cluster_027"
     },
@@ -1168,9 +1168,9 @@
         "stage3_mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)"
       },
       "position": [
-        0.059707533764307166,
-        0.0,
-        0.0
+        2.160645175399076,
+        0.0010190030319738768,
+        0.0010190029918675473
       ],
       "parent_id": "__container__cluster_027"
     },
@@ -1189,9 +1189,9 @@
         "stage3_mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)"
       },
       "position": [
-        0.0835696439976066,
-        0.0,
-        0.0
+        2.5625548246009244,
+        0.6358004370788587,
+        0.6358004371189653
       ],
       "parent_id": "__container__cluster_027"
     },
@@ -1209,9 +1209,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -2.3760000000000003,
+        0.605289985387411,
+        0.6052899853874109
       ],
       "parent_id": "__container__cluster_025"
     },
@@ -1230,9 +1230,9 @@
         "stage2_mapping": "I -> Stative -> have a car"
       },
       "position": [
-        0.07313931824037728,
-        0.0,
-        0.0
+        -1.9440000000000002,
+        -0.6052899853874111,
+        -0.6052899853874111
       ],
       "parent_id": "__container__cluster_025"
     },
@@ -1250,9 +1250,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.264,
+        -0.6052899853874111,
+        -0.6052899853874111
       ],
       "parent_id": "__container__cluster_004"
     },
@@ -1271,9 +1271,9 @@
         "stage2_mapping": "I -> Action -> having a party"
       },
       "position": [
-        0.0731393182403773,
-        0.0,
-        0.0
+        -6.696000000000001,
+        0.605289985387411,
+        0.6052899853874109
       ],
       "parent_id": "__container__cluster_004"
     },
@@ -1291,9 +1291,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        1.7573844212795653,
+        -3.6841036029712684,
+        0.6358963968621534
       ],
       "parent_id": "__container__cluster_019"
     },
@@ -1312,9 +1312,9 @@
         "stage2_mapping": "him -> Action -> told me"
       },
       "position": [
-        0.05970753376430771,
-        0.0,
-        0.0
+        2.159415578720435,
+        -4.319076956917899,
+        0.0009230432486795125
       ],
       "parent_id": "__container__cluster_019"
     },
@@ -1332,9 +1332,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        2.5632,
+        -4.9568194401108325,
+        -0.6368194401108326
       ],
       "parent_id": "__container__cluster_019"
     },
@@ -1352,9 +1352,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        2.5632,
+        -0.6368194401108326,
+        -4.9568194401108325
       ],
       "parent_id": "__container__cluster_005"
     },
@@ -1374,9 +1374,9 @@
         "stage3_mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)"
       },
       "position": [
-        -0.3200155995027973,
-        0.0,
-        0.0
+        2.159415578720435,
+        0.0009230430821013918,
+        -4.319076956751321
       ],
       "parent_id": "__container__cluster_005"
     },
@@ -1395,9 +1395,9 @@
         "stage3_mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)"
       },
       "position": [
-        0.05970753376430735,
-        0.0,
-        0.0
+        1.7573844212795653,
+        0.6358963970287319,
+        -3.6841036031378467
       ],
       "parent_id": "__container__cluster_005"
     },
@@ -1415,9 +1415,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.264,
+        3.714710014612589,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_015"
     },
@@ -1436,9 +1436,9 @@
         "stage2_mapping": "bad luck -> Cause -> Failed the exam; Unspecified -> Action -> failed the exam"
       },
       "position": [
-        -0.18694369654720888,
-        0.0,
-        0.0
+        -6.696000000000001,
+        4.925289985387411,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_015"
     },
@@ -1456,9 +1456,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430738,
-        0.0,
-        0.0
+        -2.3760000000000003,
+        4.925289985387411,
+        -3.7147100146125895
       ],
       "parent_id": "__container__cluster_032"
     },
@@ -1476,9 +1476,9 @@
         "how": "Unspecified"
       },
       "position": [
-        -0.18694369654720888,
-        1.0,
-        0.0
+        -1.9440000000000002,
+        3.714710014612589,
+        -4.925289985387411
       ],
       "parent_id": "__container__cluster_032"
     },
@@ -1496,9 +1496,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -6.0768,
+        -3.6831805598891676,
+        0.6368194401108326
       ],
       "parent_id": "__container__cluster_023"
     },
@@ -1518,9 +1518,9 @@
         "stage3_mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)"
       },
       "position": [
-        -0.13788458537010348,
-        0.0,
-        0.0
+        -6.480315152136022,
+        -4.320497762507453,
+        -0.0004977590260151744
       ],
       "parent_id": "__container__cluster_023"
     },
@@ -1539,9 +1539,9 @@
         "stage3_mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)"
       },
       "position": [
-        0.0835696439976066,
-        0.0,
-        0.0
+        -6.882884847863979,
+        -4.95632167760338,
+        -0.636321681084818
       ],
       "parent_id": "__container__cluster_023"
     },
@@ -1559,9 +1559,9 @@
         "how": "Unspecified"
       },
       "position": [
-        0.05970753376430736,
-        0.0,
-        0.0
+        -1.7568000000000001,
+        -0.6368194401108326,
+        -4.9568194401108325
       ],
       "parent_id": "__container__cluster_006"
     },
@@ -1581,9 +1581,9 @@
         "stage3_mapping": "Node(report) -> Attribute -> State(Long)"
       },
       "position": [
-        -0.3833896349869322,
-        0.0,
-        0.0
+        -2.160584421279565,
+        0.0009230430821013918,
+        -4.319076956751321
       ],
       "parent_id": "__container__cluster_006"
     },
@@ -1602,9 +1602,9 @@
         "stage3_mapping": "Node(report) -> Attribute -> State(Long)"
       },
       "position": [
-        0.08356964399760615,
-        0.0,
-        0.0
+        -2.562615578720435,
+        0.6358963970287319,
+        -3.6841036031378467
       ],
       "parent_id": "__container__cluster_006"
     },
@@ -1617,9 +1617,9 @@
         "what": "the long meeting"
       },
       "position": [
-        -0.259732989957477,
-        0.0,
-        0.0
+        6.718636542380267,
+        3.6566,
+        -4.102847632521131
       ],
       "parent_id": "__container__cluster_001"
     },
@@ -1637,10 +1637,17 @@
         "p_modifier_89dd39a8fc5a"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.07,
+      "capsule_half_length": 0.8400000000000001,
+      "semantic_position": [
         -0.003020515362466298,
         0.0,
         0.25
+      ],
+      "position": [
+        6.48,
+        4.32,
+        -4.32
       ]
     },
     {
@@ -1655,10 +1662,17 @@
         "p_event_9faf6dd6fc2b"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.19781438069149315,
         0.0,
         0.0
+      ],
+      "position": [
+        2.16,
+        -4.32,
+        4.32
       ]
     },
     {
@@ -1673,9 +1687,16 @@
         "p_event_85ef8600654e"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.05970753376430754,
         0.0,
+        0.0
+      ],
+      "position": [
+        6.48,
+        -4.32,
         0.0
       ]
     },
@@ -1691,8 +1712,15 @@
         "p_event_0f69793257fe"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.06642342600234233,
+        0.0,
+        0.0
+      ],
+      "position": [
+        -6.48,
         0.0,
         0.0
       ]
@@ -1710,10 +1738,17 @@
         "p_modifier_848a5fc5935e"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         -0.0668668439913942,
         0.0,
         0.0
+      ],
+      "position": [
+        2.16,
+        0.0,
+        -4.32
       ]
     },
     {
@@ -1729,10 +1764,17 @@
         "p_modifier_ae6708c9c06c"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         -0.0800374857416729,
         0.0,
         0.0
+      ],
+      "position": [
+        -2.16,
+        0.0,
+        -4.32
       ]
     },
     {
@@ -1747,10 +1789,17 @@
         "p_event_c6c4635a1cb8"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.19781438069149315,
         0.0,
         0.0
+      ],
+      "position": [
+        6.48,
+        -4.32,
+        4.32
       ]
     },
     {
@@ -1765,10 +1814,17 @@
         "p_event_b03c96326b69"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.1301540328692447,
         0.0,
         0.0
+      ],
+      "position": [
+        -6.48,
+        -4.32,
+        -4.32
       ]
     },
     {
@@ -1783,9 +1839,16 @@
         "p_event_bfcc0ff31474"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.05970753376430733,
         0.0,
+        0.0
+      ],
+      "position": [
+        -2.16,
+        -4.32,
         0.0
       ]
     },
@@ -1802,9 +1865,16 @@
         "p_relativeclause_243a1c340909"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.06766157050874043,
         0.0,
+        0.0
+      ],
+      "position": [
+        -6.48,
+        4.32,
         0.0
       ]
     },
@@ -1820,10 +1890,17 @@
         "p_event_b6f30004a7cc"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.08744747235642242,
         0.0,
         0.0
+      ],
+      "position": [
+        6.48,
+        -4.32,
+        -4.32
       ]
     },
     {
@@ -1838,10 +1915,17 @@
         "p_event_aa28c4293a0b"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.1000127280965849,
         0.0,
         0.0
+      ],
+      "position": [
+        -2.16,
+        -4.32,
+        -4.32
       ]
     },
     {
@@ -1857,10 +1941,17 @@
         "p_modifier_4dd7643e42eb"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.15177876504909787,
         0.0,
         0.0
+      ],
+      "position": [
+        -2.16,
+        -4.32,
+        4.32
       ]
     },
     {
@@ -1875,10 +1966,17 @@
         "p_event_e7a691f87f38"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.08744747235642245,
         0.0,
         0.0
+      ],
+      "position": [
+        2.16,
+        -4.32,
+        -4.32
       ]
     },
     {
@@ -1893,10 +1991,17 @@
         "p_event_b1019b80435c"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.06361808139145075,
         0.0,
         0.0
+      ],
+      "position": [
+        -6.48,
+        4.32,
+        -4.32
       ]
     },
     {
@@ -1912,9 +2017,16 @@
         "p_relativeclause_14e627a2fae6"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.06766157050874043,
         0.0,
+        0.0
+      ],
+      "position": [
+        -2.16,
+        4.32,
         0.0
       ]
     },
@@ -1930,10 +2042,17 @@
         "p_event_1e5de928020f"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.08744747235642242,
         0.0,
         0.0
+      ],
+      "position": [
+        -6.48,
+        0.0,
+        -4.32
       ]
     },
     {
@@ -1948,9 +2067,16 @@
         "p_event_5b17259fa239"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.08204064225500284,
         0.0,
+        0.0
+      ],
+      "position": [
+        2.16,
+        4.32,
         0.0
       ]
     },
@@ -1967,9 +2093,16 @@
         "p_who_5ff223baa118"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.05970753376430748,
         0.0,
+        0.0
+      ],
+      "position": [
+        2.16,
+        -4.32,
         0.0
       ]
     },
@@ -1986,10 +2119,17 @@
         "p_event_f140f3aa8492"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         -0.06306406321217743,
         0.0,
         0.0
+      ],
+      "position": [
+        2.16,
+        4.32,
+        -4.32
       ]
     },
     {
@@ -2005,9 +2145,16 @@
         "p_modifier_a6c3b8cb8835"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.09094145475731526,
         0.0,
+        0.0
+      ],
+      "position": [
+        6.48,
+        4.32,
         0.0
       ]
     },
@@ -2023,10 +2170,17 @@
         "p_event_17b6cf76e552"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.19781438069149315,
         0.0,
         0.0
+      ],
+      "position": [
+        -6.48,
+        0.0,
+        4.32
       ]
     },
     {
@@ -2042,9 +2196,16 @@
         "p_relativeclause_624584c3613f"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.0017975307972701582,
         0.0,
+        0.0
+      ],
+      "position": [
+        -6.48,
+        -4.32,
         0.0
       ]
     },
@@ -2060,10 +2221,17 @@
         "p_event_d7114036910f"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.09462736013716996,
         0.0,
         0.0
+      ],
+      "position": [
+        -6.48,
+        -4.32,
+        4.32
       ]
     },
     {
@@ -2078,8 +2246,15 @@
         "p_event_1dbd40acff3d"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.06642342600234233,
+        0.0,
+        0.0
+      ],
+      "position": [
+        -2.16,
         0.0,
         0.0
       ]
@@ -2097,8 +2272,15 @@
         "p_relativeclause_bb0a45b4a0b2"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.0676615705087404,
+        0.0,
+        0.0
+      ],
+      "position": [
+        6.48,
         0.0,
         0.0
       ]
@@ -2116,8 +2298,15 @@
         "p_relativeclause_e8c221ce2a90"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 1.0271281292110204,
+      "capsule_half_length": 0.56,
+      "semantic_position": [
         0.06766157050874037,
+        0.0,
+        0.0
+      ],
+      "position": [
+        2.16,
         0.0,
         0.0
       ]
@@ -2134,10 +2323,17 @@
         "p_event_ce8e617207d6"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.19781438069149315,
         0.0,
         0.0
+      ],
+      "position": [
+        -2.16,
+        0.0,
+        4.32
       ]
     },
     {
@@ -2152,10 +2348,17 @@
         "p_effect_463c9bebc2c5"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.06500006461585445,
         0.5,
         0.0
+      ],
+      "position": [
+        6.48,
+        0.0,
+        -4.32
       ]
     },
     {
@@ -2170,10 +2373,17 @@
         "p_effect_c9302f7d21a4"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.2307786503127974,
         0.5,
         0.0
+      ],
+      "position": [
+        2.16,
+        0.0,
+        4.32
       ]
     },
     {
@@ -2188,10 +2398,17 @@
         "p_effect_1c7d504bd18f"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.24257702056365077,
         0.5,
         0.0
+      ],
+      "position": [
+        6.48,
+        0.0,
+        4.32
       ]
     },
     {
@@ -2206,10 +2423,17 @@
         "p_effect_c262e174b581"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         -0.06361808139145075,
         0.5,
         0.0
+      ],
+      "position": [
+        -2.16,
+        4.32,
+        -4.32
       ]
     },
     {
@@ -2224,10 +2448,17 @@
         "p_effect_808a9c8f40ae"
       ],
       "parent_id": "__container__conversation",
-      "position": [
+      "capsule_radius": 0.9762741699796953,
+      "capsule_half_length": 0.3,
+      "semantic_position": [
         0.25667574827497724,
         0.5,
         0.0
+      ],
+      "position": [
+        -6.48,
+        4.32,
+        4.32
       ]
     },
     {
@@ -2272,10 +2503,15 @@
         "__container__cluster_032",
         "__container__cluster_033"
       ],
+      "semantic_position": [
+        0.04931382171225028,
+        0.07575757575757576,
+        0.007575757575757576
+      ],
       "position": [
-        0.04574144779419359,
-        0.06329113924050633,
-        0.012658227848101266
+        0.0,
+        8.64,
+        0.0
       ]
     }
   ],

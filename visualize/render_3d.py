@@ -1,4 +1,5 @@
 import json
+import math
 from pathlib import Path
 
 import plotly.graph_objects as go
@@ -14,65 +15,37 @@ def _axis_label(node, attribute):
 	return "Unspecified" if value.casefold() == "unspecified" else value
 
 
-def _axis_ticks(nodes, positions, attribute, axis_index, maximum_ticks=8):
-	labels_by_key = {}
-	values_by_key = {}
-	for node in nodes:
-		label = _axis_label(node, attribute)
-		key = label.casefold()
-		labels_by_key.setdefault(key, label)
-		values_by_key.setdefault(key, []).append(positions[node["id"]][axis_index])
-
-	ticks = sorted(
-		((sum(values) / len(values), labels_by_key[key]) for key, values in values_by_key.items()),
-		key=lambda tick: tick[0],
-	)
-	if len(ticks) > maximum_ticks:
-		indices = {
-			round(index * (len(ticks) - 1) / (maximum_ticks - 1))
-			for index in range(maximum_ticks)
-		}
-		ticks = [tick for index, tick in enumerate(ticks) if index in indices]
-	return [tick[0] for tick in ticks], [tick[1] for tick in ticks]
-
-
-def _container_bounds_trace(containers, positions):
+def _container_capsule_trace(containers, positions):
 	x_values = []
 	y_values = []
 	z_values = []
 	for container in containers:
-		member_positions = [positions[node_id] for node_id in container.get("contains", []) if node_id in positions]
-		if not member_positions:
-			continue
-		bounds = []
-		for axis_index in range(3):
-			values = [position[axis_index] for position in member_positions]
-			minimum = min(values)
-			maximum = max(values)
-			padding = max((maximum - minimum) * 0.12, 0.2)
-			bounds.append((minimum - padding, maximum + padding))
+		center = positions[container["id"]]
+		radius = float(container["capsule_radius"])
+		half_length = float(container["capsule_half_length"])
 
-		x_min, x_max = bounds[0]
-		y_min, y_max = bounds[1]
-		z_min, z_max = bounds[2]
-		corners = [
-			(x_min, y_min, z_min),
-			(x_max, y_min, z_min),
-			(x_max, y_max, z_min),
-			(x_min, y_max, z_min),
-			(x_min, y_min, z_max),
-			(x_max, y_min, z_max),
-			(x_max, y_max, z_max),
-			(x_min, y_max, z_max),
-		]
-		for start, end in (
-			(0, 1), (1, 2), (2, 3), (3, 0),
-			(4, 5), (5, 6), (6, 7), (7, 4),
-			(0, 4), (1, 5), (2, 6), (3, 7),
-		):
-			x_values.extend([corners[start][0], corners[end][0], None])
-			y_values.extend([corners[start][1], corners[end][1], None])
-			z_values.extend([corners[start][2], corners[end][2], None])
+		for x_offset in (-half_length, 0.0, half_length):
+			for index in range(25):
+				angle = 2 * math.pi * index / 24
+				x_values.append(center[0] + x_offset)
+				y_values.append(center[1] + radius * math.cos(angle))
+				z_values.append(center[2] + radius * math.sin(angle))
+			x_values.append(None)
+			y_values.append(None)
+			z_values.append(None)
+
+		for index in range(12):
+			angle = 2 * math.pi * index / 12
+			for side in (-1, 1):
+				for step in range(13):
+					arc = (math.pi / 2) * step / 12
+					x_values.append(center[0] + side * (half_length + radius * math.sin(arc)))
+					radial = radius * math.cos(arc)
+					y_values.append(center[1] + radial * math.cos(angle))
+					z_values.append(center[2] + radial * math.sin(angle))
+				x_values.append(None)
+				y_values.append(None)
+				z_values.append(None)
 	return go.Scatter3d(
 		x=x_values,
 		y=y_values,
@@ -81,7 +54,7 @@ def _container_bounds_trace(containers, positions):
 		line={"color": "rgba(55, 110, 140, 0.55)", "width": 2},
 		hoverinfo="skip",
 		showlegend=False,
-		name="Container boundaries",
+		name="Capsule containers",
 	)
 
 
@@ -102,7 +75,7 @@ def render_graph(graph_data, output_path):
 	figure = go.Figure()
 	cluster_containers = [container for container in containers if container.get("container_type") != "conversation"]
 	if cluster_containers:
-		figure.add_trace(_container_bounds_trace(cluster_containers, positions))
+		figure.add_trace(_container_capsule_trace(cluster_containers, positions))
 
 	edge_x = []
 	edge_y = []
@@ -185,7 +158,12 @@ def render_graph(graph_data, output_path):
 				text=[node.get("label", node["id"]) for node in container_nodes],
 				textposition="top center",
 				customdata=[
-					[node["id"], len(node.get("contains", [])), node.get("parent_id", "Top level")]
+					[
+						node["id"],
+						len(node.get("contains", [])),
+						node.get("parent_id", "Top level"),
+						*(node.get("semantic_position") or [0.0, 0.0, 0.0]),
+					]
 					for node in container_nodes
 				],
 				marker={
@@ -198,7 +176,9 @@ def render_graph(graph_data, output_path):
 					"<b>%{text}</b><br>Container particle"
 					+ "<br>ID: %{customdata[0]}"
 					+ "<br>Contains: %{customdata[1]} particles"
-					+ "<br>Parent: %{customdata[2]}<extra></extra>"
+					+ "<br>Parent: %{customdata[2]}"
+					+ "<br>Semantic center: (%{customdata[3]:.2f}, %{customdata[4]:.2f}, %{customdata[5]:.2f})"
+					+ "<extra></extra>"
 				),
 			)
 		)
@@ -215,8 +195,6 @@ def render_graph(graph_data, output_path):
 		padding = max((maximum - minimum) * 0.08, 0.5)
 		axis_ranges.append([minimum - padding, maximum + padding])
 
-	x_ticks, x_labels = _axis_ticks(leaf_nodes, positions, "what", 0)
-	z_values = sorted({point[2] for point in coordinates})
 	figure.update_layout(
 		title="Semantic Space Allocation",
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
@@ -224,23 +202,16 @@ def render_graph(graph_data, output_path):
 		hovermode="closest",
 		scene={
 			"xaxis": {
-				"title": "What (lexical similarity, 1D)",
+				"title": "Packed container layout X",
 				"range": axis_ranges[0],
-				"tickmode": "array",
-				"tickvals": x_ticks,
-				"ticktext": x_labels,
 			},
 			"yaxis": {
-				"title": "Causal / hierarchical depth",
+				"title": "Packed container layout Y",
 				"range": axis_ranges[1],
-				"dtick": 1,
 			},
 			"zaxis": {
-				"title": "Process stage (Temporal relations / explicit stage)",
+				"title": "Packed container layout Z",
 				"range": axis_ranges[2],
-				"tickmode": "array",
-				"tickvals": z_values,
-				"ticktext": [f"Stage {value:g}" for value in z_values],
 			},
 			"aspectmode": "data",
 			"dragmode": "orbit",

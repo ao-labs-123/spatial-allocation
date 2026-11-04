@@ -197,7 +197,7 @@ def _temporal_stages(nodes, edges):
 	return {node_id: float(depths[component_id]) for node_id, component_id in component_for_node.items()}
 
 
-def _add_container_particles(nodes, edges):
+def _add_container_particles(nodes, edges, seed=42):
 	if not nodes:
 		return nodes
 
@@ -214,18 +214,21 @@ def _add_container_particles(nodes, edges):
 
 	top_level_members = []
 	container_nodes = []
-	cluster_index = 0
-	node_positions = {node["id"]: node["position"] for node in nodes}
-	for component in components:
+	node_by_id = {node["id"]: node for node in nodes}
+	component_layouts = []
+	for cluster_index, component in enumerate(components, start=1):
 		member_ids = sorted(component)
-		if len(member_ids) == 1:
-			top_level_members.extend(member_ids)
-			continue
-
-		cluster_index += 1
 		container_id = f"__container__cluster_{cluster_index:03d}"
 		if any(node["id"] == container_id for node in nodes):
 			raise ValueError(f"Node ID {container_id!r} is reserved for a cluster container")
+		member_positions = [node_by_id[node_id]["position"] for node_id in member_ids]
+		center = [
+			sum(position[axis] for position in member_positions) / len(member_positions)
+			for axis in range(3)
+		]
+		radius = 0.75 + 0.16 * math.sqrt(len(member_ids))
+		half_length = max(0.3, 0.28 * (len(member_ids) - 1))
+
 		container = {
 			"id": container_id,
 			"label": f"Local cluster {cluster_index}",
@@ -235,16 +238,70 @@ def _add_container_particles(nodes, edges):
 			"resolution_state": "Derived",
 			"contains": member_ids,
 			"parent_id": root_id,
+			"capsule_radius": radius,
+			"capsule_half_length": half_length,
+			"semantic_position": center,
 		}
-		container["position"] = [
-			sum(node_positions[node_id][axis] for node_id in member_ids) / len(member_ids)
-			for axis in range(3)
-		]
 		container_nodes.append(container)
-		top_level_members.append(container_id)
-		for node in nodes:
-			if node["id"] in component:
-				node["parent_id"] = container_id
+		component_layouts.append((container, member_ids))
+
+	if component_layouts:
+		max_extent = max(
+			container["capsule_radius"] + container["capsule_half_length"]
+			for container, _ in component_layouts
+		)
+		spacing = 2 * max_extent + 0.5
+		columns = math.ceil(len(component_layouts) ** (1 / 3))
+		rows = math.ceil(math.sqrt(len(component_layouts) / columns))
+		layers = math.ceil(len(component_layouts) / (columns * rows))
+		for index, (container, member_ids) in enumerate(
+			sorted(
+				component_layouts,
+				key=lambda item: (
+					*item[0]["semantic_position"],
+					item[0]["id"],
+				),
+			)
+		):
+			grid_x = index % columns
+			grid_y = (index // columns) % rows
+			grid_z = index // (columns * rows)
+			container["position"] = [
+				(grid_x - (columns - 1) / 2) * spacing,
+				(grid_y - (rows - 1) / 2) * spacing,
+				(grid_z - (layers - 1) / 2) * spacing,
+			]
+			center = container["position"]
+			local_graph = graph.subgraph(member_ids)
+			local_positions = nx.spring_layout(
+				local_graph,
+				dim=3,
+				seed=seed,
+				iterations=60,
+				scale=1,
+			)
+			local_extents = [
+				max((abs(local_positions[node_id][axis]) for node_id in member_ids), default=0)
+				for axis in range(3)
+			]
+			local_scales = [
+				container["capsule_half_length"] * 0.72,
+				container["capsule_radius"] * 0.62,
+				container["capsule_radius"] * 0.62,
+			]
+			for node_id in member_ids:
+				node = node_by_id[node_id]
+				node["position"] = [
+					float(center[axis])
+					+ (
+						float(local_positions[node_id][axis]) / local_extents[axis] * local_scales[axis]
+						if local_extents[axis] > 1e-12
+						else 0.0
+					)
+					for axis in range(3)
+				]
+				node["parent_id"] = container["id"]
+			top_level_members.append(container["id"])
 
 	root = {
 		"id": root_id,
@@ -254,14 +311,21 @@ def _add_container_particles(nodes, edges):
 		"container_type": "conversation",
 		"resolution_state": "Derived",
 		"contains": sorted(top_level_members),
+		"semantic_position": [
+			sum(container["semantic_position"][axis] for container, _ in component_layouts)
+			/ len(component_layouts)
+			for axis in range(3)
+		] if component_layouts else [0.0, 0.0, 0.0],
 	}
-	root["position"] = [
-		sum(node["position"][axis] for node in nodes) / len(nodes)
-		for axis in range(3)
-	]
-	for node in nodes:
-		if "parent_id" not in node:
-			node["parent_id"] = root_id
+	root["position"] = (
+		[
+			0.0,
+			max(container["position"][1] for container in container_nodes) + spacing,
+			0.0,
+		]
+		if container_nodes
+		else [0.0, 0.0, 0.0]
+	)
 
 	return nodes + container_nodes + [root]
 
@@ -290,7 +354,7 @@ def allocate_coordinates(graph_data, seed=42):
 			temporal_stages[node_id],
 		]
 
-	graph_data["nodes"] = _add_container_particles(nodes, edges)
+	graph_data["nodes"] = _add_container_particles(nodes, edges, seed=seed)
 	return graph_data
 
 
