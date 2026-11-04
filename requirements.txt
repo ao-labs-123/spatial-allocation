@@ -1,4 +1,4 @@
 networkx>=3.0
 numpy>=1.23
-matplotlib>=3.7
+plotly>=5.18
   
