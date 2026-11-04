@@ -14,6 +14,8 @@ The 3D allocator uses the input node attributes and directed morphisms as follow
 
 `attributes.where` is shown as contextual information in each node's hover details, rather than as an axis. `who`, `when`, and `where` are likewise retained as useful node context. Temporal relationships and explicit stage values must not conflict; cyclic temporal relationships are collapsed into one stage.
 
+The allocator also wraps each connected multi-particle component in a derived **container particle** and creates a top-level `Conversation` container particle. Container particles are ordinary nodes with `node_type: "container"`, a `contains` list, a `parent_id` where applicable, and a position derived from their members. Isolated particles sit directly inside the conversation container. The renderer shows local containers as wireframe boxes and all containers as selectable/hoverable particles. Containment is separate from semantic morphism edges. Derived containers are rebuilt on every allocation, so running the allocator repeatedly is safe.
+
 ---
 
 ## Design Philosophy

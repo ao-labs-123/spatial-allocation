@@ -17,7 +17,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_002"
     },
     {
       "id": "p_event_9faf6dd6fc2b",
@@ -37,7 +38,8 @@
         0.33592122761867893,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_002"
     },
     {
       "id": "p_cause_d452fea9db1b",
@@ -56,7 +58,8 @@
         0.21787157365440182,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_033"
     },
     {
       "id": "p_effect_808a9c8f40ae",
@@ -75,7 +78,8 @@
         0.2954799228955527,
         1.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_033"
     },
     {
       "id": "p_agent_66701c013f50",
@@ -94,7 +98,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_012"
     },
     {
       "id": "p_event_aa28c4293a0b",
@@ -114,7 +119,8 @@
         -0.2597329899574772,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_012"
     },
     {
       "id": "p_agent_eae1a5ebeee4",
@@ -133,7 +139,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_024"
     },
     {
       "id": "p_event_d7114036910f",
@@ -153,7 +160,8 @@
         0.12954718651003255,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_024"
     },
     {
       "id": "p_agent_d8de13d6ba9c",
@@ -172,7 +180,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_021"
     },
     {
       "id": "p_event_9351a50972a9",
@@ -193,7 +202,8 @@
         0.12954718651003255,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_021"
     },
     {
       "id": "p_modifier_a6c3b8cb8835",
@@ -213,7 +223,8 @@
         0.0835696439976059,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_021"
     },
     {
       "id": "p_agent_1148288f30b0",
@@ -232,7 +243,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_003"
     },
     {
       "id": "p_event_85ef8600654e",
@@ -252,7 +264,8 @@
         0.059707533764307714,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_003"
     },
     {
       "id": "p_agent_91d510e01871",
@@ -271,7 +284,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_014"
     },
     {
       "id": "p_event_e7a691f87f38",
@@ -291,7 +305,8 @@
         -0.23460247847715224,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_014"
     },
     {
       "id": "p_agent_605af38b027a",
@@ -310,7 +325,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_011"
     },
     {
       "id": "p_event_b6f30004a7cc",
@@ -330,7 +346,8 @@
         -0.2346024784771522,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_011"
     },
     {
       "id": "p_agent_31cd2dbae9c1",
@@ -349,7 +366,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_008"
     },
     {
       "id": "p_event_b03c96326b69",
@@ -369,7 +387,8 @@
         -0.3200155995027968,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_008"
     },
     {
       "id": "p_agent_2c695ab7ee29",
@@ -388,7 +407,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_007"
     },
     {
       "id": "p_event_c6c4635a1cb8",
@@ -408,7 +428,8 @@
         0.33592122761867893,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_007"
     },
     {
       "id": "p_cause_6332939e7b94",
@@ -427,7 +448,8 @@
         0.12563607300691587,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_030"
     },
     {
       "id": "p_effect_c9302f7d21a4",
@@ -446,7 +468,8 @@
         0.33592122761867893,
         1.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_030"
     },
     {
       "id": "p_agent_cecd48c3ed7d",
@@ -465,7 +488,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_020"
     },
     {
       "id": "p_event_f140f3aa8492",
@@ -485,7 +509,8 @@
         -0.01452584342343242,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_020"
     },
     {
       "id": "p_concession_55c9430515c1",
@@ -504,7 +529,8 @@
         -0.23437387997740725,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_020"
     },
     {
       "id": "p_agent_36dc7c18d025",
@@ -523,7 +549,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_009"
     },
     {
       "id": "p_event_bfcc0ff31474",
@@ -543,7 +570,8 @@
         0.059707533764307305,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_009"
     },
     {
       "id": "p_agent_b02be8b1a200",
@@ -562,7 +590,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_017"
     },
     {
       "id": "p_event_1e5de928020f",
@@ -582,7 +611,8 @@
         -0.2346024784771522,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_017"
     },
     {
       "id": "p_agent_da37e426d9fd",
@@ -601,7 +631,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_022"
     },
     {
       "id": "p_event_17b6cf76e552",
@@ -621,7 +652,8 @@
         0.33592122761867893,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_022"
     },
     {
       "id": "p_agent_bb9fa1735494",
@@ -640,7 +672,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_018"
     },
     {
       "id": "p_event_5b17259fa239",
@@ -660,7 +693,8 @@
         0.10437375074569831,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_018"
     },
     {
       "id": "p_cause_1cbfce827926",
@@ -679,7 +713,8 @@
         -0.2343738799774072,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_029"
     },
     {
       "id": "p_effect_463c9bebc2c5",
@@ -698,7 +733,8 @@
         0.10437375074569828,
         1.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_029"
     },
     {
       "id": "p_agent_fea2568ef1d5",
@@ -717,7 +753,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_028"
     },
     {
       "id": "p_event_ce8e617207d6",
@@ -737,7 +774,8 @@
         0.33592122761867893,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_028"
     },
     {
       "id": "p_cause_92946bcb8caa",
@@ -756,7 +794,8 @@
         0.12563607300691587,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_031"
     },
     {
       "id": "p_effect_1c7d504bd18f",
@@ -775,7 +814,8 @@
         0.35951796812038567,
         1.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_031"
     },
     {
       "id": "p_agent_917aef0aef4f",
@@ -794,7 +834,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_013"
     },
     {
       "id": "p_event_380252dd4189",
@@ -815,7 +856,8 @@
         0.33592122761867893,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_013"
     },
     {
       "id": "p_modifier_4dd7643e42eb",
@@ -835,7 +877,8 @@
         0.05970753376430735,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_013"
     },
     {
       "id": "p_agent_d313d7998a03",
@@ -854,7 +897,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_001"
     },
     {
       "id": "p_event_74925654b84e",
@@ -875,7 +919,8 @@
         0.10437375074569831,
         0.0,
         1.0
-      ]
+      ],
+      "parent_id": "__container__cluster_001"
     },
     {
       "id": "p_modifier_89dd39a8fc5a",
@@ -895,7 +940,8 @@
         0.08356964399760615,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_001"
     },
     {
       "id": "p_agent_f68a1fa4d5d6",
@@ -914,7 +960,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_026"
     },
     {
       "id": "p_event_369797f302ae",
@@ -935,7 +982,8 @@
         0.059707533764307326,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_026"
     },
     {
       "id": "p_relativeclause_bb0a45b4a0b2",
@@ -955,7 +1003,8 @@
         0.08356964399760652,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_026"
     },
     {
       "id": "p_agent_4d4ee5fe2988",
@@ -974,7 +1023,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_010"
     },
     {
       "id": "p_event_c185f8719227",
@@ -995,7 +1045,8 @@
         0.059707533764307326,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_010"
     },
     {
       "id": "p_relativeclause_243a1c340909",
@@ -1015,7 +1066,8 @@
         0.0835696439976066,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_010"
     },
     {
       "id": "p_agent_ad0e53673670",
@@ -1034,7 +1086,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_016"
     },
     {
       "id": "p_event_6b2d1ccdf3be",
@@ -1055,7 +1108,8 @@
         0.059707533764307305,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_016"
     },
     {
       "id": "p_relativeclause_14e627a2fae6",
@@ -1075,7 +1129,8 @@
         0.0835696439976066,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_016"
     },
     {
       "id": "p_agent_fd4f86bfbeed",
@@ -1094,7 +1149,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_027"
     },
     {
       "id": "p_event_47689b5b2fc9",
@@ -1115,7 +1171,8 @@
         0.059707533764307166,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_027"
     },
     {
       "id": "p_relativeclause_e8c221ce2a90",
@@ -1135,7 +1192,8 @@
         0.0835696439976066,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_027"
     },
     {
       "id": "p_agent_ec0e6b47120c",
@@ -1154,7 +1212,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_025"
     },
     {
       "id": "p_event_1dbd40acff3d",
@@ -1174,7 +1233,8 @@
         0.07313931824037728,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_025"
     },
     {
       "id": "p_agent_152d0ea1c17f",
@@ -1193,7 +1253,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_004"
     },
     {
       "id": "p_event_0f69793257fe",
@@ -1213,7 +1274,8 @@
         0.0731393182403773,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_004"
     },
     {
       "id": "p_agent_beb709d70026",
@@ -1232,7 +1294,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_019"
     },
     {
       "id": "p_event_1a17eb5ef27c",
@@ -1252,7 +1315,8 @@
         0.05970753376430771,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_019"
     },
     {
       "id": "p_who_5ff223baa118",
@@ -1271,7 +1335,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_019"
     },
     {
       "id": "p_agent_25e25932f14f",
@@ -1290,7 +1355,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_005"
     },
     {
       "id": "p_event_beda054eadfb",
@@ -1311,7 +1377,8 @@
         -0.3200155995027973,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_005"
     },
     {
       "id": "p_modifier_848a5fc5935e",
@@ -1331,7 +1398,8 @@
         0.05970753376430735,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_005"
     },
     {
       "id": "p_agent_9a377e844b3c",
@@ -1350,7 +1418,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_015"
     },
     {
       "id": "p_event_b1019b80435c",
@@ -1370,7 +1439,8 @@
         -0.18694369654720888,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_015"
     },
     {
       "id": "p_cause_a98de6faf41e",
@@ -1389,7 +1459,8 @@
         0.05970753376430738,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_032"
     },
     {
       "id": "p_effect_c262e174b581",
@@ -1408,7 +1479,8 @@
         -0.18694369654720888,
         1.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_032"
     },
     {
       "id": "p_agent_de1a71eb3250",
@@ -1427,7 +1499,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_023"
     },
     {
       "id": "p_event_c000be03edde",
@@ -1448,7 +1521,8 @@
         -0.13788458537010348,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_023"
     },
     {
       "id": "p_relativeclause_624584c3613f",
@@ -1468,7 +1542,8 @@
         0.0835696439976066,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_023"
     },
     {
       "id": "p_agent_28f16e6728c5",
@@ -1487,7 +1562,8 @@
         0.05970753376430736,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_006"
     },
     {
       "id": "p_event_21c4a03c1db3",
@@ -1508,7 +1584,8 @@
         -0.3833896349869322,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_006"
     },
     {
       "id": "p_modifier_ae6708c9c06c",
@@ -1528,7 +1605,8 @@
         0.08356964399760615,
         0.0,
         0.0
-      ]
+      ],
+      "parent_id": "__container__cluster_006"
     },
     {
       "id": "context_temporal_78",
@@ -1542,6 +1620,662 @@
         -0.259732989957477,
         0.0,
         0.0
+      ],
+      "parent_id": "__container__cluster_001"
+    },
+    {
+      "id": "__container__cluster_001",
+      "label": "Local cluster 1",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "context_temporal_78",
+        "p_agent_d313d7998a03",
+        "p_event_74925654b84e",
+        "p_modifier_89dd39a8fc5a"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.003020515362466298,
+        0.0,
+        0.25
+      ]
+    },
+    {
+      "id": "__container__cluster_002",
+      "label": "Local cluster 2",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_0520d73d3ccc",
+        "p_event_9faf6dd6fc2b"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.19781438069149315,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_003",
+      "label": "Local cluster 3",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_1148288f30b0",
+        "p_event_85ef8600654e"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.05970753376430754,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_004",
+      "label": "Local cluster 4",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_152d0ea1c17f",
+        "p_event_0f69793257fe"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.06642342600234233,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_005",
+      "label": "Local cluster 5",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_25e25932f14f",
+        "p_event_beda054eadfb",
+        "p_modifier_848a5fc5935e"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.0668668439913942,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_006",
+      "label": "Local cluster 6",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_28f16e6728c5",
+        "p_event_21c4a03c1db3",
+        "p_modifier_ae6708c9c06c"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.0800374857416729,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_007",
+      "label": "Local cluster 7",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_2c695ab7ee29",
+        "p_event_c6c4635a1cb8"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.19781438069149315,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_008",
+      "label": "Local cluster 8",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_31cd2dbae9c1",
+        "p_event_b03c96326b69"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.1301540328692447,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_009",
+      "label": "Local cluster 9",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_36dc7c18d025",
+        "p_event_bfcc0ff31474"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.05970753376430733,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_010",
+      "label": "Local cluster 10",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_4d4ee5fe2988",
+        "p_event_c185f8719227",
+        "p_relativeclause_243a1c340909"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.06766157050874043,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_011",
+      "label": "Local cluster 11",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_605af38b027a",
+        "p_event_b6f30004a7cc"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.08744747235642242,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_012",
+      "label": "Local cluster 12",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_66701c013f50",
+        "p_event_aa28c4293a0b"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.1000127280965849,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_013",
+      "label": "Local cluster 13",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_917aef0aef4f",
+        "p_event_380252dd4189",
+        "p_modifier_4dd7643e42eb"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.15177876504909787,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_014",
+      "label": "Local cluster 14",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_91d510e01871",
+        "p_event_e7a691f87f38"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.08744747235642245,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_015",
+      "label": "Local cluster 15",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_9a377e844b3c",
+        "p_event_b1019b80435c"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.06361808139145075,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_016",
+      "label": "Local cluster 16",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_ad0e53673670",
+        "p_event_6b2d1ccdf3be",
+        "p_relativeclause_14e627a2fae6"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.06766157050874043,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_017",
+      "label": "Local cluster 17",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_b02be8b1a200",
+        "p_event_1e5de928020f"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.08744747235642242,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_018",
+      "label": "Local cluster 18",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_bb9fa1735494",
+        "p_event_5b17259fa239"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.08204064225500284,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_019",
+      "label": "Local cluster 19",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_beb709d70026",
+        "p_event_1a17eb5ef27c",
+        "p_who_5ff223baa118"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.05970753376430748,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_020",
+      "label": "Local cluster 20",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_cecd48c3ed7d",
+        "p_concession_55c9430515c1",
+        "p_event_f140f3aa8492"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.06306406321217743,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_021",
+      "label": "Local cluster 21",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_d8de13d6ba9c",
+        "p_event_9351a50972a9",
+        "p_modifier_a6c3b8cb8835"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.09094145475731526,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_022",
+      "label": "Local cluster 22",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_da37e426d9fd",
+        "p_event_17b6cf76e552"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.19781438069149315,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_023",
+      "label": "Local cluster 23",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_de1a71eb3250",
+        "p_event_c000be03edde",
+        "p_relativeclause_624584c3613f"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.0017975307972701582,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_024",
+      "label": "Local cluster 24",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_eae1a5ebeee4",
+        "p_event_d7114036910f"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.09462736013716996,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_025",
+      "label": "Local cluster 25",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_ec0e6b47120c",
+        "p_event_1dbd40acff3d"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.06642342600234233,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_026",
+      "label": "Local cluster 26",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_f68a1fa4d5d6",
+        "p_event_369797f302ae",
+        "p_relativeclause_bb0a45b4a0b2"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.0676615705087404,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_027",
+      "label": "Local cluster 27",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_fd4f86bfbeed",
+        "p_event_47689b5b2fc9",
+        "p_relativeclause_e8c221ce2a90"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.06766157050874037,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_028",
+      "label": "Local cluster 28",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_agent_fea2568ef1d5",
+        "p_event_ce8e617207d6"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.19781438069149315,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_029",
+      "label": "Local cluster 29",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_cause_1cbfce827926",
+        "p_effect_463c9bebc2c5"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.06500006461585445,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_030",
+      "label": "Local cluster 30",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_cause_6332939e7b94",
+        "p_effect_c9302f7d21a4"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.2307786503127974,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_031",
+      "label": "Local cluster 31",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_cause_92946bcb8caa",
+        "p_effect_1c7d504bd18f"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.24257702056365077,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_032",
+      "label": "Local cluster 32",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_cause_a98de6faf41e",
+        "p_effect_c262e174b581"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        -0.06361808139145075,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__cluster_033",
+      "label": "Local cluster 33",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "cluster",
+      "resolution_state": "Derived",
+      "contains": [
+        "p_cause_d452fea9db1b",
+        "p_effect_808a9c8f40ae"
+      ],
+      "parent_id": "__container__conversation",
+      "position": [
+        0.25667574827497724,
+        0.5,
+        0.0
+      ]
+    },
+    {
+      "id": "__container__conversation",
+      "label": "Conversation",
+      "category": "Container",
+      "node_type": "container",
+      "container_type": "conversation",
+      "resolution_state": "Derived",
+      "contains": [
+        "__container__cluster_001",
+        "__container__cluster_002",
+        "__container__cluster_003",
+        "__container__cluster_004",
+        "__container__cluster_005",
+        "__container__cluster_006",
+        "__container__cluster_007",
+        "__container__cluster_008",
+        "__container__cluster_009",
+        "__container__cluster_010",
+        "__container__cluster_011",
+        "__container__cluster_012",
+        "__container__cluster_013",
+        "__container__cluster_014",
+        "__container__cluster_015",
+        "__container__cluster_016",
+        "__container__cluster_017",
+        "__container__cluster_018",
+        "__container__cluster_019",
+        "__container__cluster_020",
+        "__container__cluster_021",
+        "__container__cluster_022",
+        "__container__cluster_023",
+        "__container__cluster_024",
+        "__container__cluster_025",
+        "__container__cluster_026",
+        "__container__cluster_027",
+        "__container__cluster_028",
+        "__container__cluster_029",
+        "__container__cluster_030",
+        "__container__cluster_031",
+        "__container__cluster_032",
+        "__container__cluster_033"
+      ],
+      "position": [
+        0.04574144779419359,
+        0.06329113924050633,
+        0.012658227848101266
       ]
     }
   ],

@@ -36,8 +36,59 @@ def _axis_ticks(nodes, positions, attribute, axis_index, maximum_ticks=8):
 	return [tick[0] for tick in ticks], [tick[1] for tick in ticks]
 
 
+def _container_bounds_trace(containers, positions):
+	x_values = []
+	y_values = []
+	z_values = []
+	for container in containers:
+		member_positions = [positions[node_id] for node_id in container.get("contains", []) if node_id in positions]
+		if not member_positions:
+			continue
+		bounds = []
+		for axis_index in range(3):
+			values = [position[axis_index] for position in member_positions]
+			minimum = min(values)
+			maximum = max(values)
+			padding = max((maximum - minimum) * 0.12, 0.2)
+			bounds.append((minimum - padding, maximum + padding))
+
+		x_min, x_max = bounds[0]
+		y_min, y_max = bounds[1]
+		z_min, z_max = bounds[2]
+		corners = [
+			(x_min, y_min, z_min),
+			(x_max, y_min, z_min),
+			(x_max, y_max, z_min),
+			(x_min, y_max, z_min),
+			(x_min, y_min, z_max),
+			(x_max, y_min, z_max),
+			(x_max, y_max, z_max),
+			(x_min, y_max, z_max),
+		]
+		for start, end in (
+			(0, 1), (1, 2), (2, 3), (3, 0),
+			(4, 5), (5, 6), (6, 7), (7, 4),
+			(0, 4), (1, 5), (2, 6), (3, 7),
+		):
+			x_values.extend([corners[start][0], corners[end][0], None])
+			y_values.extend([corners[start][1], corners[end][1], None])
+			z_values.extend([corners[start][2], corners[end][2], None])
+	return go.Scatter3d(
+		x=x_values,
+		y=y_values,
+		z=z_values,
+		mode="lines",
+		line={"color": "rgba(55, 110, 140, 0.55)", "width": 2},
+		hoverinfo="skip",
+		showlegend=False,
+		name="Container boundaries",
+	)
+
+
 def render_graph(graph_data, output_path):
 	nodes = graph_data["nodes"]
+	leaf_nodes = [node for node in nodes if node.get("node_type") != "container"]
+	containers = [node for node in nodes if node.get("node_type") == "container"]
 	positions = {}
 	for node in nodes:
 		position = node.get("position")
@@ -49,6 +100,9 @@ def render_graph(graph_data, output_path):
 	palette = qualitative.Safe + qualitative.Vivid + qualitative.Pastel
 	category_colors = {category: palette[index % len(palette)] for index, category in enumerate(categories)}
 	figure = go.Figure()
+	cluster_containers = [container for container in containers if container.get("container_type") != "conversation"]
+	if cluster_containers:
+		figure.add_trace(_container_bounds_trace(cluster_containers, positions))
 
 	edge_x = []
 	edge_y = []
@@ -75,8 +129,8 @@ def render_graph(graph_data, output_path):
 		)
 	)
 
-	for category in categories:
-		category_nodes = [node for node in nodes if node.get("category", "Unknown") == category]
+	for category in sorted({node.get("category", "Unknown") for node in leaf_nodes}):
+		category_nodes = [node for node in leaf_nodes if node.get("category", "Unknown") == category]
 		figure.add_trace(
 			go.Scatter3d(
 				x=[positions[node["id"]][0] for node in category_nodes],
@@ -114,6 +168,41 @@ def render_graph(graph_data, output_path):
 			)
 		)
 
+	for container_type, label, symbol, size in (
+		("cluster", "Nested containers", "diamond", 11),
+		("conversation", "Conversation container", "diamond-open", 15),
+	):
+		container_nodes = [container for container in containers if container.get("container_type") == container_type]
+		if not container_nodes:
+			continue
+		figure.add_trace(
+			go.Scatter3d(
+				x=[positions[node["id"]][0] for node in container_nodes],
+				y=[positions[node["id"]][1] for node in container_nodes],
+				z=[positions[node["id"]][2] for node in container_nodes],
+				mode="markers+text",
+				name=label,
+				text=[node.get("label", node["id"]) for node in container_nodes],
+				textposition="top center",
+				customdata=[
+					[node["id"], len(node.get("contains", [])), node.get("parent_id", "Top level")]
+					for node in container_nodes
+				],
+				marker={
+					"size": size,
+					"symbol": symbol,
+					"color": "#245b78",
+					"line": {"color": "white", "width": 1.2},
+				},
+				hovertemplate=(
+					"<b>%{text}</b><br>Container particle"
+					+ "<br>ID: %{customdata[0]}"
+					+ "<br>Contains: %{customdata[1]} particles"
+					+ "<br>Parent: %{customdata[2]}<extra></extra>"
+				),
+			)
+		)
+
 	coordinates = list(positions.values())
 	axis_ranges = []
 	for axis_index in range(3):
@@ -126,7 +215,7 @@ def render_graph(graph_data, output_path):
 		padding = max((maximum - minimum) * 0.08, 0.5)
 		axis_ranges.append([minimum - padding, maximum + padding])
 
-	x_ticks, x_labels = _axis_ticks(nodes, positions, "what", 0)
+	x_ticks, x_labels = _axis_ticks(leaf_nodes, positions, "what", 0)
 	z_values = sorted({point[2] for point in coordinates})
 	figure.update_layout(
 		title="Semantic Space Allocation",

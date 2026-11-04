@@ -96,6 +96,30 @@ class AllocateCoordinatesTests(unittest.TestCase):
 		positions = {node["id"]: node["position"] for node in allocated["nodes"]}
 		self.assertEqual(positions["a"][2], positions["b"][2])
 
+	def test_connected_particles_are_nested_in_container_particles(self):
+		graph_data = {
+			"nodes": [{"id": "a"}, {"id": "b"}, {"id": "isolated"}],
+			"edges": [{"source": "a", "target": "b", "morphism_type": "Action"}],
+		}
+
+		allocated = allocate_coordinates(graph_data)
+		nodes = {node["id"]: node for node in allocated["nodes"]}
+		root = nodes["__container__conversation"]
+		cluster = nodes["__container__cluster_001"]
+
+		self.assertEqual(cluster["contains"], ["a", "b"])
+		self.assertEqual(cluster["parent_id"], root["id"])
+		self.assertEqual(nodes["a"]["parent_id"], cluster["id"])
+		self.assertEqual(nodes["b"]["parent_id"], cluster["id"])
+		self.assertEqual(nodes["isolated"]["parent_id"], root["id"])
+		self.assertEqual(set(root["contains"]), {cluster["id"], "isolated"})
+
+		allocated_again = allocate_coordinates(allocated)
+		self.assertEqual(
+			sum(node.get("node_type") == "container" for node in allocated_again["nodes"]),
+			2,
+		)
+
 
 if __name__ == "__main__":
 	unittest.main()

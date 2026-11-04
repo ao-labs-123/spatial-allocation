@@ -197,8 +197,80 @@ def _temporal_stages(nodes, edges):
 	return {node_id: float(depths[component_id]) for node_id, component_id in component_for_node.items()}
 
 
+def _add_container_particles(nodes, edges):
+	if not nodes:
+		return nodes
+
+	graph = nx.Graph()
+	graph.add_nodes_from(node["id"] for node in nodes)
+	graph.add_edges_from((edge["source"], edge["target"]) for edge in edges)
+	components = sorted(
+		nx.connected_components(graph),
+		key=lambda component: tuple(sorted(component)),
+	)
+	root_id = "__container__conversation"
+	if any(node["id"] == root_id for node in nodes):
+		raise ValueError(f"Node ID {root_id!r} is reserved for the conversation container")
+
+	top_level_members = []
+	container_nodes = []
+	cluster_index = 0
+	node_positions = {node["id"]: node["position"] for node in nodes}
+	for component in components:
+		member_ids = sorted(component)
+		if len(member_ids) == 1:
+			top_level_members.extend(member_ids)
+			continue
+
+		cluster_index += 1
+		container_id = f"__container__cluster_{cluster_index:03d}"
+		if any(node["id"] == container_id for node in nodes):
+			raise ValueError(f"Node ID {container_id!r} is reserved for a cluster container")
+		container = {
+			"id": container_id,
+			"label": f"Local cluster {cluster_index}",
+			"category": "Container",
+			"node_type": "container",
+			"container_type": "cluster",
+			"resolution_state": "Derived",
+			"contains": member_ids,
+			"parent_id": root_id,
+		}
+		container["position"] = [
+			sum(node_positions[node_id][axis] for node_id in member_ids) / len(member_ids)
+			for axis in range(3)
+		]
+		container_nodes.append(container)
+		top_level_members.append(container_id)
+		for node in nodes:
+			if node["id"] in component:
+				node["parent_id"] = container_id
+
+	root = {
+		"id": root_id,
+		"label": "Conversation",
+		"category": "Container",
+		"node_type": "container",
+		"container_type": "conversation",
+		"resolution_state": "Derived",
+		"contains": sorted(top_level_members),
+	}
+	root["position"] = [
+		sum(node["position"][axis] for node in nodes) / len(nodes)
+		for axis in range(3)
+	]
+	for node in nodes:
+		if "parent_id" not in node:
+			node["parent_id"] = root_id
+
+	return nodes + container_nodes + [root]
+
+
 def allocate_coordinates(graph_data, seed=42):
-	nodes = graph_data["nodes"]
+	nodes = [node for node in graph_data["nodes"] if node.get("node_type") != "container"]
+	for node in nodes:
+		node.pop("parent_id", None)
+	graph_data["nodes"] = nodes
 	edges = graph_data["edges"]
 	node_ids = {node["id"] for node in nodes}
 
@@ -218,6 +290,7 @@ def allocate_coordinates(graph_data, seed=42):
 			temporal_stages[node_id],
 		]
 
+	graph_data["nodes"] = _add_container_particles(nodes, edges)
 	return graph_data
 
 
