@@ -97,13 +97,14 @@ def render_graph(graph_data, output_path):
 def main():
 	project_dir = Path(__file__).resolve().parents[1]
 	input_path = project_dir / "data" / "topological_graph_3d.json"
-	output_path = project_dir / "visualize" / "topological_graph_3d.html"
+	output_path = project_dir / "docs" / "index.html"
 
 	with input_path.open(encoding="utf-8") as input_file:
 		graph_data = json.load(input_file)
 
+	output_path.parent.mkdir(parents=True, exist_ok=True)
 	render_graph(graph_data, output_path)
-	print(f"Saved interactive 3D visualization to {output_path}")
+	print(f"Saved interactive 3D visualization for GitHub Pages to {output_path}")
 
 
 if __name__ == "__main__":
