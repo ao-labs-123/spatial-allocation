@@ -8,11 +8,11 @@ This repository serves as the spatial positioning layer, taking the pure topolog
 
 The 3D allocator uses the input node attributes and directed morphisms as follows:
 
-- **X — Context / who reference:** nodes with the same `attributes.who` share an x coordinate. Different values are categorical groups, not measured semantic distances.
+- **X — What / topic proximity:** a deterministic one-dimensional projection of TF-IDF cosine distances between `attributes.what` values. This captures lexical overlap, not full language-model semantics. Missing `what` values are placed at the median x position and are not treated as semantic matches.
 - **Y — Causal / hierarchical depth:** the longest directed path of `Cause` and `Hierarchy` morphisms from a root. Cycles are treated as a single depth level.
-- **Z — Time / when labels:** nodes with the same `attributes.when` share a z coordinate. These are labeled categories; natural-language values are not assumed to be chronologically sortable.
+- **Z — Process stage:** directed `Temporal` morphisms (source precedes target) and optional numeric `attributes.stage`, `attributes.stage_index`, or `attributes.process_stage` values establish ordering. ISO-formatted `attributes.when` values can also establish order when no explicit stage is given. Free-text `when` values are not guessed to be chronological; nodes without ordering evidence remain at the baseline.
 
-Missing or `Unspecified` values form their own category on X and Z. The current input has many unspecified `who` and `when` values, so those dimensions will remain coarse until the mapper supplies richer data. To make Z represent actual process progression, provide normalized timestamps or an explicit ordered stage; a free-text `when` value alone cannot reliably determine that order.
+`attributes.where` is shown as contextual information in each node's hover details, rather than as an axis. `who`, `when`, and `where` are likewise retained as useful node context. Temporal relationships and explicit stage values must not conflict; cyclic temporal relationships are collapsed into one stage.
 
 ---
 

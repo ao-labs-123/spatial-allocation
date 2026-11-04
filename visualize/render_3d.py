@@ -14,7 +14,7 @@ def _axis_label(node, attribute):
 	return "Unspecified" if value.casefold() == "unspecified" else value
 
 
-def _axis_ticks(nodes, positions, attribute, axis_index):
+def _axis_ticks(nodes, positions, attribute, axis_index, maximum_ticks=8):
 	labels_by_key = {}
 	values_by_key = {}
 	for node in nodes:
@@ -27,6 +27,12 @@ def _axis_ticks(nodes, positions, attribute, axis_index):
 		((sum(values) / len(values), labels_by_key[key]) for key, values in values_by_key.items()),
 		key=lambda tick: tick[0],
 	)
+	if len(ticks) > maximum_ticks:
+		indices = {
+			round(index * (len(ticks) - 1) / (maximum_ticks - 1))
+			for index in range(maximum_ticks)
+		}
+		ticks = [tick for index, tick in enumerate(ticks) if index in indices]
 	return [tick[0] for tick in ticks], [tick[1] for tick in ticks]
 
 
@@ -87,8 +93,10 @@ def render_graph(graph_data, output_path):
 				customdata=[
 					[
 						node["id"],
+						_axis_label(node, "what"),
 						_axis_label(node, "who"),
 						_axis_label(node, "when"),
+						_axis_label(node, "where"),
 					]
 					for node in category_nodes
 				],
@@ -96,9 +104,12 @@ def render_graph(graph_data, output_path):
 					"<b>%{text}</b><br>Category: "
 					+ category
 					+ "<br>ID: %{customdata[0]}"
-					+ "<br>Who: %{customdata[1]}"
-					+ "<br>When: %{customdata[2]}"
-					+ "<br>Causal / hierarchy depth: %{y}<extra></extra>"
+					+ "<br>What: %{customdata[1]}"
+					+ "<br>Who: %{customdata[2]}"
+					+ "<br>When: %{customdata[3]}"
+					+ "<br>Where: %{customdata[4]}"
+					+ "<br>Causal / hierarchy depth: %{y}"
+					+ "<br>Process stage: %{z}<extra></extra>"
 				),
 			)
 		)
@@ -115,8 +126,8 @@ def render_graph(graph_data, output_path):
 		padding = max((maximum - minimum) * 0.08, 0.5)
 		axis_ranges.append([minimum - padding, maximum + padding])
 
-	x_ticks, x_labels = _axis_ticks(nodes, positions, "who", 0)
-	z_ticks, z_labels = _axis_ticks(nodes, positions, "when", 2)
+	x_ticks, x_labels = _axis_ticks(nodes, positions, "what", 0)
+	z_values = sorted({point[2] for point in coordinates})
 	figure.update_layout(
 		title="Semantic Space Allocation",
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
@@ -124,7 +135,7 @@ def render_graph(graph_data, output_path):
 		hovermode="closest",
 		scene={
 			"xaxis": {
-				"title": "Context / Who reference",
+				"title": "What (lexical similarity, 1D)",
 				"range": axis_ranges[0],
 				"tickmode": "array",
 				"tickvals": x_ticks,
@@ -136,13 +147,13 @@ def render_graph(graph_data, output_path):
 				"dtick": 1,
 			},
 			"zaxis": {
-				"title": "Time / When (labels)",
+				"title": "Process stage (Temporal relations / explicit stage)",
 				"range": axis_ranges[2],
 				"tickmode": "array",
-				"tickvals": z_ticks,
-				"ticktext": z_labels,
+				"tickvals": z_values,
+				"ticktext": [f"Stage {value:g}" for value in z_values],
 			},
-			"aspectmode": "cube",
+			"aspectmode": "data",
 			"dragmode": "orbit",
 			"camera": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},
 		},
