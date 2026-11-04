@@ -5,6 +5,31 @@ import plotly.graph_objects as go
 from plotly.colors import qualitative
 
 
+def _axis_label(node, attribute):
+	attributes = node.get("attributes") or {}
+	value = attributes.get(attribute)
+	if value is None or not str(value).strip():
+		return "Unspecified"
+	value = str(value).strip()
+	return "Unspecified" if value.casefold() == "unspecified" else value
+
+
+def _axis_ticks(nodes, positions, attribute, axis_index):
+	labels_by_key = {}
+	values_by_key = {}
+	for node in nodes:
+		label = _axis_label(node, attribute)
+		key = label.casefold()
+		labels_by_key.setdefault(key, label)
+		values_by_key.setdefault(key, []).append(positions[node["id"]][axis_index])
+
+	ticks = sorted(
+		((sum(values) / len(values), labels_by_key[key]) for key, values in values_by_key.items()),
+		key=lambda tick: tick[0],
+	)
+	return [tick[0] for tick in ticks], [tick[1] for tick in ticks]
+
+
 def render_graph(graph_data, output_path):
 	nodes = graph_data["nodes"]
 	positions = {}
@@ -54,38 +79,69 @@ def render_graph(graph_data, output_path):
 				mode="markers",
 				name=category,
 				text=[node.get("label", node["id"]) for node in category_nodes],
-				customdata=[node["id"] for node in category_nodes],
 				marker={
 					"size": 6,
 					"color": category_colors[category],
 					"line": {"color": "white", "width": 0.7},
 				},
+				customdata=[
+					[
+						node["id"],
+						_axis_label(node, "who"),
+						_axis_label(node, "when"),
+					]
+					for node in category_nodes
+				],
 				hovertemplate=(
 					"<b>%{text}</b><br>Category: "
 					+ category
-					+ "<br>ID: %{customdata}<extra></extra>"
+					+ "<br>ID: %{customdata[0]}"
+					+ "<br>Who: %{customdata[1]}"
+					+ "<br>When: %{customdata[2]}"
+					+ "<br>Causal / hierarchy depth: %{y}<extra></extra>"
 				),
 			)
 		)
 
 	coordinates = list(positions.values())
-	center = [
-		(min(point[axis_index] for point in coordinates) + max(point[axis_index] for point in coordinates)) / 2
-		for axis_index in range(3)
-	]
-	radius = max(
-		(max(point[axis_index] for point in coordinates) - min(point[axis_index] for point in coordinates)) / 2
-		for axis_index in range(3)
-	) or 1
+	axis_ranges = []
+	for axis_index in range(3):
+		axis_values = [point[axis_index] for point in coordinates]
+		if not axis_values:
+			axis_ranges.append([-1, 1])
+			continue
+		minimum = min(axis_values)
+		maximum = max(axis_values)
+		padding = max((maximum - minimum) * 0.08, 0.5)
+		axis_ranges.append([minimum - padding, maximum + padding])
+
+	x_ticks, x_labels = _axis_ticks(nodes, positions, "who", 0)
+	z_ticks, z_labels = _axis_ticks(nodes, positions, "when", 2)
 	figure.update_layout(
-		title="3D Topological Graph",
+		title="Semantic Space Allocation",
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
 		legend={"title": "Category"},
 		hovermode="closest",
 		scene={
-			"xaxis": {"title": "X", "range": [center[0] - radius, center[0] + radius]},
-			"yaxis": {"title": "Y", "range": [center[1] - radius, center[1] + radius]},
-			"zaxis": {"title": "Z", "range": [center[2] - radius, center[2] + radius]},
+			"xaxis": {
+				"title": "Context / Who reference",
+				"range": axis_ranges[0],
+				"tickmode": "array",
+				"tickvals": x_ticks,
+				"ticktext": x_labels,
+			},
+			"yaxis": {
+				"title": "Causal / hierarchical depth",
+				"range": axis_ranges[1],
+				"dtick": 1,
+			},
+			"zaxis": {
+				"title": "Time / When (labels)",
+				"range": axis_ranges[2],
+				"tickmode": "array",
+				"tickvals": z_ticks,
+				"ticktext": z_labels,
+			},
 			"aspectmode": "cube",
 			"dragmode": "orbit",
 			"camera": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},
