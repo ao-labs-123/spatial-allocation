@@ -19,47 +19,39 @@ In cognitive architectures, semantic understanding is not merely a flat collecti
 
 ```text
 Spatial-allocation/
-├── README.md                  # Documentation
-├── requirements.txt           # Core dependencies (numpy, networkx, etc.)
-├── pyproject.toml             # Package configuration
-│
-├── data/                      # Input / Output data storage
-│   └── topological_graph.json # Input topology from topological-mapper
-│
-├── src/                       # Core engine source code
-│   ├── __init__.py
-│   ├── loader.py              # Parses nodes, entities, events, and morphisms
-│   ├── allocator.py           # Core spatial allocation & layout algorithms
-│   └── exporter.py            # Exports coordinate-mapped graph structures
-│
-├── visualize/                 # Rendering & preview scripts
-│   └── render_3d.py           # 3D/2D spatial layout verification
-│
-└── tests/                     # Unit tests
-    └── test_allocator.py
+├── data/
+│   ├── topological_graph.json       # Input topology
+│   └── topological_graph_3d.json    # Generated coordinates
+├── docs/
+│   └── index.html                   # GitHub Pages visualization
+├── src/
+│   └── allocator.py                # 3D coordinate allocation
+├── visualize/
+│   └── render_3d.py                # Interactive Plotly renderer
+├── requirements.txt
+└── README.md
 ```
 
 ## Getting Started
-1. Installation
-Clone the repository and install the required dependencies:
-```text
-git clone [https://github.com/ao-labs-123/spatial-allocation.git](https://github.com/ao-labs-123/spatial-allocation.git)
-cd spatial-allocation
-pip install -r requirements.txt
-```
-2. Usage
-Place your ⁠topological_graph.json⁠ (from ⁠topological-mapper⁠) into the ⁠data/⁠ directory, then run the allocation engine:
-```text
+Install the dependencies, then generate coordinates and the interactive visualization:
+
+```bash
+python -m pip install -r requirements.txt
 python src/allocator.py
+python visualize/render_3d.py
 ```
+
+The coordinate graph is written to `data/topological_graph_3d.json`. The standalone Plotly page is written to `docs/index.html`.
 ## Pipeline Workflow
 ```text
-[Natural Language Text] 
-       │
-       ▼
-[topological-mapper] ──(Topological Graph JSON)──> [Spatial-allocation] ──(3D Coordinates)──> [3D Visualizer]
+[topological-mapper] -> data/topological_graph.json
+    -> python src/allocator.py -> data/topological_graph_3d.json
+    -> python visualize/render_3d.py -> docs/index.html
 ```
 ## Tech Stack
 - Language: Python 3.x
-- Graph Processing: NetworkX
-- Layout & Computation: NumPy / Custom Deterministic Physics Engine
+- Graph Processing and Layout: NetworkX
+- Interactive 3D Visualization: Plotly
+- Numeric Computation: NumPy
+
+To publish the visualization with GitHub Pages, select **Deploy from a branch**, choose the `main` branch, and set the folder to `/docs` in the repository's Pages settings.
