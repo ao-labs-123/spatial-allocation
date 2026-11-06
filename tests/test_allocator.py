@@ -177,6 +177,24 @@ class AllocateCoordinatesTests(unittest.TestCase):
 			nodes["event"]["lattice_cores"],
 			[{"node_id": "entity", "label": "Researcher"}],
 		)
+		self.assertEqual(nodes["entity"]["lattice_site"], "body_center")
+		self.assertEqual(nodes["event"]["lattice_site"], "vertex")
+		self.assertTrue(all(
+			value % 1 == 0.5
+			for value in nodes["entity"]["lattice_coordinate"]
+		))
+		self.assertTrue(all(
+			value.is_integer()
+			for value in nodes["event"]["lattice_coordinate"]
+		))
+		self.assertTrue(all(
+			abs(core - vertex) == 0.5
+			for core, vertex in zip(
+				nodes["entity"]["lattice_coordinate"],
+				nodes["event"]["lattice_coordinate"],
+			)
+		))
+		self.assertNotEqual(nodes["entity"]["position"], nodes["event"]["position"])
 		self.assertNotIn("lattice_role", nodes["other"])
 
 	def test_missing_entity_mapping_uses_simple_cubic_lattice(self):
@@ -202,6 +220,13 @@ class AllocateCoordinatesTests(unittest.TestCase):
 		self.assertEqual(container["auxiliary_particle_ids"], [])
 		self.assertNotIn("lattice_role", nodes["entity"])
 		self.assertNotIn("lattice_role", nodes["event"])
+		self.assertEqual(nodes["entity"]["lattice_site"], "vertex")
+		self.assertEqual(nodes["event"]["lattice_site"], "vertex")
+		self.assertTrue(all(
+			all(value.is_integer() for value in node["lattice_coordinate"])
+			for node in (nodes["entity"], nodes["event"])
+		))
+		self.assertNotEqual(nodes["entity"]["position"], nodes["event"]["position"])
 
 	def test_duplicate_entity_labels_keep_distinct_core_node_ids(self):
 		graph_data = {

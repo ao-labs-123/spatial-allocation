@@ -136,6 +136,8 @@ def render_graph(graph_data, output_path):
 							f"{core['label']} ({core['node_id']})"
 							for core in node.get("lattice_cores", [])
 						),
+						node.get("lattice_site", ""),
+						", ".join(f"{value:g}" for value in node.get("lattice_coordinate", [])),
 					]
 					for node in category_nodes
 				],
@@ -149,6 +151,8 @@ def render_graph(graph_data, output_path):
 					+ "<br>Where: %{customdata[4]}"
 					+ "<br>Lattice role: %{customdata[5]}"
 					+ "<br>Core index: %{customdata[6]}"
+					+ "<br>Lattice site: %{customdata[7]}"
+					+ "<br>Lattice coordinate: %{customdata[8]}"
 					+ "<br>Causal / hierarchy depth: %{y}"
 					+ "<br>Process stage: %{z}<extra></extra>"
 				),

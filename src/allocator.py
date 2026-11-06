@@ -265,6 +265,151 @@ def _classify_lattice(member_ids, node_by_id, graph):
 	}
 
 
+def _grid_dimensions(count):
+	columns = math.ceil(count ** (1 / 3))
+	rows = math.ceil(math.sqrt(count / columns))
+	layers = math.ceil(count / (columns * rows))
+	return columns, rows, layers
+
+
+def _lattice_sites(dimensions, body_centered):
+	columns, rows, layers = dimensions
+	corners = set()
+	centers = []
+	for x_index in range(columns):
+		for y_index in range(rows):
+			for z_index in range(layers):
+				origin = (x_index, y_index, z_index)
+				corners.update(
+					(
+						origin[0] + x_offset,
+						origin[1] + y_offset,
+						origin[2] + z_offset,
+					)
+					for x_offset in (0, 1)
+					for y_offset in (0, 1)
+					for z_offset in (0, 1)
+				)
+				centers.append(tuple(value + 0.5 for value in origin))
+
+	if body_centered:
+		return corners, centers
+	return corners, []
+
+
+def _simple_cubic_sites(count):
+	dimensions = _grid_dimensions(count)
+	columns, rows, layers = dimensions
+	center = ((columns - 1) / 2, (rows - 1) / 2, (layers - 1) / 2)
+	sites = [
+		(float(x_index), float(y_index), float(z_index))
+		for x_index in range(columns)
+		for y_index in range(rows)
+		for z_index in range(layers)
+	]
+	return sorted(sites, key=lambda point: (_distance_squared(point, center), point))
+
+
+def _distance_squared(left, right):
+	return sum((left[axis] - right[axis]) ** 2 for axis in range(3))
+
+
+def _lattice_particle_positions(member_ids, node_by_id, container):
+	body_centered = container["lattice_mode"] == "body_centered_cubic"
+	core_indices = container["core_indices"]
+	if body_centered:
+		cell_count = max(len(core_indices), math.ceil(len(member_ids) / 2), 1)
+		dimensions = _grid_dimensions(cell_count)
+		corners, centers = _lattice_sites(dimensions, True)
+		grid_center = tuple((dimension - 1) / 2 for dimension in dimensions)
+		ordered_corners = sorted(
+			corners,
+			key=lambda point: (_distance_squared(point, grid_center), point),
+		)
+		ordered_centers = sorted(
+			centers,
+			key=lambda point: (_distance_squared(point, grid_center), point),
+		)
+	else:
+		ordered_corners = _simple_cubic_sites(len(member_ids))
+		ordered_centers = []
+	assignments = {}
+	site_kinds = {}
+
+	if body_centered:
+		assigned_core_positions = {}
+		for core, position in zip(core_indices, ordered_centers):
+			node_id = core["node_id"]
+			assignments[node_id] = position
+			site_kinds[node_id] = "body_center"
+			assigned_core_positions[node_id] = position
+
+		event_cores = {}
+		for core in core_indices:
+			for event_id in core["mapped_event_ids"]:
+				event_cores.setdefault(event_id, []).append(core["node_id"])
+		available_corners = set(corners)
+		for event_id in sorted(event_cores):
+			core_ids = event_cores[event_id]
+			core_position = assigned_core_positions[core_ids[0]]
+			position = min(
+				available_corners,
+				key=lambda candidate: (_distance_squared(candidate, core_position), candidate),
+			)
+			assignments[event_id] = position
+			site_kinds[event_id] = "vertex"
+			available_corners.remove(position)
+
+		remaining_ids = [node_id for node_id in member_ids if node_id not in assignments]
+		remaining_sites = [
+			(point, "vertex") for point in ordered_corners if point in available_corners
+		]
+		remaining_sites.extend(
+			(point, "body_center")
+			for point in ordered_centers
+			if point not in set(assigned_core_positions.values())
+		)
+	else:
+		remaining_ids = list(member_ids)
+		remaining_sites = [(point, "vertex") for point in ordered_corners]
+
+	for node_id, (position, site_kind) in zip(remaining_ids, remaining_sites):
+		assignments[node_id] = position
+		site_kinds[node_id] = site_kind
+
+	axis_centers = [
+		(
+			min(position[axis] for position in assignments.values())
+			+ max(position[axis] for position in assignments.values())
+		) / 2
+		if assignments else 0.0
+		for axis in range(3)
+	]
+	axis_extents = [
+		max((abs(position[axis] - axis_centers[axis]) for position in assignments.values()), default=0.0)
+		for axis in range(3)
+	]
+	center = container["position"]
+	target_extents = [
+		container["capsule_half_length"] * 0.72,
+		container["capsule_radius"] * 0.62,
+		container["capsule_radius"] * 0.62,
+	]
+	for node_id, coordinate in assignments.items():
+		node = node_by_id[node_id]
+		node["lattice_coordinate"] = [float(value) for value in coordinate]
+		node["lattice_site"] = site_kinds[node_id]
+		node["position"] = [
+			float(center[axis])
+			+ (
+				(coordinate[axis] - axis_centers[axis]) / axis_extents[axis] * target_extents[axis]
+				if axis_extents[axis] > 1e-12
+				else 0.0
+			)
+			for axis in range(3)
+		]
+
+
 def _add_container_particles(nodes, edges, seed=42):
 	if not nodes:
 		return nodes
@@ -342,34 +487,9 @@ def _add_container_particles(nodes, edges, seed=42):
 				(grid_z - (layers - 1) / 2) * spacing,
 			]
 			center = container["position"]
-			local_graph = graph.subgraph(member_ids)
-			local_positions = nx.spring_layout(
-				local_graph,
-				dim=3,
-				seed=seed,
-				iterations=60,
-				scale=1,
-			)
-			local_extents = [
-				max((abs(local_positions[node_id][axis]) for node_id in member_ids), default=0)
-				for axis in range(3)
-			]
-			local_scales = [
-				container["capsule_half_length"] * 0.72,
-				container["capsule_radius"] * 0.62,
-				container["capsule_radius"] * 0.62,
-			]
+			_lattice_particle_positions(member_ids, node_by_id, container)
 			for node_id in member_ids:
 				node = node_by_id[node_id]
-				node["position"] = [
-					float(center[axis])
-					+ (
-						float(local_positions[node_id][axis]) / local_extents[axis] * local_scales[axis]
-						if local_extents[axis] > 1e-12
-						else 0.0
-					)
-					for axis in range(3)
-				]
 				node["parent_id"] = container["id"]
 			top_level_members.append(container["id"])
 
