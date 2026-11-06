@@ -141,6 +141,101 @@ class AllocateCoordinatesTests(unittest.TestCase):
 			3,
 		)
 
+	def test_entity_index_and_mapped_event_select_body_centered_cubic_lattice(self):
+		graph_data = {
+			"nodes": [
+				{"id": "entity", "label": "Researcher", "category": "Entity"},
+				{
+					"id": "event",
+					"label": "reviewed report",
+					"category": "Event",
+					"attributes": {"stage2_mapping": "Researcher -> Action -> reviewed report"},
+				},
+				{"id": "other", "label": "report", "category": "Event"},
+			],
+			"edges": [
+				{"source": "entity", "target": "event", "morphism_type": "Action"},
+				{"source": "event", "target": "other", "morphism_type": "Relation"},
+			],
+		}
+
+		allocated = allocate_coordinates(graph_data)
+		nodes = {node["id"]: node for node in allocated["nodes"]}
+		container = nodes[nodes["entity"]["parent_id"]]
+
+		self.assertEqual(container["lattice_mode"], "body_centered_cubic")
+		self.assertEqual(container["core_indices"], [{
+			"node_id": "entity",
+			"label": "Researcher",
+			"mapped_event_ids": ["event"],
+		}])
+		self.assertEqual(container["auxiliary_particle_ids"], ["event"])
+		self.assertEqual(nodes["entity"]["lattice_role"], "core")
+		self.assertEqual(nodes["entity"]["lattice_index"], "Researcher")
+		self.assertEqual(nodes["event"]["lattice_role"], "vertex")
+		self.assertEqual(
+			nodes["event"]["lattice_cores"],
+			[{"node_id": "entity", "label": "Researcher"}],
+		)
+		self.assertNotIn("lattice_role", nodes["other"])
+
+	def test_missing_entity_mapping_uses_simple_cubic_lattice(self):
+		graph_data = {
+			"nodes": [
+				{"id": "entity", "label": "Unspecified", "category": "Entity"},
+				{
+					"id": "event",
+					"label": "mapped event",
+					"category": "Event",
+					"attributes": {"stage2_mapping": "Unspecified -> Action -> mapped event"},
+				},
+			],
+			"edges": [{"source": "entity", "target": "event", "morphism_type": "Action"}],
+		}
+
+		allocated = allocate_coordinates(graph_data)
+		nodes = {node["id"]: node for node in allocated["nodes"]}
+		container = nodes[nodes["entity"]["parent_id"]]
+
+		self.assertEqual(container["lattice_mode"], "simple_cubic")
+		self.assertEqual(container["core_indices"], [])
+		self.assertEqual(container["auxiliary_particle_ids"], [])
+		self.assertNotIn("lattice_role", nodes["entity"])
+		self.assertNotIn("lattice_role", nodes["event"])
+
+	def test_duplicate_entity_labels_keep_distinct_core_node_ids(self):
+		graph_data = {
+			"nodes": [
+				{"id": "entity-a", "label": "I", "category": "Entity"},
+				{"id": "entity-b", "label": "I", "category": "Entity"},
+				{
+					"id": "event-a",
+					"category": "Event",
+					"attributes": {"stage2_mapping": "I -> Action -> event a"},
+				},
+				{
+					"id": "event-b",
+					"category": "Event",
+					"attributes": {"stage2_mapping": "I -> Action -> event b"},
+				},
+			],
+			"edges": [
+				{"source": "entity-a", "target": "event-a", "morphism_type": "Action"},
+				{"source": "entity-b", "target": "event-b", "morphism_type": "Action"},
+			],
+		}
+
+		allocated = allocate_coordinates(graph_data)
+		nodes = {node["id"]: node for node in allocated["nodes"]}
+		containers = [
+			node for node in allocated["nodes"] if node.get("container_type") == "cluster"
+		]
+
+		self.assertEqual(len(containers), 2)
+		self.assertTrue(all(node["lattice_mode"] == "body_centered_cubic" for node in containers))
+		self.assertEqual(nodes["entity-a"]["lattice_index"], "I")
+		self.assertEqual(nodes["entity-b"]["lattice_index"], "I")
+
 	def test_container_capsules_are_packed_without_overlap(self):
 		nodes = [{"id": f"node-{index}"} for index in range(8)]
 		edges = [

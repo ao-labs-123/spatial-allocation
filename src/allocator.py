@@ -197,6 +197,74 @@ def _temporal_stages(nodes, edges):
 	return {node_id: float(depths[component_id]) for node_id, component_id in component_for_node.items()}
 
 
+def _mapping_fields(node):
+	attributes = node.get("attributes") or {}
+	return {
+		field: value.strip()
+		for field, value in attributes.items()
+		if field.endswith("_mapping")
+		and isinstance(value, str)
+		and value.strip()
+		and value.strip().casefold() != UNKNOWN.casefold()
+	}
+
+
+def _entity_index_label(node):
+	label = str(node.get("label") or "").strip()
+	return None if not label or label.casefold() == UNKNOWN.casefold() else label
+
+
+def _classify_lattice(member_ids, node_by_id, graph):
+	core_indices = []
+	auxiliary_particle_ids = set()
+	cores_by_event = {}
+
+	for node_id in member_ids:
+		node = node_by_id[node_id]
+		if str(node.get("category", "")).casefold() != "entity":
+			continue
+		label = _entity_index_label(node)
+		if label is None:
+			continue
+
+		mapped_events = sorted(
+			neighbor_id
+			for neighbor_id in graph.neighbors(node_id)
+			if str(node_by_id[neighbor_id].get("category", "")).casefold() == "event"
+			and _mapping_fields(node_by_id[neighbor_id])
+		)
+		if not mapped_events:
+			continue
+
+		core_indices.append({
+			"node_id": node_id,
+			"label": label,
+			"mapped_event_ids": mapped_events,
+		})
+		node["lattice_role"] = "core"
+		node["lattice_index"] = label
+		for event_id in mapped_events:
+			auxiliary_particle_ids.add(event_id)
+			cores_by_event.setdefault(event_id, []).append({
+				"node_id": node_id,
+				"label": label,
+			})
+
+	for event_id, cores in cores_by_event.items():
+		node_by_id[event_id]["lattice_role"] = "vertex"
+		node_by_id[event_id]["lattice_cores"] = sorted(
+			cores,
+			key=lambda core: (core["label"].casefold(), core["node_id"]),
+		)
+
+	core_indices.sort(key=lambda core: (core["label"].casefold(), core["node_id"]))
+	return {
+		"lattice_mode": "body_centered_cubic" if core_indices else "simple_cubic",
+		"core_indices": core_indices,
+		"auxiliary_particle_ids": sorted(auxiliary_particle_ids),
+	}
+
+
 def _add_container_particles(nodes, edges, seed=42):
 	if not nodes:
 		return nodes
@@ -228,6 +296,7 @@ def _add_container_particles(nodes, edges, seed=42):
 		]
 		radius = 0.75 + 0.16 * math.sqrt(len(member_ids))
 		half_length = max(0.3, 0.28 * (len(member_ids) - 1))
+		lattice = _classify_lattice(member_ids, node_by_id, graph)
 
 		container = {
 			"id": container_id,
@@ -241,6 +310,7 @@ def _add_container_particles(nodes, edges, seed=42):
 			"capsule_radius": radius,
 			"capsule_half_length": half_length,
 			"semantic_position": center,
+			**lattice,
 		}
 		container_nodes.append(container)
 		component_layouts.append((container, member_ids))
@@ -334,6 +404,8 @@ def allocate_coordinates(graph_data, seed=42):
 	nodes = [node for node in graph_data["nodes"] if node.get("node_type") != "container"]
 	for node in nodes:
 		node.pop("parent_id", None)
+		for field in ("lattice_role", "lattice_index", "lattice_cores"):
+			node.pop(field, None)
 	graph_data["nodes"] = nodes
 	edges = graph_data["edges"]
 	node_ids = {node["id"] for node in nodes}

@@ -113,8 +113,15 @@ def render_graph(graph_data, output_path):
 				name=category,
 				text=[node.get("label", node["id"]) for node in category_nodes],
 				marker={
-					"size": 6,
+					"size": [
+						9 if node.get("lattice_role") == "core" else 6
+						for node in category_nodes
+					],
 					"color": category_colors[category],
+					"symbol": [
+						"diamond" if node.get("lattice_role") == "core" else "circle"
+						for node in category_nodes
+					],
 					"line": {"color": "white", "width": 0.7},
 				},
 				customdata=[
@@ -124,6 +131,11 @@ def render_graph(graph_data, output_path):
 						_axis_label(node, "who"),
 						_axis_label(node, "when"),
 						_axis_label(node, "where"),
+						node.get("lattice_role", "particle"),
+						node.get("lattice_index") or ", ".join(
+							f"{core['label']} ({core['node_id']})"
+							for core in node.get("lattice_cores", [])
+						),
 					]
 					for node in category_nodes
 				],
@@ -135,6 +147,8 @@ def render_graph(graph_data, output_path):
 					+ "<br>Who: %{customdata[2]}"
 					+ "<br>When: %{customdata[3]}"
 					+ "<br>Where: %{customdata[4]}"
+					+ "<br>Lattice role: %{customdata[5]}"
+					+ "<br>Core index: %{customdata[6]}"
 					+ "<br>Causal / hierarchy depth: %{y}"
 					+ "<br>Process stage: %{z}<extra></extra>"
 				),
@@ -163,6 +177,11 @@ def render_graph(graph_data, output_path):
 						len(node.get("contains", [])),
 						node.get("parent_id", "Top level"),
 						*(node.get("semantic_position") or [0.0, 0.0, 0.0]),
+						node.get("lattice_mode", ""),
+						", ".join(
+							f"{core['label']} ({core['node_id']})"
+							for core in node.get("core_indices", [])
+						),
 					]
 					for node in container_nodes
 				],
@@ -178,6 +197,8 @@ def render_graph(graph_data, output_path):
 					+ "<br>Contains: %{customdata[1]} particles"
 					+ "<br>Parent: %{customdata[2]}"
 					+ "<br>Semantic center: (%{customdata[3]:.2f}, %{customdata[4]:.2f}, %{customdata[5]:.2f})"
+					+ "<br>Lattice: %{customdata[6]}"
+					+ "<br>Core indices: %{customdata[7]}"
 					+ "<extra></extra>"
 				),
 			)
