@@ -15,9 +15,17 @@
       },
       "position": [
         2.3760000000000003,
-        -4.925289985387411,
-        3.714710014612589
+        -3.714710014612589,
+        4.925289985387411
       ],
+      "lattice_role": "core",
+      "lattice_index": "He",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_002"
     },
     {
@@ -36,9 +44,22 @@
       },
       "position": [
         1.9440000000000002,
-        -3.7147100146125895,
-        4.925289985387411
+        -4.925289985387411,
+        3.714710014612589
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_0520d73d3ccc",
+          "label": "He"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_002"
     },
     {
@@ -56,9 +77,15 @@
       },
       "position": [
         -6.696000000000001,
-        4.925289985387411,
-        4.925289985387411
+        4.32,
+        4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_033"
     },
     {
@@ -76,9 +103,15 @@
       },
       "position": [
         -6.264,
-        3.714710014612589,
-        3.714710014612589
+        4.32,
+        4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_033"
     },
     {
@@ -95,10 +128,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -2.3760000000000003,
-        -3.7147100146125895,
-        -3.7147100146125895
+        -1.9440000000000002,
+        -3.714710014612589,
+        -3.714710014612589
       ],
+      "lattice_role": "core",
+      "lattice_index": "You",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_012"
     },
     {
@@ -116,10 +157,23 @@
         "stage2_mapping": "You -> Action -> review the document"
       },
       "position": [
-        -1.9440000000000002,
+        -2.3760000000000003,
         -4.925289985387411,
         -4.925289985387411
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_66701c013f50",
+          "label": "You"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_012"
     },
     {
@@ -137,9 +191,17 @@
       },
       "position": [
         -6.264,
-        -4.925289985387411,
-        3.714710014612589
+        -3.714710014612589,
+        4.925289985387411
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_024"
     },
     {
@@ -158,9 +220,22 @@
       },
       "position": [
         -6.696000000000001,
-        -3.7147100146125895,
-        4.925289985387411
+        -4.925289985387411,
+        3.714710014612589
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_eae1a5ebeee4",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_024"
     },
     {
@@ -177,10 +252,18 @@
         "how": "Unspecified"
       },
       "position": [
-        6.8832,
-        3.6831805598891676,
-        -0.6368194401108326
+        6.48,
+        4.9568194401108325,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "He/She/They",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_021"
     },
     {
@@ -199,10 +282,23 @@
         "stage3_mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)"
       },
       "position": [
-        6.4794155787204355,
-        4.320923043082102,
-        0.0009230432486795125
+        6.0768,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_d8de13d6ba9c",
+          "label": "He/She/They"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_021"
     },
     {
@@ -220,10 +316,16 @@
         "stage3_mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)"
       },
       "position": [
-        6.077384421279565,
-        4.955896397028733,
-        0.6358963968621534
+        6.8832,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_021"
     },
     {
@@ -241,9 +343,15 @@
       },
       "position": [
         6.264,
-        -3.7147100146125895,
-        0.6052899853874109
+        -4.32,
+        0.0
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_003"
     },
     {
@@ -262,9 +370,15 @@
       },
       "position": [
         6.696000000000001,
-        -4.925289985387411,
-        -0.6052899853874111
+        -4.32,
+        0.0
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_003"
     },
     {
@@ -282,9 +396,17 @@
       },
       "position": [
         2.3760000000000003,
-        -4.925289985387411,
-        -4.925289985387411
+        -3.714710014612589,
+        -3.714710014612589
       ],
+      "lattice_role": "core",
+      "lattice_index": "you",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_014"
     },
     {
@@ -303,9 +425,22 @@
       },
       "position": [
         1.9440000000000002,
-        -3.7147100146125895,
-        -3.7147100146125895
+        -4.925289985387411,
+        -4.925289985387411
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_91d510e01871",
+          "label": "you"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_014"
     },
     {
@@ -323,9 +458,17 @@
       },
       "position": [
         6.696000000000001,
-        -4.925289985387411,
-        -4.925289985387411
+        -3.714710014612589,
+        -3.714710014612589
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_011"
     },
     {
@@ -344,9 +487,22 @@
       },
       "position": [
         6.264,
-        -3.7147100146125895,
-        -3.7147100146125895
+        -4.925289985387411,
+        -4.925289985387411
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_605af38b027a",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_011"
     },
     {
@@ -364,9 +520,17 @@
       },
       "position": [
         -6.264,
-        -4.925289985387411,
-        -4.925289985387411
+        -3.714710014612589,
+        -3.714710014612589
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_008"
     },
     {
@@ -385,9 +549,22 @@
       },
       "position": [
         -6.696000000000001,
-        -3.7147100146125895,
-        -3.7147100146125895
+        -4.925289985387411,
+        -4.925289985387411
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_31cd2dbae9c1",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_008"
     },
     {
@@ -404,10 +581,16 @@
         "how": "Unspecified"
       },
       "position": [
-        6.696000000000001,
-        -4.925289985387411,
-        3.714710014612589
+        6.264,
+        -4.32,
+        4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_007"
     },
     {
@@ -425,10 +608,16 @@
         "stage2_mapping": "you helped -> Cause -> Succeeded; Unspecified -> Action -> succeeded"
       },
       "position": [
-        6.264,
-        -3.7147100146125895,
-        4.925289985387411
+        6.696000000000001,
+        -4.32,
+        4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_007"
     },
     {
@@ -445,10 +634,16 @@
         "how": "Unspecified"
       },
       "position": [
-        2.3760000000000003,
-        -0.6052899853874111,
-        3.714710014612589
+        1.9440000000000002,
+        0.0,
+        4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_030"
     },
     {
@@ -465,10 +660,16 @@
         "how": "Unspecified"
       },
       "position": [
-        1.9440000000000002,
-        0.605289985387411,
-        4.925289985387411
+        2.3760000000000003,
+        0.0,
+        4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_030"
     },
     {
@@ -485,10 +686,16 @@
         "how": "Unspecified"
       },
       "position": [
-        2.5632,
-        4.9568194401108325,
-        -3.6831805598891676
+        1.7568000000000001,
+        3.6831805598891676,
+        -4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_020"
     },
     {
@@ -506,10 +713,16 @@
         "stage2_mapping": "the effort -> Concession -> Failed; Unspecified -> Action -> failed"
       },
       "position": [
-        2.159684847863979,
-        4.319502237492547,
-        -4.320497759026016
+        2.5632,
+        3.6831805598891676,
+        -4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_020"
     },
     {
@@ -526,10 +739,16 @@
         "how": "Unspecified"
       },
       "position": [
-        1.7571151521360213,
-        3.683678322396621,
-        -4.956321681084818
+        1.7568000000000001,
+        4.9568194401108325,
+        -4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_020"
     },
     {
@@ -546,10 +765,16 @@
         "how": "Unspecified"
       },
       "position": [
-        -1.9440000000000002,
-        -4.925289985387411,
-        -0.6052899853874111
+        -2.3760000000000003,
+        -4.32,
+        0.0
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_009"
     },
     {
@@ -567,10 +792,16 @@
         "stage2_mapping": "Unspecified -> Action -> further investigation"
       },
       "position": [
-        -2.3760000000000003,
-        -3.7147100146125895,
-        0.6052899853874109
+        -1.9440000000000002,
+        -4.32,
+        0.0
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_009"
     },
     {
@@ -587,10 +818,16 @@
         "how": "Unspecified"
       },
       "position": [
-        -6.264,
-        -0.6052899853874111,
-        -4.925289985387411
+        -6.696000000000001,
+        0.0,
+        -4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_017"
     },
     {
@@ -608,10 +845,16 @@
         "stage2_mapping": "Unspecified -> Action -> submitted the form"
       },
       "position": [
-        -6.696000000000001,
-        0.605289985387411,
-        -3.7147100146125895
+        -6.264,
+        0.0,
+        -4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_017"
     },
     {
@@ -628,10 +871,16 @@
         "how": "Unspecified"
       },
       "position": [
-        -6.264,
-        -0.6052899853874111,
-        3.714710014612589
+        -6.696000000000001,
+        0.0,
+        4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_022"
     },
     {
@@ -649,10 +898,16 @@
         "stage2_mapping": "Unspecified -> Action -> succeeded"
       },
       "position": [
-        -6.696000000000001,
-        0.605289985387411,
-        4.925289985387411
+        -6.264,
+        0.0,
+        4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_022"
     },
     {
@@ -670,9 +925,17 @@
       },
       "position": [
         2.3760000000000003,
-        3.714710014612589,
-        -0.6052899853874111
+        4.925289985387411,
+        0.6052899853874111
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_018"
     },
     {
@@ -691,9 +954,22 @@
       },
       "position": [
         1.9440000000000002,
-        4.925289985387411,
-        0.6052899853874109
+        3.714710014612589,
+        -0.6052899853874111
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_bb9fa1735494",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_018"
     },
     {
@@ -710,10 +986,16 @@
         "how": "Unspecified"
       },
       "position": [
-        6.696000000000001,
-        -0.6052899853874111,
-        -4.925289985387411
+        6.264,
+        0.0,
+        -4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_029"
     },
     {
@@ -730,10 +1012,16 @@
         "how": "Unspecified"
       },
       "position": [
-        6.264,
-        0.605289985387411,
-        -3.7147100146125895
+        6.696000000000001,
+        0.0,
+        -4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_029"
     },
     {
@@ -751,9 +1039,17 @@
       },
       "position": [
         -1.9440000000000002,
-        -0.6052899853874111,
-        3.714710014612589
+        0.6052899853874111,
+        4.925289985387411
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_028"
     },
     {
@@ -772,9 +1068,22 @@
       },
       "position": [
         -2.3760000000000003,
-        0.605289985387411,
-        4.925289985387411
+        -0.6052899853874111,
+        3.714710014612589
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_fea2568ef1d5",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_028"
     },
     {
@@ -792,9 +1101,15 @@
       },
       "position": [
         6.264,
-        0.605289985387411,
-        4.925289985387411
+        0.0,
+        4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_031"
     },
     {
@@ -812,9 +1127,15 @@
       },
       "position": [
         6.696000000000001,
-        -0.6052899853874111,
-        3.714710014612589
+        0.0,
+        4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_031"
     },
     {
@@ -831,10 +1152,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -2.5632,
-        -4.9568194401108325,
-        3.6831805598891676
+        -2.16,
+        -3.6831805598891676,
+        4.9568194401108325
       ],
+      "lattice_role": "core",
+      "lattice_index": "He",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_013"
     },
     {
@@ -853,10 +1182,23 @@
         "stage3_mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)"
       },
       "position": [
-        -2.1593548246009244,
-        -4.318980996968026,
-        4.321019002991868
+        -2.5632,
+        -4.9568194401108325,
+        3.6831805598891676
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_917aef0aef4f",
+          "label": "He"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_013"
     },
     {
@@ -874,10 +1216,16 @@
         "stage3_mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)"
       },
       "position": [
-        -1.757445175399076,
-        -3.6841995629211417,
-        4.955800437118966
+        -1.7568000000000001,
+        -4.9568194401108325,
+        3.6831805598891676
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_013"
     },
     {
@@ -894,10 +1242,18 @@
         "how": "Unspecified"
       },
       "position": [
-        6.845409055294916,
-        4.890923741731507,
-        -3.8744388522626605
+        6.48,
+        4.9834000000000005,
+        -4.32
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_001"
     },
     {
@@ -916,10 +1272,23 @@
         "stage3_mapping": "Node(meeting) -> Attribute -> State(Long)"
       },
       "position": [
-        6.480754402324818,
-        4.317902797983648,
-        -4.319313515216209
+        5.8752,
+        3.6566,
+        -4.9834000000000005
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_d313d7998a03",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_001"
     },
     {
@@ -938,9 +1307,15 @@
       },
       "position": [
         5.8752,
-        4.414573460284846,
-        -4.9834000000000005
+        3.6566,
+        -3.6566
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_001"
     },
     {
@@ -957,10 +1332,18 @@
         "how": "Unspecified"
       },
       "position": [
-        6.077384421279565,
-        0.6358963970287319,
-        0.6358963968621534
+        6.48,
+        0.6368194401108326,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "The report",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_026"
     },
     {
@@ -979,10 +1362,23 @@
         "stage3_mapping": "Node(The report) -> Attribute -> State(Long)"
       },
       "position": [
-        6.4794155787204355,
-        0.0009230430821013918,
-        0.0009230432486795125
+        6.0768,
+        -0.6368194401108326,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_f68a1fa4d5d6",
+          "label": "The report"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_026"
     },
     {
@@ -1004,6 +1400,12 @@
         -0.6368194401108326,
         -0.6368194401108326
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_026"
     },
     {
@@ -1020,10 +1422,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -6.8832,
-        3.6831805598891676,
-        -0.6368194401108326
+        -6.48,
+        4.9568194401108325,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "The report",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_010"
     },
     {
@@ -1042,10 +1452,23 @@
         "stage3_mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)"
       },
       "position": [
-        -6.479354824600924,
-        4.321019003031974,
-        0.0010190029918675473
+        -6.8832,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_4d4ee5fe2988",
+          "label": "The report"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_010"
     },
     {
@@ -1063,10 +1486,16 @@
         "stage3_mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)"
       },
       "position": [
-        -6.077445175399077,
-        4.955800437078859,
-        0.6358004371189653
+        -6.0768,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_010"
     },
     {
@@ -1083,10 +1512,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -2.5632,
-        3.6831805598891676,
-        -0.6368194401108326
+        -2.16,
+        4.9568194401108325,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "The office",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_016"
     },
     {
@@ -1105,10 +1542,23 @@
         "stage3_mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)"
       },
       "position": [
-        -2.1593548246009244,
-        4.321019003031974,
-        0.0010190029918675473
+        -2.5632,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_ad0e53673670",
+          "label": "The office"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_016"
     },
     {
@@ -1126,10 +1576,16 @@
         "stage3_mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)"
       },
       "position": [
-        -1.757445175399076,
-        4.955800437078859,
-        0.6358004371189653
+        -1.7568000000000001,
+        3.6831805598891676,
+        -0.6368194401108326
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_016"
     },
     {
@@ -1146,10 +1602,18 @@
         "how": "Unspecified"
       },
       "position": [
-        1.7568000000000001,
-        -0.6368194401108326,
-        -0.6368194401108326
+        2.16,
+        0.6368194401108326,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "The day",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_027"
     },
     {
@@ -1168,10 +1632,23 @@
         "stage3_mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)"
       },
       "position": [
-        2.160645175399076,
-        0.0010190030319738768,
-        0.0010190029918675473
+        1.7568000000000001,
+        -0.6368194401108326,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_fd4f86bfbeed",
+          "label": "The day"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_027"
     },
     {
@@ -1189,10 +1666,16 @@
         "stage3_mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)"
       },
       "position": [
-        2.5625548246009244,
-        0.6358004370788587,
-        0.6358004371189653
+        2.5632,
+        -0.6368194401108326,
+        -0.6368194401108326
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_027"
     },
     {
@@ -1209,10 +1692,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -2.3760000000000003,
-        0.605289985387411,
-        0.6052899853874109
+        -1.9440000000000002,
+        0.6052899853874111,
+        0.6052899853874111
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_025"
     },
     {
@@ -1230,10 +1721,23 @@
         "stage2_mapping": "I -> Stative -> have a car"
       },
       "position": [
-        -1.9440000000000002,
+        -2.3760000000000003,
         -0.6052899853874111,
         -0.6052899853874111
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_ec0e6b47120c",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_025"
     },
     {
@@ -1251,9 +1755,17 @@
       },
       "position": [
         -6.264,
-        -0.6052899853874111,
-        -0.6052899853874111
+        0.6052899853874111,
+        0.6052899853874111
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_004"
     },
     {
@@ -1272,9 +1784,22 @@
       },
       "position": [
         -6.696000000000001,
-        0.605289985387411,
-        0.6052899853874109
+        -0.6052899853874111,
+        -0.6052899853874111
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_152d0ea1c17f",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_004"
     },
     {
@@ -1291,10 +1816,18 @@
         "how": "Unspecified"
       },
       "position": [
-        1.7573844212795653,
-        -3.6841036029712684,
-        0.6358963968621534
+        2.5632,
+        -3.6831805598891676,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        1.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_019"
     },
     {
@@ -1312,10 +1845,27 @@
         "stage2_mapping": "him -> Action -> told me"
       },
       "position": [
-        2.159415578720435,
-        -4.319076956917899,
-        0.0009230432486795125
+        1.7568000000000001,
+        -4.9568194401108325,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_who_5ff223baa118",
+          "label": "him"
+        },
+        {
+          "node_id": "p_agent_beb709d70026",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_019"
     },
     {
@@ -1332,10 +1882,18 @@
         "how": "Unspecified"
       },
       "position": [
-        2.5632,
-        -4.9568194401108325,
-        -0.6368194401108326
+        2.0256000000000003,
+        -3.6831805598891676,
+        0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "him",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_019"
     },
     {
@@ -1352,10 +1910,18 @@
         "how": "Unspecified"
       },
       "position": [
-        2.5632,
-        -0.6368194401108326,
-        -4.9568194401108325
+        2.16,
+        0.6368194401108326,
+        -3.6831805598891676
       ],
+      "lattice_role": "core",
+      "lattice_index": "The report",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_005"
     },
     {
@@ -1374,10 +1940,23 @@
         "stage3_mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)"
       },
       "position": [
-        2.159415578720435,
-        0.0009230430821013918,
-        -4.319076956751321
+        1.7568000000000001,
+        -0.6368194401108326,
+        -4.9568194401108325
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_25e25932f14f",
+          "label": "The report"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_005"
     },
     {
@@ -1395,10 +1974,16 @@
         "stage3_mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)"
       },
       "position": [
-        1.7573844212795653,
-        0.6358963970287319,
-        -3.6841036031378467
+        2.5632,
+        -0.6368194401108326,
+        -4.9568194401108325
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_005"
     },
     {
@@ -1415,10 +2000,16 @@
         "how": "Unspecified"
       },
       "position": [
-        -6.264,
-        3.714710014612589,
-        -4.925289985387411
+        -6.696000000000001,
+        4.32,
+        -4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_015"
     },
     {
@@ -1436,10 +2027,16 @@
         "stage2_mapping": "bad luck -> Cause -> Failed the exam; Unspecified -> Action -> failed the exam"
       },
       "position": [
-        -6.696000000000001,
-        4.925289985387411,
-        -3.7147100146125895
+        -6.264,
+        4.32,
+        -4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_015"
     },
     {
@@ -1457,9 +2054,15 @@
       },
       "position": [
         -2.3760000000000003,
-        4.925289985387411,
-        -3.7147100146125895
+        4.32,
+        -4.32
       ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_032"
     },
     {
@@ -1477,9 +2080,15 @@
       },
       "position": [
         -1.9440000000000002,
-        3.714710014612589,
-        -4.925289985387411
+        4.32,
+        -4.32
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_032"
     },
     {
@@ -1496,10 +2105,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -6.0768,
+        -6.48,
         -3.6831805598891676,
         0.6368194401108326
       ],
+      "lattice_role": "core",
+      "lattice_index": "I",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_023"
     },
     {
@@ -1518,10 +2135,23 @@
         "stage3_mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)"
       },
       "position": [
-        -6.480315152136022,
-        -4.320497762507453,
-        -0.0004977590260151744
+        -6.8832,
+        -4.9568194401108325,
+        -0.6368194401108326
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_de1a71eb3250",
+          "label": "I"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_023"
     },
     {
@@ -1539,10 +2169,16 @@
         "stage3_mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)"
       },
       "position": [
-        -6.882884847863979,
-        -4.95632167760338,
-        -0.636321681084818
+        -6.0768,
+        -4.9568194401108325,
+        -0.6368194401108326
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_023"
     },
     {
@@ -1559,10 +2195,18 @@
         "how": "Unspecified"
       },
       "position": [
-        -1.7568000000000001,
-        -0.6368194401108326,
-        -4.9568194401108325
+        -2.16,
+        0.6368194401108326,
+        -3.6831805598891676
       ],
+      "lattice_role": "core",
+      "lattice_index": "You",
+      "lattice_coordinate": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "lattice_site": "body_center",
       "parent_id": "__container__cluster_006"
     },
     {
@@ -1581,10 +2225,23 @@
         "stage3_mapping": "Node(report) -> Attribute -> State(Long)"
       },
       "position": [
-        -2.160584421279565,
-        0.0009230430821013918,
-        -4.319076956751321
+        -2.5632,
+        -0.6368194401108326,
+        -4.9568194401108325
       ],
+      "lattice_role": "vertex",
+      "lattice_cores": [
+        {
+          "node_id": "p_agent_28f16e6728c5",
+          "label": "You"
+        }
+      ],
+      "lattice_coordinate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_006"
     },
     {
@@ -1602,10 +2259,16 @@
         "stage3_mapping": "Node(report) -> Attribute -> State(Long)"
       },
       "position": [
-        -2.562615578720435,
-        0.6358963970287319,
-        -3.6841036031378467
+        -1.7568000000000001,
+        -0.6368194401108326,
+        -4.9568194401108325
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_006"
     },
     {
@@ -1617,10 +2280,16 @@
         "what": "the long meeting"
       },
       "position": [
-        6.718636542380267,
+        7.0848,
         3.6566,
-        -4.102847632521131
+        -4.9834000000000005
       ],
+      "lattice_coordinate": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lattice_site": "vertex",
       "parent_id": "__container__cluster_001"
     },
     {
@@ -1643,6 +2312,19 @@
         -0.003020515362466298,
         0.0,
         0.25
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_d313d7998a03",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_74925654b84e"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_74925654b84e"
       ],
       "position": [
         6.48,
@@ -1669,6 +2351,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_0520d73d3ccc",
+          "label": "He",
+          "mapped_event_ids": [
+            "p_event_9faf6dd6fc2b"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_9faf6dd6fc2b"
+      ],
       "position": [
         2.16,
         -4.32,
@@ -1694,6 +2389,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         6.48,
         -4.32,
@@ -1718,6 +2416,19 @@
         0.06642342600234233,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_152d0ea1c17f",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_0f69793257fe"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_0f69793257fe"
       ],
       "position": [
         -6.48,
@@ -1745,6 +2456,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_25e25932f14f",
+          "label": "The report",
+          "mapped_event_ids": [
+            "p_event_beda054eadfb"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_beda054eadfb"
+      ],
       "position": [
         2.16,
         0.0,
@@ -1771,6 +2495,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_28f16e6728c5",
+          "label": "You",
+          "mapped_event_ids": [
+            "p_event_21c4a03c1db3"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_21c4a03c1db3"
+      ],
       "position": [
         -2.16,
         0.0,
@@ -1796,6 +2533,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         6.48,
         -4.32,
@@ -1820,6 +2560,19 @@
         -0.1301540328692447,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_31cd2dbae9c1",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_b03c96326b69"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_b03c96326b69"
       ],
       "position": [
         -6.48,
@@ -1846,6 +2599,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         -2.16,
         -4.32,
@@ -1872,6 +2628,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_4d4ee5fe2988",
+          "label": "The report",
+          "mapped_event_ids": [
+            "p_event_c185f8719227"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_c185f8719227"
+      ],
       "position": [
         -6.48,
         4.32,
@@ -1897,6 +2666,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_605af38b027a",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_b6f30004a7cc"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_b6f30004a7cc"
+      ],
       "position": [
         6.48,
         -4.32,
@@ -1921,6 +2703,19 @@
         -0.1000127280965849,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_66701c013f50",
+          "label": "You",
+          "mapped_event_ids": [
+            "p_event_aa28c4293a0b"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_aa28c4293a0b"
       ],
       "position": [
         -2.16,
@@ -1948,6 +2743,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_917aef0aef4f",
+          "label": "He",
+          "mapped_event_ids": [
+            "p_event_380252dd4189"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_380252dd4189"
+      ],
       "position": [
         -2.16,
         -4.32,
@@ -1972,6 +2780,19 @@
         -0.08744747235642245,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_91d510e01871",
+          "label": "you",
+          "mapped_event_ids": [
+            "p_event_e7a691f87f38"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_e7a691f87f38"
       ],
       "position": [
         2.16,
@@ -1998,6 +2819,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         -6.48,
         4.32,
@@ -2024,6 +2848,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_ad0e53673670",
+          "label": "The office",
+          "mapped_event_ids": [
+            "p_event_6b2d1ccdf3be"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_6b2d1ccdf3be"
+      ],
       "position": [
         -2.16,
         4.32,
@@ -2049,6 +2886,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         -6.48,
         0.0,
@@ -2073,6 +2913,19 @@
         0.08204064225500284,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_bb9fa1735494",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_5b17259fa239"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_5b17259fa239"
       ],
       "position": [
         2.16,
@@ -2100,6 +2953,26 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_who_5ff223baa118",
+          "label": "him",
+          "mapped_event_ids": [
+            "p_event_1a17eb5ef27c"
+          ]
+        },
+        {
+          "node_id": "p_agent_beb709d70026",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_1a17eb5ef27c"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_1a17eb5ef27c"
+      ],
       "position": [
         2.16,
         -4.32,
@@ -2126,6 +2999,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         2.16,
         4.32,
@@ -2152,6 +3028,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_d8de13d6ba9c",
+          "label": "He/She/They",
+          "mapped_event_ids": [
+            "p_event_9351a50972a9"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_9351a50972a9"
+      ],
       "position": [
         6.48,
         4.32,
@@ -2177,6 +3066,9 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         -6.48,
         0.0,
@@ -2203,6 +3095,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_de1a71eb3250",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_c000be03edde"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_c000be03edde"
+      ],
       "position": [
         -6.48,
         -4.32,
@@ -2228,6 +3133,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_eae1a5ebeee4",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_d7114036910f"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_d7114036910f"
+      ],
       "position": [
         -6.48,
         -4.32,
@@ -2252,6 +3170,19 @@
         0.06642342600234233,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_ec0e6b47120c",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_1dbd40acff3d"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_1dbd40acff3d"
       ],
       "position": [
         -2.16,
@@ -2279,6 +3210,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_f68a1fa4d5d6",
+          "label": "The report",
+          "mapped_event_ids": [
+            "p_event_369797f302ae"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_369797f302ae"
+      ],
       "position": [
         6.48,
         0.0,
@@ -2305,6 +3249,19 @@
         0.0,
         0.0
       ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_fd4f86bfbeed",
+          "label": "The day",
+          "mapped_event_ids": [
+            "p_event_47689b5b2fc9"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_47689b5b2fc9"
+      ],
       "position": [
         2.16,
         0.0,
@@ -2329,6 +3286,19 @@
         0.19781438069149315,
         0.0,
         0.0
+      ],
+      "lattice_mode": "body_centered_cubic",
+      "core_indices": [
+        {
+          "node_id": "p_agent_fea2568ef1d5",
+          "label": "I",
+          "mapped_event_ids": [
+            "p_event_ce8e617207d6"
+          ]
+        }
+      ],
+      "auxiliary_particle_ids": [
+        "p_event_ce8e617207d6"
       ],
       "position": [
         -2.16,
@@ -2355,6 +3325,9 @@
         0.5,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         6.48,
         0.0,
@@ -2380,6 +3353,9 @@
         0.5,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         2.16,
         0.0,
@@ -2405,6 +3381,9 @@
         0.5,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         6.48,
         0.0,
@@ -2430,6 +3409,9 @@
         0.5,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         -2.16,
         4.32,
@@ -2455,6 +3437,9 @@
         0.5,
         0.0
       ],
+      "lattice_mode": "simple_cubic",
+      "core_indices": [],
+      "auxiliary_particle_ids": [],
       "position": [
         -6.48,
         4.32,
