@@ -131,7 +131,7 @@ def _unit_cell_trace(crystal, cell_coordinates):
 		y=y_values,
 		z=z_values,
 		mode="lines",
-		line={"color": "rgba(35, 155, 190, 0.45)", "width": 2},
+		line={"color": "rgba(75, 80, 86, 0.78)", "width": 2},
 		hoverinfo="skip",
 		showlegend=True,
 		name="Outer crystal unit cells",
