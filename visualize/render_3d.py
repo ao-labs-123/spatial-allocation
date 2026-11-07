@@ -138,6 +138,46 @@ def _unit_cell_trace(crystal, cell_coordinates):
 	)
 
 
+def _outer_lattice_bond_trace(crystal, cell_coordinates):
+	unit_cell = crystal.get("unit_cell")
+	if unit_cell is None:
+		return None
+
+	center = unit_cell["center"]
+	size = unit_cell["size"]
+	cell_centers = {
+		tuple(cell): [
+			center[axis] + cell[axis] * size[axis]
+			for axis in range(3)
+		]
+		for cell in cell_coordinates
+	}
+	x_values = []
+	y_values = []
+	z_values = []
+	for cell, position in cell_centers.items():
+		for axis in range(3):
+			neighbor = list(cell)
+			neighbor[axis] += 1
+			neighbor_position = cell_centers.get(tuple(neighbor))
+			if neighbor_position is None:
+				continue
+			x_values.extend([position[0], neighbor_position[0], None])
+			y_values.extend([position[1], neighbor_position[1], None])
+			z_values.extend([position[2], neighbor_position[2], None])
+
+	return go.Scatter3d(
+		x=x_values,
+		y=y_values,
+		z=z_values,
+		mode="lines",
+		line={"color": "rgba(35, 40, 45, 0.62)", "width": 4},
+		hoverinfo="skip",
+		showlegend=True,
+		name="Outer crystal lattice bonds",
+	)
+
+
 def _lattice_bond_trace(particles, positions):
 	particles_by_cell_and_cluster = {}
 	for node in particles:
@@ -234,6 +274,9 @@ def render_graph(graph_data, output_path):
 	unit_cells = _unit_cell_trace(crystal, cell_coordinates)
 	if unit_cells is not None:
 		figure.add_trace(unit_cells)
+	outer_lattice_bonds = _outer_lattice_bond_trace(crystal, cell_coordinates)
+	if outer_lattice_bonds is not None and outer_lattice_bonds.x:
+		figure.add_trace(outer_lattice_bonds)
 	if containers:
 		figure.add_trace(_container_capsule_trace(containers, positions))
 	lattice_bonds = _lattice_bond_trace(leaf_nodes, positions)
