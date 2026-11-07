@@ -58,60 +58,6 @@ def _container_capsule_trace(containers, positions):
 	)
 
 
-def _lattice_bond_trace(nodes, containers, positions):
-	nodes_by_id = {node["id"]: node for node in nodes}
-	x_values = []
-	y_values = []
-	z_values = []
-
-	for container in containers:
-		member_nodes = [
-			nodes_by_id[node_id]
-			for node_id in container.get("contains", [])
-			if node_id in nodes_by_id
-		]
-		member_nodes = [
-			node for node in member_nodes
-			if node.get("lattice_coordinate") is not None
-		]
-		for index, left in enumerate(member_nodes):
-			for right in member_nodes[index + 1:]:
-				left_coordinate = left["lattice_coordinate"]
-				right_coordinate = right["lattice_coordinate"]
-				delta = [
-					abs(left_coordinate[axis] - right_coordinate[axis])
-					for axis in range(3)
-				]
-				if container.get("lattice_mode") == "body_centered_cubic":
-					is_neighbor = (
-						left.get("lattice_site") != right.get("lattice_site")
-						and all(math.isclose(value, 0.5) for value in delta)
-					)
-				else:
-					is_neighbor = (
-						sum(math.isclose(value, 1.0) for value in delta) == 1
-						and all(math.isclose(value, 0.0) or math.isclose(value, 1.0) for value in delta)
-					)
-				if not is_neighbor:
-					continue
-				left_position = positions[left["id"]]
-				right_position = positions[right["id"]]
-				x_values.extend([left_position[0], right_position[0], None])
-				y_values.extend([left_position[1], right_position[1], None])
-				z_values.extend([left_position[2], right_position[2], None])
-
-	return go.Scatter3d(
-		x=x_values,
-		y=y_values,
-		z=z_values,
-		mode="lines",
-		line={"color": "rgba(35, 155, 190, 0.8)", "width": 5},
-		hoverinfo="skip",
-		showlegend=True,
-		name="Lattice bonds",
-	)
-
-
 def render_graph(graph_data, output_path):
 	nodes = graph_data["nodes"]
 	leaf_nodes = [node for node in nodes if node.get("node_type") != "container"]
@@ -130,7 +76,6 @@ def render_graph(graph_data, output_path):
 	cluster_containers = [container for container in containers if container.get("container_type") != "conversation"]
 	if cluster_containers:
 		figure.add_trace(_container_capsule_trace(cluster_containers, positions))
-		figure.add_trace(_lattice_bond_trace(leaf_nodes, cluster_containers, positions))
 
 	edge_x = []
 	edge_y = []

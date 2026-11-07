@@ -1,0 +1,2084 @@
+[
+    {
+        "timestamp": "2026-10-13T11:26:28.800267",
+        "input": "He succeeded because I helped.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "He"
+        },
+        "stage2": {
+            "process": "Causal Marker: because; Event: Action",
+            "decision": "Causal relation mapped; Event classified: Action",
+            "mapping": "I helped -> Cause -> He succeeded; He -> Action -> succeeded",
+            "structure": {
+                "relation": "CauseEffect",
+                "marker": "because",
+                "cause": "I helped",
+                "effect": "He succeeded",
+                "event": {
+                    "category": "Action",
+                    "verb": "succeeded",
+                    "actor": "He",
+                    "patient": null
+                }
+            },
+            "agent": "He",
+            "action": {
+                "verb": "succeeded",
+                "actor": "He",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "He"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "succeeded",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "He",
+            "structure": {
+                "form": "Base",
+                "verb": "succeeded",
+                "subject": "He",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "He"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "He",
+                "what": "succeeded",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "because I helped",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.801619",
+        "input": "Please review the document.",
+        "stage1": {
+            "process": "Imperative / Direct Directive",
+            "decision": "Priority: Listener Address",
+            "agent": "You"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "You -> Action -> review the document",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "review",
+                    "actor": "You",
+                    "patient": "the document"
+                }
+            },
+            "agent": "You",
+            "action": {
+                "verb": "review",
+                "actor": "You",
+                "patient": "the document"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "You"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "review",
+            "patient": "the document",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "You",
+            "structure": {
+                "form": "Base",
+                "verb": "review",
+                "subject": "You",
+                "object": "the document",
+                "category": "Action",
+                "patient": "the document",
+                "agent": "You"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "You",
+                "what": "review the document",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.802858",
+        "input": "Thought was strange.",
+        "stage1": {
+            "process": "Psychological Verb + Null Subject",
+            "decision": "Default: Speaker",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "I -> State -> strange",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": null,
+                    "actor": "I",
+                    "patient": null,
+                    "state": "strange"
+                }
+            },
+            "agent": "I",
+            "action": null
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": null,
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Thought",
+            "structure": {
+                "form": "State",
+                "state": "strange",
+                "subject": "Thought",
+                "object": null,
+                "psychological_verb": "thought",
+                "verb": null,
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "thought was strange",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.804494",
+        "input": "Thought it was strange apparently.",
+        "stage1": {
+            "process": "Null Subject + Evidential / Attribution Marker",
+            "decision": "Override: Third Person",
+            "agent": "He/She/They"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "He/She/They -> State -> strange",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": null,
+                    "actor": "He/She/They",
+                    "patient": null,
+                    "state": "strange"
+                }
+            },
+            "agent": "He/She/They",
+            "action": null
+        },
+        "stage3": {
+            "process": "Degree modifier",
+            "decision": "Supplementary",
+            "mapping": "Agent(He/She/They) -> Internal Eval -> State(Strange) -> How: Degree(Apparently)",
+            "target": "strange",
+            "modifier": "apparently",
+            "attribution": {
+                "target": "strange",
+                "modifier_agent": "strange",
+                "primary_agent": "He/She/They"
+            },
+            "structure": {
+                "type": "Supplementary",
+                "antecedent": "strange",
+                "target": "strange",
+                "clause": "apparently",
+                "kind": "Degree",
+                "classification": "Supplementary",
+                "modifier_kind": "Degree"
+            },
+            "agent": "He/She/They"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": null,
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Thought it",
+            "structure": {
+                "form": "State",
+                "state": "strange",
+                "subject": "Thought it",
+                "object": "apparently",
+                "psychological_verb": "thought",
+                "verb": null,
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "He/She/They"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "He/She/They",
+                "what": "thought it was strange",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "apparently"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.806481",
+        "input": "Went to the cafe yesterday.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "Clarification Required (Undetermined Agent); Event classified: Action",
+            "mapping": "Unspecified -> Action -> went",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "went",
+                    "actor": "Unspecified",
+                    "patient": null
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "went",
+                "actor": "Unspecified",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "went",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Went",
+            "structure": {
+                "form": "Base",
+                "verb": "went",
+                "subject": "Went",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "went",
+                "when": "yesterday",
+                "where": "cafe",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.807710",
+        "input": "It is required that you submit the form.",
+        "stage1": {
+            "process": "Formal Subject Detected (It ... that)",
+            "decision": "Priority: True Subject in Clause",
+            "agent": "you",
+            "structure": "It is [required] that [you submit the form]"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "you -> Action -> submit the form",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "submit",
+                    "actor": "you",
+                    "patient": "the form"
+                }
+            },
+            "agent": "you",
+            "action": {
+                "verb": "submit",
+                "actor": "you",
+                "patient": "the form"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "you"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "submit",
+            "patient": "the form",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "you",
+            "structure": {
+                "form": "Base",
+                "verb": "submit",
+                "subject": "you",
+                "object": "the form",
+                "category": "Action",
+                "patient": "the form",
+                "agent": "you"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "you",
+                "what": "submit the form",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.808994",
+        "input": "I submitted the form yesterday.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "I -> Action -> submitted the form",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "submitted",
+                    "actor": "I",
+                    "patient": "the form"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "submitted",
+                "actor": "I",
+                "patient": "the form"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "submitted",
+            "patient": "the form",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "Base",
+                "verb": "submitted",
+                "subject": "I",
+                "object": "the form",
+                "category": "Action",
+                "patient": "the form",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "submitted the form",
+                "when": "yesterday",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.810458",
+        "input": "I wrote the report at the office.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "I -> Action -> wrote the report",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "wrote",
+                    "actor": "I",
+                    "patient": "the report"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "wrote",
+                "actor": "I",
+                "patient": "the report"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "wrote",
+            "patient": "the report",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "Base",
+                "verb": "wrote",
+                "subject": "I",
+                "object": "the report",
+                "category": "Action",
+                "patient": "the report",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "wrote the report",
+                "when": "Unspecified",
+                "where": "at the office",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.812077",
+        "input": "Succeeded because you helped.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Causal Marker: because; Event: Action",
+            "decision": "Causal relation mapped; Event classified: Action",
+            "mapping": "you helped -> Cause -> Succeeded; Unspecified -> Action -> succeeded",
+            "structure": {
+                "relation": "CauseEffect",
+                "marker": "because",
+                "cause": "you helped",
+                "effect": "Succeeded",
+                "event": {
+                    "category": "Action",
+                    "verb": "succeeded",
+                    "actor": "Unspecified",
+                    "patient": null
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "succeeded",
+                "actor": "Unspecified",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "succeeded",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Succeeded",
+            "structure": {
+                "form": "Base",
+                "verb": "succeeded",
+                "subject": "Succeeded",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "succeeded",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "because you helped",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.814980",
+        "input": "Failed despite the effort.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Concessive Marker: despite; Event: Action",
+            "decision": "Concessive relation mapped; Event classified: Action",
+            "mapping": "the effort -> Concession -> Failed; Unspecified -> Action -> failed",
+            "structure": {
+                "relation": "Concession",
+                "marker": "despite",
+                "concession": "the effort",
+                "outcome": "Failed",
+                "event": {
+                    "category": "Action",
+                    "verb": "failed",
+                    "actor": "Unspecified",
+                    "patient": null
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "failed",
+                "actor": "Unspecified",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "failed",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Failed",
+            "structure": {
+                "form": "Base",
+                "verb": "failed",
+                "subject": "Failed",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "failed",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.817943",
+        "input": "Required further investigation.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "Clarification Required (Undetermined Agent); Event classified: Action",
+            "mapping": "Unspecified -> Action -> further investigation",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "further",
+                    "actor": "Unspecified",
+                    "patient": "investigation"
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "further",
+                "actor": "Unspecified",
+                "patient": "investigation"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "further",
+            "patient": "investigation",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Required",
+            "structure": {
+                "form": "Base",
+                "verb": "further",
+                "subject": "Required",
+                "object": "investigation",
+                "category": "Action",
+                "patient": "investigation",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "required further investigation",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.820779",
+        "input": "Submitted the form yesterday.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "Clarification Required (Undetermined Agent); Event classified: Action",
+            "mapping": "Unspecified -> Action -> submitted the form",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "submitted",
+                    "actor": "Unspecified",
+                    "patient": "the form"
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "submitted",
+                "actor": "Unspecified",
+                "patient": "the form"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "submitted",
+            "patient": "the form",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Submitted",
+            "structure": {
+                "form": "Base",
+                "verb": "submitted",
+                "subject": "Submitted",
+                "object": "the form",
+                "category": "Action",
+                "patient": "the form",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "submitted the form",
+                "when": "yesterday",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.823801",
+        "input": "Succeeded in the meeting.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "Clarification Required (Undetermined Agent); Event classified: Action",
+            "mapping": "Unspecified -> Action -> succeeded",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "succeeded",
+                    "actor": "Unspecified",
+                    "patient": null
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "succeeded",
+                "actor": "Unspecified",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "succeeded",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Succeeded",
+            "structure": {
+                "form": "Base",
+                "verb": "succeeded",
+                "subject": "Succeeded",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "succeeded",
+                "when": "Unspecified",
+                "where": "in the meeting",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.826792",
+        "input": "I'm stressed due to the project.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Causal Marker: due to; Event: State",
+            "decision": "Causal relation mapped; Event classified: State",
+            "mapping": "the project -> Cause -> I'm stressed; I -> State -> stressed",
+            "structure": {
+                "relation": "CauseEffect",
+                "marker": "due to",
+                "cause": "the project",
+                "effect": "I'm stressed",
+                "event": {
+                    "category": "State",
+                    "verb": "stressed",
+                    "actor": "I",
+                    "patient": null,
+                    "state": "stressed"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "stressed",
+                "actor": "I",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": "stressed",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "State",
+                "state": "stressed",
+                "subject": "I",
+                "object": "due to the project",
+                "verb": "stressed",
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "stressed",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "due to the project",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.829655",
+        "input": "I succeeded because you helped.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Causal Marker: because; Event: Action",
+            "decision": "Causal relation mapped; Event classified: Action",
+            "mapping": "you helped -> Cause -> I succeeded; I -> Action -> succeeded",
+            "structure": {
+                "relation": "CauseEffect",
+                "marker": "because",
+                "cause": "you helped",
+                "effect": "I succeeded",
+                "event": {
+                    "category": "Action",
+                    "verb": "succeeded",
+                    "actor": "I",
+                    "patient": null
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "succeeded",
+                "actor": "I",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "succeeded",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "Base",
+                "verb": "succeeded",
+                "subject": "I",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "succeeded",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "because you helped",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.832967",
+        "input": "He succeeded by working hard.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "He"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "He -> Action -> succeeded",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "succeeded",
+                    "actor": "He",
+                    "patient": null
+                }
+            },
+            "agent": "He",
+            "action": {
+                "verb": "succeeded",
+                "actor": "He",
+                "patient": null
+            },
+            "context": {
+                "relation": "Manner",
+                "marker": "by",
+                "context": "working hard",
+                "event": "He succeeded"
+            }
+        },
+        "stage3": {
+            "process": "Instrument phrase",
+            "decision": "Supplementary",
+            "mapping": "Agent(He) -> How: Instrument(Hard Work) -> State(Success)",
+            "target": "Success",
+            "modifier": "Hard Work",
+            "attribution": {
+                "target": "Success",
+                "modifier_agent": "Hard Work",
+                "primary_agent": "He"
+            },
+            "structure": {
+                "type": "Supplementary",
+                "antecedent": "He succeeded",
+                "target": "Success",
+                "clause": "Hard Work",
+                "kind": "Instrument",
+                "actor": "He",
+                "outcome": "Success",
+                "outcome_kind": "State",
+                "instrument": "Hard Work",
+                "classification": "Supplementary",
+                "modifier_kind": "Instrument"
+            },
+            "agent": "He"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "succeeded",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "He",
+            "structure": {
+                "form": "Base",
+                "verb": "succeeded",
+                "subject": "He",
+                "object": null,
+                "category": "Action",
+                "patient": "Unspecified",
+                "agent": "He"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "He",
+                "what": "succeeded",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Hard Work"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.835942",
+        "input": "I was stressed after the long meeting.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "I -> State -> stressed",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": "stressed",
+                    "actor": "I",
+                    "patient": null,
+                    "state": "stressed"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "stressed",
+                "actor": "I",
+                "patient": null
+            },
+            "context": {
+                "relation": "Temporal",
+                "marker": "after",
+                "context": "the long meeting",
+                "event": "I was stressed"
+            }
+        },
+        "stage3": {
+            "process": "Adjectival modifier",
+            "decision": "Supplementary",
+            "mapping": "Node(meeting) -> Attribute -> State(Long)",
+            "target": "meeting",
+            "modifier": "long",
+            "attribution": {
+                "target": "meeting",
+                "modifier_agent": "meeting",
+                "primary_agent": "I"
+            },
+            "structure": {
+                "type": "Supplementary",
+                "antecedent": "meeting",
+                "target": "meeting",
+                "clause": "long",
+                "kind": "Adjective",
+                "classification": "Supplementary",
+                "modifier_kind": "Adjective"
+            },
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": "stressed",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "State",
+                "state": "stressed",
+                "subject": "I",
+                "object": "after the long meeting",
+                "verb": "stressed",
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "stressed",
+                "when": "after the long meeting",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.839007",
+        "input": "The report, which was long, is done.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "The report"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "The report -> State -> done",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": "done",
+                    "actor": "The report",
+                    "patient": null,
+                    "state": "done"
+                }
+            },
+            "agent": "The report",
+            "action": {
+                "verb": "done",
+                "actor": "The report",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "Non-defining clause",
+            "decision": "Supplementary",
+            "mapping": "Node(The report) -> Attribute -> State(Long)",
+            "target": "The report",
+            "modifier": "was long",
+            "attribution": {
+                "target": "The report",
+                "modifier_agent": "The report",
+                "primary_agent": "The report"
+            },
+            "structure": {
+                "type": "Non-defining",
+                "antecedent": "The report",
+                "target": "The report",
+                "clause": "was long",
+                "classification": "Supplementary",
+                "modifier_kind": "RelativeClause"
+            },
+            "agent": "The report"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": "done",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "The report",
+            "structure": {
+                "form": "State",
+                "state": "done",
+                "subject": "The report",
+                "object": null,
+                "verb": "done",
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "The report"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "The report",
+                "what": "done",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.841466",
+        "input": "The report that I wrote is done.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "The report"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "The report -> State -> done",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": "done",
+                    "actor": "The report",
+                    "patient": null,
+                    "state": "done"
+                }
+            },
+            "agent": "The report",
+            "action": {
+                "verb": "done",
+                "actor": "The report",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "Defining clause",
+            "decision": "Essential",
+            "mapping": "Node(The report) -> Defining Attribute -> Clause(I wrote)",
+            "target": "The report",
+            "modifier": "I wrote",
+            "attribution": {
+                "target": "The report",
+                "modifier_agent": "I",
+                "primary_agent": "The report"
+            },
+            "structure": {
+                "type": "Defining",
+                "antecedent": "The report",
+                "target": "The report",
+                "clause": "I wrote",
+                "kind": "RelativeClause",
+                "relative_marker": "that",
+                "classification": "Essential",
+                "modifier_kind": "RelativeClause"
+            },
+            "agent": "The report"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": "done",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "The report that I wrote",
+            "structure": {
+                "form": "State",
+                "state": "done",
+                "subject": "The report that I wrote",
+                "object": null,
+                "verb": "done",
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "The report"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "The report",
+                "what": "done",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.844063",
+        "input": "The office where I wrote the report was quiet.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "The office"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "The office -> State -> quiet",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": "quiet",
+                    "actor": "The office",
+                    "patient": null,
+                    "state": "quiet"
+                }
+            },
+            "agent": "The office",
+            "action": {
+                "verb": "quiet",
+                "actor": "The office",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "Defining clause",
+            "decision": "Essential",
+            "mapping": "Node(The office) -> Defining Attribute -> Clause(I wrote the report)",
+            "target": "The office",
+            "modifier": "I wrote the report",
+            "attribution": {
+                "target": "The office",
+                "modifier_agent": "I",
+                "primary_agent": "The office"
+            },
+            "structure": {
+                "type": "Defining",
+                "antecedent": "The office",
+                "target": "The office",
+                "clause": "I wrote the report",
+                "kind": "RelativeClause",
+                "relative_marker": "where",
+                "classification": "Essential",
+                "modifier_kind": "RelativeClause"
+            },
+            "agent": "The office"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": "quiet",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "The office where I wrote the report",
+            "structure": {
+                "form": "State",
+                "state": "quiet",
+                "subject": "The office where I wrote the report",
+                "object": null,
+                "verb": "quiet",
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "The office"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "The office",
+                "what": "quiet",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.846841",
+        "input": "The day where he succeeded was bright.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "The day"
+        },
+        "stage2": {
+            "process": "Event: State",
+            "decision": "No causal relation; Event classified: State",
+            "mapping": "The day -> State -> bright",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "State",
+                    "verb": "bright",
+                    "actor": "The day",
+                    "patient": null,
+                    "state": "bright"
+                }
+            },
+            "agent": "The day",
+            "action": {
+                "verb": "bright",
+                "actor": "The day",
+                "patient": null
+            }
+        },
+        "stage3": {
+            "process": "Defining clause",
+            "decision": "Essential",
+            "mapping": "Node(The day) -> Defining Attribute -> Clause(he succeeded)",
+            "target": "The day",
+            "modifier": "he succeeded",
+            "attribution": {
+                "target": "The day",
+                "modifier_agent": "The day",
+                "primary_agent": "The day"
+            },
+            "structure": {
+                "type": "Defining",
+                "antecedent": "The day",
+                "target": "The day",
+                "clause": "he succeeded",
+                "kind": "RelativeClause",
+                "relative_marker": "where",
+                "classification": "Essential",
+                "modifier_kind": "RelativeClause"
+            },
+            "agent": "The day"
+        },
+        "stage4": {
+            "process": "[State predicate] → [Category: State]",
+            "form": "State",
+            "category": "State",
+            "verb": "bright",
+            "patient": "Unspecified",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "The day where he succeeded",
+            "structure": {
+                "form": "State",
+                "state": "bright",
+                "subject": "The day where he succeeded",
+                "object": null,
+                "verb": "bright",
+                "category": "State",
+                "patient": "Unspecified",
+                "agent": "The day"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "The day",
+                "what": "bright",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.849521",
+        "input": "I have a car.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: Stative",
+            "decision": "No causal relation; Event classified: Stative",
+            "mapping": "I -> Stative -> have a car",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Stative",
+                    "verb": "have",
+                    "actor": "I",
+                    "patient": "a car"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "have",
+                "actor": "I",
+                "patient": "a car"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Stative]",
+            "form": "Base",
+            "category": "Stative",
+            "verb": "have",
+            "patient": "a car",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "Base",
+                "verb": "have",
+                "subject": "I",
+                "object": "a car",
+                "category": "Stative",
+                "patient": "a car",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "have a car",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.852294",
+        "input": "I am having a party.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "I -> Action -> having a party",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "having",
+                    "actor": "I",
+                    "patient": "a party"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "having",
+                "actor": "I",
+                "patient": "a party"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Morphology: be + V-ing] → [Category: Action]",
+            "form": "Progressive",
+            "category": "Action",
+            "verb": "having",
+            "patient": "a party",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "Progressive",
+                "verb": "having",
+                "subject": "I",
+                "object": "a party",
+                "category": "Action",
+                "patient": "a party",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "having a party",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.855349",
+        "input": "I was told by him.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "him -> Action -> told me",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "told",
+                    "actor": "him",
+                    "patient": "I"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "told",
+                "actor": "him",
+                "patient": "I"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Passive: be + V-en + by]",
+            "form": "Passive",
+            "category": "Action",
+            "verb": "told",
+            "patient": "I",
+            "actor": "him",
+            "receiver": "I",
+            "subject": "Unspecified",
+            "structure": {
+                "form": "Passive",
+                "verb": "told",
+                "actor": "him",
+                "receiver": "I",
+                "category": "Action",
+                "patient": "I",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "him",
+                "what": "told me",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.859781",
+        "input": "The report was completed quickly.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "The report"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "Unspecified -> Action -> completed The report",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "completed",
+                    "actor": "Unspecified",
+                    "patient": "The report"
+                }
+            },
+            "agent": "The report",
+            "action": {
+                "verb": "completed",
+                "actor": "Unspecified",
+                "patient": "The report"
+            }
+        },
+        "stage3": {
+            "process": "Manner adverb",
+            "decision": "Supplementary",
+            "mapping": "Node(The report) -> Action(Complete) -> How: Manner(Quickly)",
+            "target": "The report",
+            "modifier": "quickly",
+            "attribution": {
+                "target": "The report",
+                "modifier_agent": "The report",
+                "primary_agent": "The report"
+            },
+            "structure": {
+                "type": "Supplementary",
+                "antecedent": "The report",
+                "target": "The report",
+                "clause": "quickly",
+                "kind": "Manner",
+                "action": "Complete",
+                "classification": "Supplementary",
+                "modifier_kind": "Manner"
+            },
+            "agent": "The report"
+        },
+        "stage4": {
+            "process": "[Passive: be + V-en + by]",
+            "form": "Passive",
+            "category": "Action",
+            "verb": "completed",
+            "patient": "The report",
+            "actor": "Unspecified",
+            "receiver": "The report",
+            "subject": "Unspecified",
+            "structure": {
+                "form": "Passive",
+                "verb": "completed",
+                "actor": "Unspecified",
+                "receiver": "The report",
+                "category": "Action",
+                "patient": "The report",
+                "agent": "The report"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "The report",
+                "what": "completed the report",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "quickly"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.863096",
+        "input": "Failed the exam because of bad luck.",
+        "stage1": {
+            "process": "Null Subject + No Core Markers Detected",
+            "decision": "Fallback: Undetermined Agent",
+            "agent": "Unspecified",
+            "action_required": "Trigger Stage 1 Clarification / Context Resolution"
+        },
+        "stage2": {
+            "process": "Causal Marker: because of; Event: Action",
+            "decision": "Causal relation mapped; Event classified: Action",
+            "mapping": "bad luck -> Cause -> Failed the exam; Unspecified -> Action -> failed the exam",
+            "structure": {
+                "relation": "CauseEffect",
+                "marker": "because of",
+                "cause": "bad luck",
+                "effect": "Failed the exam",
+                "event": {
+                    "category": "Action",
+                    "verb": "failed",
+                    "actor": "Unspecified",
+                    "patient": "the exam"
+                }
+            },
+            "agent": "Unspecified",
+            "action": {
+                "verb": "failed",
+                "actor": "Unspecified",
+                "patient": "the exam"
+            }
+        },
+        "stage3": {
+            "process": "No modification structure found",
+            "decision": "Standard",
+            "mapping": null,
+            "structure": null,
+            "agent": "Unspecified"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "failed",
+            "patient": "the exam",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "Failed",
+            "structure": {
+                "form": "Base",
+                "verb": "failed",
+                "subject": "Failed",
+                "object": "the exam",
+                "category": "Action",
+                "patient": "the exam",
+                "agent": "Unspecified"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "Unspecified",
+                "what": "failed the exam",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "because of bad luck",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.866819",
+        "input": "I talked to the manager who was frustrated with the deadline.",
+        "stage1": {
+            "process": "Explicit Subject Present",
+            "decision": "Priority: Explicit Subject",
+            "agent": "I"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "I -> Action -> talked to the manager",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "talked",
+                    "actor": "I",
+                    "patient": "to the manager"
+                }
+            },
+            "agent": "I",
+            "action": {
+                "verb": "talked",
+                "actor": "I",
+                "patient": "to the manager"
+            }
+        },
+        "stage3": {
+            "process": "Defining clause",
+            "decision": "Essential",
+            "mapping": "Node(manager) -> Attribute -> State(Frustrated) -> Cause -> Node(the deadline)",
+            "target": "manager",
+            "modifier": "was frustrated with the deadline",
+            "attribution": {
+                "target": "manager",
+                "modifier_agent": "manager",
+                "primary_agent": "I"
+            },
+            "structure": {
+                "type": "Defining",
+                "antecedent": "I talked to the manager",
+                "target": "manager",
+                "clause": "was frustrated with the deadline",
+                "kind": "RelativeClause",
+                "relative_marker": "who",
+                "classification": "Essential",
+                "modifier_kind": "RelativeClause"
+            },
+            "agent": "I"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "talked",
+            "patient": "to the manager",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "I",
+            "structure": {
+                "form": "Base",
+                "verb": "talked",
+                "subject": "I",
+                "object": "to the manager",
+                "category": "Action",
+                "patient": "to the manager",
+                "agent": "I"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "I",
+                "what": "talked to the manager",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    },
+    {
+        "timestamp": "2026-10-13T11:26:28.872013",
+        "input": "Please review the long report.",
+        "stage1": {
+            "process": "Imperative / Direct Directive",
+            "decision": "Priority: Listener Address",
+            "agent": "You"
+        },
+        "stage2": {
+            "process": "Event: Action",
+            "decision": "No causal relation; Event classified: Action",
+            "mapping": "You -> Action -> review the long report",
+            "structure": {
+                "relation": "Event",
+                "event": {
+                    "category": "Action",
+                    "verb": "review",
+                    "actor": "You",
+                    "patient": "the long report"
+                }
+            },
+            "agent": "You",
+            "action": {
+                "verb": "review",
+                "actor": "You",
+                "patient": "the long report"
+            }
+        },
+        "stage3": {
+            "process": "Adjectival modifier",
+            "decision": "Supplementary",
+            "mapping": "Node(report) -> Attribute -> State(Long)",
+            "target": "report",
+            "modifier": "long",
+            "attribution": {
+                "target": "report",
+                "modifier_agent": "report",
+                "primary_agent": "You"
+            },
+            "structure": {
+                "type": "Supplementary",
+                "antecedent": "report",
+                "target": "report",
+                "clause": "long",
+                "kind": "Adjective",
+                "classification": "Supplementary",
+                "modifier_kind": "Adjective"
+            },
+            "agent": "You"
+        },
+        "stage4": {
+            "process": "[Morphology: Base] → [Category: Action]",
+            "form": "Base",
+            "category": "Action",
+            "verb": "review",
+            "patient": "the long report",
+            "actor": "Unspecified",
+            "receiver": "Unspecified",
+            "subject": "You",
+            "structure": {
+                "form": "Base",
+                "verb": "review",
+                "subject": "You",
+                "object": "the long report",
+                "category": "Action",
+                "patient": "the long report",
+                "agent": "You"
+            }
+        },
+        "stage5": {
+            "stage": "Stage 5 - 5W1H Synthesis",
+            "frame": {
+                "who": "You",
+                "what": "review the long report",
+                "when": "Unspecified",
+                "where": "Unspecified",
+                "why": "Unspecified",
+                "how": "Unspecified"
+            },
+            "status": "Ready for Particle Encapsulation"
+        }
+    }
+]
