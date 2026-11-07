@@ -138,6 +138,53 @@ def _unit_cell_trace(crystal, cell_coordinates):
 	)
 
 
+def _lattice_bond_trace(particles, positions):
+	particles_by_cell_and_cluster = {}
+	for node in particles:
+		if not isinstance(node.get("lattice_coordinate"), list):
+			continue
+		key = (tuple(node["cell_coordinate"]), node.get("topology_cluster_id"))
+		particles_by_cell_and_cluster.setdefault(key, []).append(node)
+
+	x_values = []
+	y_values = []
+	z_values = []
+	for group in particles_by_cell_and_cluster.values():
+		for index, left in enumerate(group):
+			left_coordinate = left["lattice_coordinate"]
+			for right in group[index + 1:]:
+				right_coordinate = right["lattice_coordinate"]
+				delta = [
+					abs(float(left_coordinate[axis]) - float(right_coordinate[axis]))
+					for axis in range(3)
+				]
+				if left.get("lattice_site") != right.get("lattice_site"):
+					is_neighbor = all(math.isclose(value, 0.5) for value in delta)
+				else:
+					is_neighbor = (
+						sum(math.isclose(value, 1.0) for value in delta) == 1
+						and all(math.isclose(value, 0.0) or math.isclose(value, 1.0) for value in delta)
+					)
+				if not is_neighbor:
+					continue
+				left_position = positions[left["_render_id"]]
+				right_position = positions[right["_render_id"]]
+				x_values.extend([left_position[0], right_position[0], None])
+				y_values.extend([left_position[1], right_position[1], None])
+				z_values.extend([left_position[2], right_position[2], None])
+
+	return go.Scatter3d(
+		x=x_values,
+		y=y_values,
+		z=z_values,
+		mode="lines",
+		line={"color": "rgba(0, 190, 220, 0.95)", "width": 4},
+		hoverinfo="skip",
+		showlegend=True,
+		name="Inner SC / BCC lattice bonds",
+	)
+
+
 def render_graph(graph_data, output_path):
 	source_nodes = graph_data["nodes"]
 	source_positions = {}
@@ -189,6 +236,9 @@ def render_graph(graph_data, output_path):
 		figure.add_trace(unit_cells)
 	if containers:
 		figure.add_trace(_container_capsule_trace(containers, positions))
+	lattice_bonds = _lattice_bond_trace(leaf_nodes, positions)
+	if lattice_bonds.x:
+		figure.add_trace(lattice_bonds)
 
 	edge_x = []
 	edge_y = []
