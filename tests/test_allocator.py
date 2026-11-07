@@ -261,6 +261,66 @@ class AllocateCoordinatesTests(unittest.TestCase):
 		self.assertEqual(nodes["entity-a"]["lattice_index"], "I")
 		self.assertEqual(nodes["entity-b"]["lattice_index"], "I")
 
+	def test_source_examples_group_disconnected_topology_clusters(self):
+		graph_data = {
+			"nodes": [
+				{
+					"id": "mapped-a",
+					"category": "Event",
+					"attributes": {"stage2_mapping": "shared mapping", "stage3_mapping": "detail a"},
+				},
+				{
+					"id": "mapped-b",
+					"category": "Event",
+					"attributes": {"stage2_mapping": "shared mapping", "stage3_mapping": "detail b"},
+				},
+				{"id": "cause-a", "label": "cause a", "category": "Event"},
+				{"id": "effect-a", "label": "effect a", "category": "Event"},
+				{"id": "cause-b", "label": "cause b", "category": "Event"},
+				{"id": "effect-b", "label": "effect b", "category": "Event"},
+			],
+			"edges": [
+				{"source": "cause-a", "target": "effect-a", "morphism_type": "Cause"},
+				{"source": "cause-b", "target": "effect-b", "morphism_type": "Cause"},
+			],
+		}
+		source_logs = [
+			{
+				"input": "Example A",
+				"stage2": {
+					"mapping": "shared mapping",
+					"structure": {"cause": "cause a", "effect": "effect a"},
+				},
+				"stage3": {"mapping": "detail a"},
+			},
+			{
+				"input": "Example B",
+				"stage2": {
+					"mapping": "shared mapping",
+					"structure": {"cause": "cause b", "effect": "effect b"},
+				},
+				"stage3": {"mapping": "detail b"},
+			},
+		]
+
+		allocated = allocate_coordinates(graph_data, source_logs=source_logs)
+		nodes = {node["id"]: node for node in allocated["nodes"]}
+
+		self.assertEqual(nodes["mapped-a"]["source_example_id"], "example-001")
+		self.assertEqual(nodes["mapped-b"]["source_example_id"], "example-002")
+		self.assertEqual(nodes["cause-a"]["source_example_id"], "example-001")
+		self.assertEqual(nodes["effect-a"]["source_example_id"], "example-001")
+		self.assertEqual(nodes["cause-b"]["source_example_id"], "example-002")
+		self.assertEqual(nodes["effect-b"]["source_example_id"], "example-002")
+		self.assertEqual(nodes["cause-a"]["topology_cluster_id"], nodes["effect-a"]["topology_cluster_id"])
+		self.assertEqual(nodes["cause-b"]["topology_cluster_id"], nodes["effect-b"]["topology_cluster_id"])
+		self.assertEqual(allocated["crystal"]["basis_type"], "dataset_supercell")
+		self.assertEqual(allocated["crystal"]["preview_repeats"], [3, 3, 3])
+		self.assertEqual(
+			[node["id"] for node in allocated["crystal"]["unit_cell"]["source_examples"]],
+			["example-001", "example-002"],
+		)
+
 	def test_container_capsules_are_packed_without_overlap(self):
 		nodes = [{"id": f"node-{index}"} for index in range(8)]
 		edges = [
