@@ -178,7 +178,7 @@ def _lattice_bond_trace(particles, positions):
 		y=y_values,
 		z=z_values,
 		mode="lines",
-		line={"color": "rgba(0, 190, 220, 0.95)", "width": 4},
+		line={"color": "rgba(35, 40, 45, 0.92)", "width": 3},
 		hoverinfo="skip",
 		showlegend=True,
 		name="Inner SC / BCC lattice bonds",
