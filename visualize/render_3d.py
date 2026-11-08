@@ -164,6 +164,53 @@ def _outer_lattice_bond_trace(crystal, cell_coordinates):
 	)
 
 
+def _topology_container_trace(containers, positions):
+	x_values = []
+	y_values = []
+	z_values = []
+	ring_segments = 16
+	cap_segments = 8
+	arc_steps = 5
+	for container in containers:
+		center = positions[container["_render_id"]]
+		radius = float(container["capsule_radius"])
+		half_length = float(container["capsule_half_length"])
+
+		for x_offset in (-half_length, 0.0, half_length):
+			for index in range(ring_segments + 1):
+				angle = 2 * math.pi * index / ring_segments
+				x_values.append(center[0] + x_offset)
+				y_values.append(center[1] + radius * math.cos(angle))
+				z_values.append(center[2] + radius * math.sin(angle))
+			x_values.append(None)
+			y_values.append(None)
+			z_values.append(None)
+
+		for index in range(cap_segments):
+			angle = 2 * math.pi * index / cap_segments
+			for side in (-1, 1):
+				for step in range(arc_steps + 1):
+					arc = (math.pi / 2) * step / arc_steps
+					x_values.append(center[0] + side * (half_length + radius * math.sin(arc)))
+					radial = radius * math.cos(arc)
+					y_values.append(center[1] + radial * math.cos(angle))
+					z_values.append(center[2] + radial * math.sin(angle))
+				x_values.append(None)
+				y_values.append(None)
+				z_values.append(None)
+
+	return go.Scatter3d(
+		x=x_values,
+		y=y_values,
+		z=z_values,
+		mode="lines",
+		line={"color": "rgba(36, 91, 120, 0.7)", "width": 2},
+		hoverinfo="skip",
+		showlegend=True,
+		name="Topology containers",
+	)
+
+
 def _inner_lattice_geometry(containers, particles, positions):
 	container_by_cluster_and_cell = {
 		(container["id"], tuple(container["cell_coordinate"])): container
@@ -391,6 +438,8 @@ def render_graph(graph_data, output_path):
 	figure = go.Figure()
 	if outer_geometry[0] is not None:
 		figure.add_trace(outer_geometry[1])
+	if containers:
+		figure.add_trace(_topology_container_trace(containers, positions))
 	lattice_bonds, unassigned_vertices, unassigned_centers = _inner_lattice_geometry(
 		containers,
 		leaf_nodes,
@@ -486,19 +535,21 @@ def render_graph(graph_data, output_path):
 			)
 		)
 
-	for container_type, label, symbol, size in (
-		("cluster", "Topology containers", "diamond", 11),
-	):
-		container_nodes = [container for container in all_containers if container.get("container_type") == container_type]
-		if not container_nodes:
-			continue
+	container_nodes = [
+		container for container in all_containers
+		if container.get("container_type") == "cluster"
+	]
+	if container_nodes:
 		figure.add_trace(
 			go.Scatter3d(
 				x=[positions[node["_render_id"]][0] for node in container_nodes],
 				y=[positions[node["_render_id"]][1] for node in container_nodes],
-				z=[positions[node["_render_id"]][2] for node in container_nodes],
-				mode="markers+text",
-				name=label,
+				z=[
+					positions[node["_render_id"]][2] + float(node["capsule_radius"]) + 0.15
+					for node in container_nodes
+				],
+				mode="text",
+				name="Topology container labels",
 				text=[node.get("label", node["id"]) for node in container_nodes],
 				textposition="top center",
 				customdata=[
@@ -512,12 +563,6 @@ def render_graph(graph_data, output_path):
 					]
 					for node in container_nodes
 				],
-				marker={
-					"size": size,
-					"symbol": symbol,
-					"color": "#245b78",
-					"line": {"color": "white", "width": 1.2},
-				},
 				hovertemplate=(
 					"<b>%{text}</b><br>Container particle"
 					+ "<br>ID: %{customdata[0]}"
@@ -532,6 +577,19 @@ def render_graph(graph_data, output_path):
 		)
 
 	coordinates = list(positions.values())
+	for container in containers:
+		center = positions[container["_render_id"]]
+		radius = float(container["capsule_radius"])
+		half_length = float(container["capsule_half_length"])
+		coordinates.extend(
+			[
+				center[0] + x_side * (half_length + radius),
+				center[1] + y_side * radius,
+				center[2] + z_side * radius,
+			]
+			for x_side, y_side, z_side in itertools.product((-1, 1), repeat=3)
+		)
+		coordinates.append([center[0], center[1], center[2] + radius + 0.15])
 	axis_ranges = []
 	for axis_index in range(3):
 		axis_values = [point[axis_index] for point in coordinates]
