@@ -2305,7 +2305,6 @@
         "p_event_74925654b84e",
         "p_modifier_89dd39a8fc5a"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.07,
       "capsule_half_length": 0.8400000000000001,
       "semantic_position": [
@@ -2343,7 +2342,6 @@
         "p_agent_0520d73d3ccc",
         "p_event_9faf6dd6fc2b"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2381,7 +2379,6 @@
         "p_agent_1148288f30b0",
         "p_event_85ef8600654e"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2409,7 +2406,6 @@
         "p_agent_152d0ea1c17f",
         "p_event_0f69793257fe"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2448,7 +2444,6 @@
         "p_event_beda054eadfb",
         "p_modifier_848a5fc5935e"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -2487,7 +2482,6 @@
         "p_event_21c4a03c1db3",
         "p_modifier_ae6708c9c06c"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -2525,7 +2519,6 @@
         "p_agent_2c695ab7ee29",
         "p_event_c6c4635a1cb8"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2553,7 +2546,6 @@
         "p_agent_31cd2dbae9c1",
         "p_event_b03c96326b69"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2591,7 +2583,6 @@
         "p_agent_36dc7c18d025",
         "p_event_bfcc0ff31474"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2620,7 +2611,6 @@
         "p_event_c185f8719227",
         "p_relativeclause_243a1c340909"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -2658,7 +2648,6 @@
         "p_agent_605af38b027a",
         "p_event_b6f30004a7cc"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2696,7 +2685,6 @@
         "p_agent_66701c013f50",
         "p_event_aa28c4293a0b"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2735,7 +2723,6 @@
         "p_event_380252dd4189",
         "p_modifier_4dd7643e42eb"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -2773,7 +2760,6 @@
         "p_agent_91d510e01871",
         "p_event_e7a691f87f38"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2811,7 +2797,6 @@
         "p_agent_9a377e844b3c",
         "p_event_b1019b80435c"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2840,7 +2825,6 @@
         "p_event_6b2d1ccdf3be",
         "p_relativeclause_14e627a2fae6"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -2878,7 +2862,6 @@
         "p_agent_b02be8b1a200",
         "p_event_1e5de928020f"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2906,7 +2889,6 @@
         "p_agent_bb9fa1735494",
         "p_event_5b17259fa239"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -2945,7 +2927,6 @@
         "p_event_1a17eb5ef27c",
         "p_who_5ff223baa118"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -2991,7 +2972,6 @@
         "p_concession_55c9430515c1",
         "p_event_f140f3aa8492"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -3020,7 +3000,6 @@
         "p_event_9351a50972a9",
         "p_modifier_a6c3b8cb8835"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -3058,7 +3037,6 @@
         "p_agent_da37e426d9fd",
         "p_event_17b6cf76e552"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3087,7 +3065,6 @@
         "p_event_c000be03edde",
         "p_relativeclause_624584c3613f"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -3125,7 +3102,6 @@
         "p_agent_eae1a5ebeee4",
         "p_event_d7114036910f"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3163,7 +3139,6 @@
         "p_agent_ec0e6b47120c",
         "p_event_1dbd40acff3d"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3202,7 +3177,6 @@
         "p_event_369797f302ae",
         "p_relativeclause_bb0a45b4a0b2"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -3241,7 +3215,6 @@
         "p_event_47689b5b2fc9",
         "p_relativeclause_e8c221ce2a90"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 1.0271281292110204,
       "capsule_half_length": 0.56,
       "semantic_position": [
@@ -3279,7 +3252,6 @@
         "p_agent_fea2568ef1d5",
         "p_event_ce8e617207d6"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3317,7 +3289,6 @@
         "p_cause_1cbfce827926",
         "p_effect_463c9bebc2c5"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3345,7 +3316,6 @@
         "p_cause_6332939e7b94",
         "p_effect_c9302f7d21a4"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3373,7 +3343,6 @@
         "p_cause_92946bcb8caa",
         "p_effect_1c7d504bd18f"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3401,7 +3370,6 @@
         "p_cause_a98de6faf41e",
         "p_effect_c262e174b581"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3429,7 +3397,6 @@
         "p_cause_d452fea9db1b",
         "p_effect_808a9c8f40ae"
       ],
-      "parent_id": "__container__conversation",
       "capsule_radius": 0.9762741699796953,
       "capsule_half_length": 0.3,
       "semantic_position": [
@@ -3444,59 +3411,6 @@
         -6.48,
         4.32,
         4.32
-      ]
-    },
-    {
-      "id": "__container__conversation",
-      "label": "Conversation",
-      "category": "Container",
-      "node_type": "container",
-      "container_type": "conversation",
-      "resolution_state": "Derived",
-      "contains": [
-        "__container__cluster_001",
-        "__container__cluster_002",
-        "__container__cluster_003",
-        "__container__cluster_004",
-        "__container__cluster_005",
-        "__container__cluster_006",
-        "__container__cluster_007",
-        "__container__cluster_008",
-        "__container__cluster_009",
-        "__container__cluster_010",
-        "__container__cluster_011",
-        "__container__cluster_012",
-        "__container__cluster_013",
-        "__container__cluster_014",
-        "__container__cluster_015",
-        "__container__cluster_016",
-        "__container__cluster_017",
-        "__container__cluster_018",
-        "__container__cluster_019",
-        "__container__cluster_020",
-        "__container__cluster_021",
-        "__container__cluster_022",
-        "__container__cluster_023",
-        "__container__cluster_024",
-        "__container__cluster_025",
-        "__container__cluster_026",
-        "__container__cluster_027",
-        "__container__cluster_028",
-        "__container__cluster_029",
-        "__container__cluster_030",
-        "__container__cluster_031",
-        "__container__cluster_032",
-        "__container__cluster_033"
-      ],
-      "semantic_position": [
-        0.04931382171225028,
-        0.07575757575757576,
-        0.007575757575757576
-      ],
-      "position": [
-        0.0,
-        8.64,
-        0.0
       ]
     }
   ],

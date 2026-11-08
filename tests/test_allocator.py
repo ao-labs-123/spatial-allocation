@@ -115,17 +115,16 @@ class AllocateCoordinatesTests(unittest.TestCase):
 
 		allocated = allocate_coordinates(graph_data)
 		nodes = {node["id"]: node for node in allocated["nodes"]}
-		root = nodes["__container__conversation"]
 		cluster = nodes["__container__cluster_001"]
 		isolated_cluster = nodes["__container__cluster_002"]
 
 		self.assertEqual(cluster["contains"], ["a", "b"])
-		self.assertEqual(cluster["parent_id"], root["id"])
+		self.assertNotIn("parent_id", cluster)
 		self.assertEqual(nodes["a"]["parent_id"], cluster["id"])
 		self.assertEqual(nodes["b"]["parent_id"], cluster["id"])
 		self.assertEqual(nodes["isolated"]["parent_id"], isolated_cluster["id"])
 		self.assertEqual(isolated_cluster["contains"], ["isolated"])
-		self.assertEqual(set(root["contains"]), {cluster["id"], isolated_cluster["id"]})
+		self.assertFalse(any(node.get("container_type") == "conversation" for node in allocated["nodes"]))
 		self.assertGreater(cluster["capsule_radius"], 0)
 		self.assertGreater(cluster["capsule_half_length"], 0)
 		for node_id in cluster["contains"]:
@@ -138,7 +137,7 @@ class AllocateCoordinatesTests(unittest.TestCase):
 		allocated_again = allocate_coordinates(allocated)
 		self.assertEqual(
 			sum(node.get("node_type") == "container" for node in allocated_again["nodes"]),
-			3,
+			2,
 		)
 
 	def test_container_capsules_are_packed_without_overlap(self):

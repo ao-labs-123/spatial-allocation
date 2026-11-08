@@ -376,17 +376,9 @@ def render_graph(graph_data, output_path):
 			if source is not None and target is not None:
 				rendered_edges.append({"source": source, "target": target})
 
-	for node in source_nodes:
-		if node.get("container_type") != "conversation":
-			continue
-		rendered_node = dict(node)
-		rendered_node["_render_id"] = node["id"]
-		rendered_nodes.append(rendered_node)
-		positions[node["id"]] = source_positions[node["id"]]
-
 	leaf_nodes = [node for node in rendered_nodes if node.get("node_type") != "container"]
 	containers = [node for node in rendered_nodes if node.get("container_type") == "cluster"]
-	all_containers = [node for node in rendered_nodes if node.get("node_type") == "container"]
+	all_containers = containers
 
 	categories = sorted({node.get("category", "Unknown") for node in leaf_nodes})
 	palette = qualitative.Safe + qualitative.Vivid + qualitative.Pastel
@@ -482,8 +474,7 @@ def render_graph(graph_data, output_path):
 		)
 
 	for container_type, label, symbol, size in (
-		("cluster", "Nested containers", "diamond", 11),
-		("conversation", "Conversation container", "diamond-open", 15),
+		("cluster", "Topology containers", "diamond", 11),
 	):
 		container_nodes = [container for container in all_containers if container.get("container_type") == container_type]
 		if not container_nodes:

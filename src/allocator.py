@@ -459,11 +459,6 @@ def _add_container_particles(nodes, edges, seed=42, preview_repeats=(3, 3, 3)):
 		nx.connected_components(graph),
 		key=lambda component: tuple(sorted(component)),
 	)
-	root_id = "__container__conversation"
-	if any(node["id"] == root_id for node in nodes):
-		raise ValueError(f"Node ID {root_id!r} is reserved for the conversation container")
-
-	top_level_members = []
 	container_nodes = []
 	node_by_id = {node["id"]: node for node in nodes}
 	component_layouts = []
@@ -491,7 +486,6 @@ def _add_container_particles(nodes, edges, seed=42, preview_repeats=(3, 3, 3)):
 			"container_type": "cluster",
 			"resolution_state": "Derived",
 			"contains": member_ids,
-			"parent_id": root_id,
 			"capsule_radius": radius,
 			"capsule_half_length": half_length,
 			"semantic_position": center,
@@ -531,35 +525,7 @@ def _add_container_particles(nodes, edges, seed=42, preview_repeats=(3, 3, 3)):
 				node = node_by_id[node_id]
 				node["parent_id"] = container["id"]
 			_lattice_particle_positions(member_ids, node_by_id, container)
-			top_level_members.append(container["id"])
-
-	root = {
-		"id": root_id,
-		"label": "Conversation",
-		"category": "Container",
-		"node_type": "container",
-		"container_type": "conversation",
-		"resolution_state": "Derived",
-		"contains": sorted(top_level_members),
-		"semantic_position": [
-			sum(container["semantic_position"][axis] for container, _ in component_layouts)
-			/ len(component_layouts)
-			for axis in range(3)
-		] if component_layouts else [0.0, 0.0, 0.0],
-	}
-	root["position"] = (
-		[
-			0.0,
-			max(container["position"][1] for container in container_nodes) + spacing,
-			0.0,
-		]
-		if container_nodes
-		else [0.0, 0.0, 0.0]
-	)
-
-	all_nodes = nodes + container_nodes + [root]
-	root["crystal"] = _crystal_metadata(container_nodes, preview_repeats)
-	return all_nodes
+	return nodes + container_nodes
 
 
 def allocate_coordinates(graph_data, seed=42):
@@ -596,12 +562,12 @@ def allocate_coordinates(graph_data, seed=42):
 		seed=seed,
 		preview_repeats=preview_repeats,
 	)
-	conversation = next(
-		(node for node in graph_data["nodes"] if node.get("container_type") == "conversation"),
-		None,
-	)
-	if conversation is not None:
-		graph_data["crystal"] = conversation.pop("crystal")
+	cluster_containers = [
+		node for node in graph_data["nodes"]
+		if node.get("container_type") == "cluster"
+	]
+	if cluster_containers:
+		graph_data["crystal"] = _crystal_metadata(cluster_containers, preview_repeats)
 	return graph_data
 
 
