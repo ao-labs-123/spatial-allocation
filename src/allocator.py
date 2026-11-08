@@ -12,7 +12,6 @@ UNKNOWN = "Unspecified"
 DEPTH_MORPHISMS = {"cause", "hierarchy"}
 TOKEN_PATTERN = re.compile(r"[^\W_]+(?:['’-][^\W_]+)*", re.UNICODE)
 STAGE_FIELDS = ("stage", "stage_index", "process_stage")
-CRYSTAL_PREVIEW_REPEATS = (3, 3, 3)
 
 
 def _axis_value(node, attribute):
@@ -210,11 +209,6 @@ def _mapping_fields(node):
 	}
 
 
-def _entity_index_label(node):
-	label = str(node.get("label") or "").strip()
-	return None if not label or label.casefold() == UNKNOWN.casefold() else label
-
-
 def _classify_lattice(member_ids, node_by_id, graph):
 	core_indices = []
 	auxiliary_particle_ids = set()
@@ -222,10 +216,12 @@ def _classify_lattice(member_ids, node_by_id, graph):
 
 	for node_id in member_ids:
 		node = node_by_id[node_id]
-		if str(node.get("category", "")).casefold() != "entity":
-			continue
-		label = _entity_index_label(node)
-		if label is None:
+		label = str(node.get("label") or "").strip()
+		if (
+			str(node.get("category", "")).casefold() != "entity"
+			or not label
+			or label.casefold() == UNKNOWN.casefold()
+		):
 			continue
 
 		mapped_events = sorted(
@@ -259,8 +255,29 @@ def _classify_lattice(member_ids, node_by_id, graph):
 		)
 
 	core_indices.sort(key=lambda core: (core["label"].casefold(), core["node_id"]))
+	explicit_modes = {
+		str((node_by_id[node_id].get("attributes") or {}).get("lattice_mode", "")).strip().casefold()
+		for node_id in member_ids
+		if (node_by_id[node_id].get("attributes") or {}).get("lattice_mode") is not None
+	}
+	mode_aliases = {
+		"sc": "simple_cubic",
+		"simple_cubic": "simple_cubic",
+		"bcc": "body_centered_cubic",
+		"body_centered_cubic": "body_centered_cubic",
+	}
+	if len(explicit_modes) > 1:
+		raise ValueError(f"Conflicting lattice_mode values in component: {sorted(explicit_modes)}")
+	if explicit_modes:
+		explicit_mode = next(iter(explicit_modes))
+		if explicit_mode not in mode_aliases:
+			raise ValueError(f"Unsupported lattice_mode: {explicit_mode!r}")
+		lattice_mode = mode_aliases[explicit_mode]
+	else:
+		lattice_mode = "body_centered_cubic" if core_indices else "simple_cubic"
+
 	return {
-		"lattice_mode": "body_centered_cubic" if core_indices else "simple_cubic",
+		"lattice_mode": lattice_mode,
 		"core_indices": core_indices,
 		"auxiliary_particle_ids": sorted(auxiliary_particle_ids),
 	}
@@ -273,195 +290,58 @@ def _grid_dimensions(count):
 	return columns, rows, layers
 
 
-def _lattice_sites(dimensions, body_centered):
-	columns, rows, layers = dimensions
-	corners = set()
-	centers = []
-	for x_index in range(columns):
-		for y_index in range(rows):
-			for z_index in range(layers):
-				origin = (x_index, y_index, z_index)
-				corners.update(
-					(
-						origin[0] + x_offset,
-						origin[1] + y_offset,
-						origin[2] + z_offset,
-					)
-					for x_offset in (0, 1)
-					for y_offset in (0, 1)
-					for z_offset in (0, 1)
-				)
-				centers.append(tuple(value + 0.5 for value in origin))
-
-	if body_centered:
-		return corners, centers
-	return corners, []
-
-
-def _simple_cubic_sites(count):
-	dimensions = _grid_dimensions(count)
-	columns, rows, layers = dimensions
-	center = ((columns - 1) / 2, (rows - 1) / 2, (layers - 1) / 2)
-	sites = [
-		(float(x_index), float(y_index), float(z_index))
-		for x_index in range(columns)
-		for y_index in range(rows)
-		for z_index in range(layers)
-	]
-	return sorted(sites, key=lambda point: (_distance_squared(point, center), point))
-
-
-def _distance_squared(left, right):
-	return sum((left[axis] - right[axis]) ** 2 for axis in range(3))
-
-
-def _attach_source_examples(nodes, edges, source_logs):
-	if source_logs is None:
-		return
-	if not isinstance(source_logs, list):
-		raise ValueError("Source logs must be a list of analysis records")
-
-	examples = {}
-	mapping_sources = {}
-	for index, record in enumerate(source_logs, start=1):
-		if not isinstance(record, dict) or not isinstance(record.get("input"), str):
-			raise ValueError(f"Source log entry {index} must contain an input string")
-		example_id = f"example-{index:03d}"
-		examples[example_id] = record["input"]
-		for stage in ("stage2", "stage3"):
-			mapping = (record.get(stage) or {}).get("mapping")
-			if isinstance(mapping, str) and mapping.strip():
-				mapping_sources.setdefault((stage, mapping.strip()), set()).add(example_id)
-
-	node_sources = {}
-	node_by_id = {node["id"]: node for node in nodes}
-	for node in nodes:
-		attributes = node.get("attributes") or {}
-		candidate_sets = []
-		for field, stage in (("stage2_mapping", "stage2"), ("stage3_mapping", "stage3")):
-			mapping = attributes.get(field)
-			if isinstance(mapping, str) and mapping.strip():
-				candidate_sets.append(mapping_sources.get((stage, mapping.strip()), set()))
-		matches = set.intersection(*candidate_sets) if candidate_sets else set()
-		if len(matches) == 1:
-			node_sources[node["id"]] = next(iter(matches))
-
-	graph = nx.Graph()
-	graph.add_nodes_from(node["id"] for node in nodes)
-	graph.add_edges_from((edge["source"], edge["target"]) for edge in edges)
-	for component in nx.connected_components(graph):
-		matched_sources = {node_sources[node_id] for node_id in component if node_id in node_sources}
-		if len(matched_sources) == 1:
-			source_id = next(iter(matched_sources))
-		elif not matched_sources:
-			labels = {
-				str(node_by_id[node_id].get("label", "")).strip().casefold()
-				for node_id in component
-			}
-			matches = []
-			for example_id, record in zip(examples, source_logs):
-				structure = (record.get("stage2") or {}).get("structure") or {}
-				relation_labels = {
-					str(structure.get(field, "")).strip().casefold()
-					for field in ("cause", "effect")
-					if structure.get(field)
-				}
-				if len(labels) > 1 and labels == relation_labels:
-					matches.append(example_id)
-			if len(matches) != 1:
-				continue
-			source_id = matches[0]
-		else:
-			continue
-
-		for node_id in component:
-			node_sources[node_id] = source_id
-
-	for node in nodes:
-		source_id = node_sources.get(node["id"])
-		if source_id is not None:
-			node["source_example_id"] = source_id
-			node["source_text"] = examples[source_id]
-
-
-def _crystal_supercell_metadata(nodes):
-	contents = [
-		node for node in nodes
-		if node.get("node_type") != "container"
-		or node.get("container_type") == "cluster"
-	]
-	bounds = [[float("inf"), float("-inf")] for _ in range(3)]
-	for node in contents:
-		position = node.get("position")
-		if not isinstance(position, list) or len(position) != 3:
-			continue
-		if node.get("container_type") == "cluster":
-			radius = float(node["capsule_radius"])
-			extents = [float(node["capsule_half_length"]) + radius, radius, radius]
-		else:
-			extents = [0.0, 0.0, 0.0]
-		for axis in range(3):
-			bounds[axis][0] = min(bounds[axis][0], float(position[axis]) - extents[axis])
-			bounds[axis][1] = max(bounds[axis][1], float(position[axis]) + extents[axis])
-
-	if not contents or any(not math.isfinite(bound) for axis_bounds in bounds for bound in axis_bounds):
-		bounds = [[-1.0, 1.0] for _ in range(3)]
-
-	margin = 0.75
-	center = [(lower + upper) / 2 for lower, upper in bounds]
-	size = [upper - lower + 2 * margin for lower, upper in bounds]
-	source_examples = {
-		node["source_example_id"]: node["source_text"]
-		for node in nodes
-		if node.get("source_example_id") and node.get("source_text")
-	}
-	return {
-		"basis_type": "dataset_supercell",
-		"preview_repeats": list(CRYSTAL_PREVIEW_REPEATS),
-		"unit_cell": {
-			"center": center,
-			"size": size,
-			"bounds": [
-				[center[axis] - size[axis] / 2, center[axis] + size[axis] / 2]
-				for axis in range(3)
-			],
-			"source_examples": [
-				{"id": example_id, "input": source_examples[example_id]}
-				for example_id in sorted(source_examples)
-			],
-		},
-	}
-
-
 def _lattice_particle_positions(member_ids, node_by_id, container):
 	body_centered = container["lattice_mode"] == "body_centered_cubic"
 	core_indices = container["core_indices"]
 	if body_centered:
 		cell_count = max(len(core_indices), math.ceil(len(member_ids) / 2), 1)
-		dimensions = _grid_dimensions(cell_count)
-		corners, centers = _lattice_sites(dimensions, True)
-		grid_center = tuple((dimension - 1) / 2 for dimension in dimensions)
+		columns, rows, layers = _grid_dimensions(cell_count)
+		corners = {
+			(float(x), float(y), float(z))
+			for x in range(columns + 1)
+			for y in range(rows + 1)
+			for z in range(layers + 1)
+		}
+		centers = [
+			(x + 0.5, y + 0.5, z + 0.5)
+			for x in range(columns)
+			for y in range(rows)
+			for z in range(layers)
+		]
+		grid_center = (columns / 2, rows / 2, layers / 2)
 		ordered_corners = sorted(
 			corners,
-			key=lambda point: (_distance_squared(point, grid_center), point),
+			key=lambda point: (
+				sum((point[axis] - grid_center[axis]) ** 2 for axis in range(3)),
+				point,
+			),
 		)
 		ordered_centers = sorted(
 			centers,
-			key=lambda point: (_distance_squared(point, grid_center), point),
+			key=lambda point: (
+				sum((point[axis] - grid_center[axis]) ** 2 for axis in range(3)),
+				point,
+			),
 		)
 	else:
-		ordered_corners = _simple_cubic_sites(len(member_ids))
+		columns, rows, layers = _grid_dimensions(len(member_ids))
+		ordered_corners = [
+			(float(x), float(y), float(z))
+			for x in range(columns)
+			for y in range(rows)
+			for z in range(layers)
+		]
 		ordered_centers = []
+
 	assignments = {}
 	site_kinds = {}
-
+	remaining_ids = list(member_ids)
 	if body_centered:
-		assigned_core_positions = {}
 		for core, position in zip(core_indices, ordered_centers):
 			node_id = core["node_id"]
 			assignments[node_id] = position
 			site_kinds[node_id] = "body_center"
-			assigned_core_positions[node_id] = position
+			remaining_ids.remove(node_id)
 
 		event_cores = {}
 		for core in core_indices:
@@ -469,27 +349,30 @@ def _lattice_particle_positions(member_ids, node_by_id, container):
 				event_cores.setdefault(event_id, []).append(core["node_id"])
 		available_corners = set(corners)
 		for event_id in sorted(event_cores):
-			core_ids = event_cores[event_id]
-			core_position = assigned_core_positions[core_ids[0]]
+			if event_id not in remaining_ids or not available_corners:
+				continue
+			core_position = assignments[event_cores[event_id][0]]
 			position = min(
 				available_corners,
-				key=lambda candidate: (_distance_squared(candidate, core_position), candidate),
+				key=lambda candidate: (
+					sum((candidate[axis] - core_position[axis]) ** 2 for axis in range(3)),
+					candidate,
+				),
 			)
 			assignments[event_id] = position
 			site_kinds[event_id] = "vertex"
+			remaining_ids.remove(event_id)
 			available_corners.remove(position)
 
-		remaining_ids = [node_id for node_id in member_ids if node_id not in assignments]
 		remaining_sites = [
 			(point, "vertex") for point in ordered_corners if point in available_corners
 		]
 		remaining_sites.extend(
 			(point, "body_center")
 			for point in ordered_centers
-			if point not in set(assigned_core_positions.values())
+			if point not in set(assignments.values())
 		)
 	else:
-		remaining_ids = list(member_ids)
 		remaining_sites = [(point, "vertex") for point in ordered_corners]
 
 	for node_id, (position, site_kind) in zip(remaining_ids, remaining_sites):
@@ -529,7 +412,43 @@ def _lattice_particle_positions(member_ids, node_by_id, container):
 		]
 
 
-def _add_container_particles(nodes, edges, seed=42):
+def _crystal_metadata(containers, preview_repeats):
+	if (
+		not isinstance(preview_repeats, list)
+		or len(preview_repeats) != 3
+		or any(not isinstance(count, int) or isinstance(count, bool) or count < 1 for count in preview_repeats)
+	):
+		raise ValueError("Crystal preview_repeats must contain three positive integers")
+	bounds = [[float("inf"), float("-inf")] for _ in range(3)]
+	for container in containers:
+		position = container["position"]
+		radius = container["capsule_radius"]
+		extents = [container["capsule_half_length"] + radius, radius, radius]
+		for axis in range(3):
+			bounds[axis][0] = min(bounds[axis][0], position[axis] - extents[axis])
+			bounds[axis][1] = max(bounds[axis][1], position[axis] + extents[axis])
+
+	if not containers:
+		bounds = [[-1.0, 1.0] for _ in range(3)]
+	center = [(lower + upper) / 2 for lower, upper in bounds]
+	cubic_size = max(upper - lower for lower, upper in bounds) + 1.0
+	return {
+		"basis_type": "dataset_supercell",
+		"periodic": True,
+		"lattice_mode": (
+			"body_centered_cubic"
+			if any(container["lattice_mode"] == "body_centered_cubic" for container in containers)
+			else "simple_cubic"
+		),
+		"preview_repeats": list(preview_repeats),
+		"unit_cell": {
+			"center": center,
+			"size": [cubic_size, cubic_size, cubic_size],
+		},
+	}
+
+
+def _add_container_particles(nodes, edges, seed=42, preview_repeats=(3, 3, 3)):
 	if not nodes:
 		return nodes
 
@@ -548,6 +467,9 @@ def _add_container_particles(nodes, edges, seed=42):
 	container_nodes = []
 	node_by_id = {node["id"]: node for node in nodes}
 	component_layouts = []
+	for node in nodes:
+		for field in ("lattice_role", "lattice_index", "lattice_cores", "lattice_coordinate", "lattice_site"):
+			node.pop(field, None)
 	for cluster_index, component in enumerate(components, start=1):
 		member_ids = sorted(component)
 		container_id = f"__container__cluster_{cluster_index:03d}"
@@ -560,14 +482,6 @@ def _add_container_particles(nodes, edges, seed=42):
 		]
 		radius = 0.75 + 0.16 * math.sqrt(len(member_ids))
 		half_length = max(0.3, 0.28 * (len(member_ids) - 1))
-		lattice = _classify_lattice(member_ids, node_by_id, graph)
-		source_example_ids = sorted({
-			node_by_id[node_id]["source_example_id"]
-			for node_id in member_ids
-			if node_by_id[node_id].get("source_example_id")
-		})
-		for node_id in member_ids:
-			node_by_id[node_id]["topology_cluster_id"] = container_id
 
 		container = {
 			"id": container_id,
@@ -581,8 +495,7 @@ def _add_container_particles(nodes, edges, seed=42):
 			"capsule_radius": radius,
 			"capsule_half_length": half_length,
 			"semantic_position": center,
-			"source_example_ids": source_example_ids,
-			**lattice,
+			**_classify_lattice(member_ids, node_by_id, graph),
 		}
 		container_nodes.append(container)
 		component_layouts.append((container, member_ids))
@@ -614,10 +527,10 @@ def _add_container_particles(nodes, edges, seed=42):
 				(grid_z - (layers - 1) / 2) * spacing,
 			]
 			center = container["position"]
-			_lattice_particle_positions(member_ids, node_by_id, container)
 			for node_id in member_ids:
 				node = node_by_id[node_id]
 				node["parent_id"] = container["id"]
+			_lattice_particle_positions(member_ids, node_by_id, container)
 			top_level_members.append(container["id"])
 
 	root = {
@@ -644,16 +557,15 @@ def _add_container_particles(nodes, edges, seed=42):
 		else [0.0, 0.0, 0.0]
 	)
 
-	return nodes + container_nodes + [root]
+	all_nodes = nodes + container_nodes + [root]
+	root["crystal"] = _crystal_metadata(container_nodes, preview_repeats)
+	return all_nodes
 
 
-def allocate_coordinates(graph_data, seed=42, source_logs=None):
+def allocate_coordinates(graph_data, seed=42):
 	nodes = [node for node in graph_data["nodes"] if node.get("node_type") != "container"]
 	for node in nodes:
 		node.pop("parent_id", None)
-		node.pop("topology_cluster_id", None)
-		for field in ("lattice_role", "lattice_index", "lattice_cores"):
-			node.pop(field, None)
 	graph_data["nodes"] = nodes
 	edges = graph_data["edges"]
 	node_ids = {node["id"] for node in nodes}
@@ -662,7 +574,6 @@ def allocate_coordinates(graph_data, seed=42, source_logs=None):
 		if edge["source"] not in node_ids or edge["target"] not in node_ids:
 			raise ValueError(f"Edge {edge.get('id', '<unknown>')} references an unknown node")
 
-	_attach_source_examples(nodes, edges, source_logs)
 	depths = _causal_depths(nodes, edges)
 	what_coordinates = _what_coordinates(nodes)
 	temporal_stages = _temporal_stages(nodes, edges)
@@ -675,23 +586,34 @@ def allocate_coordinates(graph_data, seed=42, source_logs=None):
 			temporal_stages[node_id],
 		]
 
-	graph_data["nodes"] = _add_container_particles(nodes, edges, seed=seed)
-	graph_data["crystal"] = _crystal_supercell_metadata(graph_data["nodes"])
+	crystal_config = graph_data.get("crystal") or {}
+	if not isinstance(crystal_config, dict):
+		raise ValueError("Graph crystal metadata must be an object")
+	preview_repeats = crystal_config.get("preview_repeats", [3, 3, 3])
+	graph_data["nodes"] = _add_container_particles(
+		nodes,
+		edges,
+		seed=seed,
+		preview_repeats=preview_repeats,
+	)
+	conversation = next(
+		(node for node in graph_data["nodes"] if node.get("container_type") == "conversation"),
+		None,
+	)
+	if conversation is not None:
+		graph_data["crystal"] = conversation.pop("crystal")
 	return graph_data
 
 
 def main():
 	project_dir = Path(__file__).resolve().parents[1]
 	input_path = project_dir / "data" / "topological_graph.json"
-	source_log_path = project_dir / "data" / "source" / "log.json"
 	output_path = project_dir / "data" / "topological_graph_3d.json"
 
 	with input_path.open(encoding="utf-8") as input_file:
 		graph_data = json.load(input_file)
-	with source_log_path.open(encoding="utf-8") as source_log_file:
-		source_logs = json.load(source_log_file)
 
-	graph_data = allocate_coordinates(graph_data, source_logs=source_logs)
+	graph_data = allocate_coordinates(graph_data)
 
 	with output_path.open("w", encoding="utf-8") as output_file:
 		json.dump(graph_data, output_file, ensure_ascii=False, indent=2)

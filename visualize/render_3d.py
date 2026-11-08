@@ -20,17 +20,14 @@ def _container_capsule_trace(containers, positions):
 	x_values = []
 	y_values = []
 	z_values = []
-	ring_segments = 12
-	cap_segments = 8
-	arc_steps = 5
 	for container in containers:
-		center = positions[container["_render_id"]]
+		center = positions[container.get("_render_id", container["id"])]
 		radius = float(container["capsule_radius"])
 		half_length = float(container["capsule_half_length"])
 
 		for x_offset in (-half_length, 0.0, half_length):
-			for index in range(ring_segments + 1):
-				angle = 2 * math.pi * index / ring_segments
+			for index in range(25):
+				angle = 2 * math.pi * index / 24
 				x_values.append(center[0] + x_offset)
 				y_values.append(center[1] + radius * math.cos(angle))
 				z_values.append(center[2] + radius * math.sin(angle))
@@ -38,11 +35,11 @@ def _container_capsule_trace(containers, positions):
 			y_values.append(None)
 			z_values.append(None)
 
-		for index in range(cap_segments):
-			angle = 2 * math.pi * index / cap_segments
+		for index in range(12):
+			angle = 2 * math.pi * index / 12
 			for side in (-1, 1):
-				for step in range(arc_steps + 1):
-					arc = (math.pi / 2) * step / arc_steps
+				for step in range(13):
+					arc = (math.pi / 2) * step / 12
 					x_values.append(center[0] + side * (half_length + radius * math.sin(arc)))
 					radial = radius * math.cos(arc)
 					y_values.append(center[1] + radial * math.cos(angle))
@@ -62,80 +59,104 @@ def _container_capsule_trace(containers, positions):
 	)
 
 
-def _crystal_cells(crystal):
+def _crystal_geometry(crystal):
 	repeats = crystal.get("preview_repeats", [1, 1, 1])
 	unit_cell = crystal.get("unit_cell")
 	if (
 		not isinstance(repeats, list)
 		or len(repeats) != 3
-		or any(not isinstance(count, int) or count < 1 for count in repeats)
+		or any(not isinstance(count, int) or isinstance(count, bool) or count < 1 for count in repeats)
 	):
 		raise ValueError("Crystal preview_repeats must contain three positive integers")
-	if unit_cell is not None:
-		size = unit_cell.get("size")
-		center = unit_cell.get("center")
-		if (
-			not isinstance(size, list)
-			or len(size) != 3
-			or not isinstance(center, list)
-			or len(center) != 3
-		):
-			raise ValueError("Crystal unit_cell must contain 3D center and size values")
-	else:
-		size = [0.0, 0.0, 0.0]
-		center = [0.0, 0.0, 0.0]
+	if unit_cell is None:
+		return None, None
 
-	ranges = [
+	center = unit_cell.get("center")
+	size = unit_cell.get("size")
+	if (
+		not isinstance(center, list)
+		or len(center) != 3
+		or not isinstance(size, list)
+		or len(size) != 3
+		or any(not isinstance(value, (int, float)) for value in center + size)
+		or any(value <= 0 for value in size)
+	):
+		raise ValueError("Crystal unit_cell must contain a 3D center and positive size")
+
+	cell_ranges = [
 		range(-(count // 2), count - count // 2)
 		for count in repeats
 	]
-	return list(itertools.product(*ranges)), center, size
+	cells = list(itertools.product(*cell_ranges))
+	vertices = {
+		tuple(cell[axis] + side[axis] * 0.5 for axis in range(3))
+		for cell in cells
+		for side in itertools.product((-1, 1), repeat=3)
+	}
+	body_centers = set(cells) if crystal.get("lattice_mode") == "body_centered_cubic" else set()
 
-
-def _unit_cell_trace(crystal, cell_coordinates):
-	unit_cell = crystal.get("unit_cell")
-	if unit_cell is None:
-		return None
-
-	center = unit_cell["center"]
-	size = unit_cell["size"]
 	x_values = []
 	y_values = []
 	z_values = []
-	for cell in cell_coordinates:
-		cell_center = [
-			center[axis] + cell[axis] * size[axis]
-			for axis in range(3)
-		]
-		corners = {
-			(x_side, y_side, z_side): [
-				cell_center[0] + x_side * size[0] / 2,
-				cell_center[1] + y_side * size[1] / 2,
-				cell_center[2] + z_side * size[2] / 2,
-			]
-			for x_side, y_side, z_side in itertools.product((-1, 1), repeat=3)
-		}
-		for corner, position in corners.items():
+	if not body_centers:
+		for vertex in sorted(vertices):
 			for axis in range(3):
-				neighbor = list(corner)
-				neighbor[axis] *= -1
+				neighbor = list(vertex)
+				neighbor[axis] += 1
 				neighbor = tuple(neighbor)
-				if corner[axis] != -1 or neighbor not in corners:
+				if neighbor not in vertices:
 					continue
-				other = corners[neighbor]
-				x_values.extend([position[0], other[0], None])
-				y_values.extend([position[1], other[1], None])
-				z_values.extend([position[2], other[2], None])
-	return go.Scatter3d(
+				left = [center[index] + vertex[index] * size[index] for index in range(3)]
+				right = [center[index] + neighbor[index] * size[index] for index in range(3)]
+				x_values.extend([left[0], right[0], None])
+				y_values.extend([left[1], right[1], None])
+				z_values.extend([left[2], right[2], None])
+
+	if body_centers:
+		for cell in sorted(body_centers):
+			body_position = [center[axis] + cell[axis] * size[axis] for axis in range(3)]
+			for corner in itertools.product((-0.5, 0.5), repeat=3):
+				vertex = tuple(cell[axis] + corner[axis] for axis in range(3))
+				if vertex not in vertices:
+					continue
+				vertex_position = [center[axis] + vertex[axis] * size[axis] for axis in range(3)]
+				x_values.extend([body_position[0], vertex_position[0], None])
+				y_values.extend([body_position[1], vertex_position[1], None])
+				z_values.extend([body_position[2], vertex_position[2], None])
+
+	bond_trace = go.Scatter3d(
 		x=x_values,
 		y=y_values,
 		z=z_values,
 		mode="lines",
-		line={"color": "rgba(75, 80, 86, 0.78)", "width": 2},
+		line={"color": "rgba(35, 40, 45, 0.58)", "width": 3},
 		hoverinfo="skip",
 		showlegend=True,
-		name="Outer supercell boundaries (unit cells)",
+		name=f"Outer {crystal.get('lattice_mode', 'simple_cubic')} lattice",
 	)
+	lattice_sites = sorted(vertices | body_centers)
+	site_positions = [
+		[center[axis] + site[axis] * size[axis] for axis in range(3)]
+		for site in lattice_sites
+	]
+	site_trace = go.Scatter3d(
+		x=[position[0] for position in site_positions],
+		y=[position[1] for position in site_positions],
+		z=[position[2] for position in site_positions],
+		mode="markers",
+		marker={
+			"size": 4,
+			"color": "rgba(100, 110, 120, 0.55)",
+			"symbol": [
+				"diamond" if site in body_centers else "circle"
+				for site in lattice_sites
+			],
+		},
+		hovertemplate="Outer lattice site<extra></extra>",
+		showlegend=False,
+		name="Outer lattice sites",
+	)
+	return bond_trace, site_trace
 
 
 def _outer_lattice_bond_trace(crystal, cell_coordinates):
@@ -165,7 +186,6 @@ def _outer_lattice_bond_trace(crystal, cell_coordinates):
 			x_values.extend([position[0], neighbor_position[0], None])
 			y_values.extend([position[1], neighbor_position[1], None])
 			z_values.extend([position[2], neighbor_position[2], None])
-
 	return go.Scatter3d(
 		x=x_values,
 		y=y_values,
@@ -179,7 +199,7 @@ def _outer_lattice_bond_trace(crystal, cell_coordinates):
 
 
 def _inner_lattice_geometry(containers, particles, positions):
-	containers_by_cluster_and_cell = {
+	container_by_cluster_and_cell = {
 		(container["id"], tuple(container["cell_coordinate"])): container
 		for container in containers
 	}
@@ -202,7 +222,7 @@ def _inner_lattice_geometry(containers, particles, positions):
 	center_coordinates = []
 
 	for (cluster_id, cell), group in particles_by_cluster_and_cell.items():
-		container = containers_by_cluster_and_cell.get((cluster_id, cell))
+		container = container_by_cluster_and_cell.get((cluster_id, cell))
 		if container is None:
 			continue
 
@@ -250,7 +270,6 @@ def _inner_lattice_geometry(containers, particles, positions):
 			for y in range(lower[1], upper[1] + 1)
 			for z in range(lower[2], upper[2] + 1)
 		}
-		sites = set(corners)
 		body_centers = set()
 		if container.get("lattice_mode") == "body_centered_cubic":
 			body_centers = {
@@ -259,8 +278,7 @@ def _inner_lattice_geometry(containers, particles, positions):
 				for y in range(lower[1], upper[1])
 				for z in range(lower[2], upper[2])
 			}
-			sites.update(body_centers)
-
+		sites = corners | body_centers
 		site_positions = {site: lattice_position(site) for site in sites}
 		occupied = {
 			tuple(round(value, 8) for value in coordinate)
@@ -360,20 +378,32 @@ def render_graph(graph_data, output_path):
 		source_positions[node["id"]] = position
 
 	crystal = graph_data.get("crystal") or {}
-	cell_coordinates, _, cell_size = _crystal_cells(crystal)
+	outer_geometry = _crystal_geometry(crystal)
+	repeats = crystal.get("preview_repeats", [1, 1, 1])
+	unit_cell = crystal.get("unit_cell") or {"size": [0.0, 0.0, 0.0]}
+	cell_ranges = [
+		range(-(count // 2), count - count // 2)
+		for count in repeats
+	]
+	cells = list(itertools.product(*cell_ranges))
 	rendered_nodes = []
-	positions = {}
 	rendered_edges = []
-	for cell in cell_coordinates:
-		offset = [cell[axis] * cell_size[axis] for axis in range(3)]
-		render_id_by_source_id = {}
+	positions = {}
+	for cell in cells:
+		offset = [cell[axis] * unit_cell["size"][axis] for axis in range(3)]
+		render_id_by_source_id = {
+			node["id"]: f"{node['id']}@{cell[0]},{cell[1]},{cell[2]}"
+			for node in source_nodes
+			if node.get("container_type") != "conversation"
+		}
 		for node in source_nodes:
 			if node.get("container_type") == "conversation":
 				continue
-			render_id = f"{node['id']}@{cell[0]},{cell[1]},{cell[2]}"
-			render_id_by_source_id[node["id"]] = render_id
+			render_id = render_id_by_source_id[node["id"]]
 			rendered_node = dict(node)
 			rendered_node["_render_id"] = render_id
+			rendered_node["_render_parent_id"] = render_id_by_source_id.get(node.get("parent_id"))
+			rendered_node["topology_cluster_id"] = node.get("parent_id")
 			rendered_node["cell_coordinate"] = list(cell)
 			rendered_node["position"] = [
 				float(source_positions[node["id"]][axis]) + offset[axis]
@@ -389,19 +419,25 @@ def render_graph(graph_data, output_path):
 			if source is not None and target is not None:
 				rendered_edges.append({"source": source, "target": target})
 
+	for node in source_nodes:
+		if node.get("container_type") != "conversation":
+			continue
+		rendered_node = dict(node)
+		rendered_node["_render_id"] = node["id"]
+		rendered_nodes.append(rendered_node)
+		positions[node["id"]] = source_positions[node["id"]]
+
 	leaf_nodes = [node for node in rendered_nodes if node.get("node_type") != "container"]
 	containers = [node for node in rendered_nodes if node.get("container_type") == "cluster"]
+	all_containers = [node for node in rendered_nodes if node.get("node_type") == "container"]
 
 	categories = sorted({node.get("category", "Unknown") for node in leaf_nodes})
 	palette = qualitative.Safe + qualitative.Vivid + qualitative.Pastel
 	category_colors = {category: palette[index % len(palette)] for index, category in enumerate(categories)}
 	figure = go.Figure()
-	unit_cells = _unit_cell_trace(crystal, cell_coordinates)
-	if unit_cells is not None:
-		figure.add_trace(unit_cells)
-	outer_lattice_bonds = _outer_lattice_bond_trace(crystal, cell_coordinates)
-	if outer_lattice_bonds is not None and outer_lattice_bonds.x:
-		figure.add_trace(outer_lattice_bonds)
+	if outer_geometry[0] is not None:
+		figure.add_trace(outer_geometry[0])
+		figure.add_trace(outer_geometry[1])
 	if containers:
 		figure.add_trace(_container_capsule_trace(containers, positions))
 	lattice_bonds, unassigned_vertices, unassigned_centers = _inner_lattice_geometry(
@@ -457,29 +493,19 @@ def render_graph(graph_data, output_path):
 						for node in category_nodes
 					],
 					"color": category_colors[category],
-					"symbol": [
-						"diamond" if node.get("lattice_role") == "core" else "circle"
-						for node in category_nodes
-					],
 					"line": {"color": "white", "width": 0.7},
 				},
 				customdata=[
 					[
-						node["id"],
+						node.get("source_id", node["id"]),
 						_axis_label(node, "what"),
 						_axis_label(node, "who"),
 						_axis_label(node, "when"),
 						_axis_label(node, "where"),
 						node.get("lattice_role", "particle"),
-						node.get("lattice_index") or ", ".join(
-							f"{core['label']} ({core['node_id']})"
-							for core in node.get("lattice_cores", [])
-						),
+						node.get("lattice_index", ""),
 						node.get("lattice_site", ""),
-						", ".join(f"{value:g}" for value in node.get("lattice_coordinate", [])),
-						node.get("source_example_id", ""),
-						node.get("source_text", ""),
-						", ".join(str(value) for value in node["cell_coordinate"]),
+						", ".join(str(value) for value in node.get("lattice_coordinate", [])),
 					]
 					for node in category_nodes
 				],
@@ -492,74 +518,62 @@ def render_graph(graph_data, output_path):
 					+ "<br>When: %{customdata[3]}"
 					+ "<br>Where: %{customdata[4]}"
 					+ "<br>Lattice role: %{customdata[5]}"
-					+ "<br>Core index: %{customdata[6]}"
+					+ "<br>Index: %{customdata[6]}"
 					+ "<br>Lattice site: %{customdata[7]}"
 					+ "<br>Lattice coordinate: %{customdata[8]}"
-					+ "<br>Source example: %{customdata[9]}"
-					+ "<br>Input: %{customdata[10]}"
-					+ "<br>Outer cell: (%{customdata[11]})"
 					+ "<br>Causal / hierarchy depth: %{y}"
 					+ "<br>Process stage: %{z}<extra></extra>"
 				),
 			)
 		)
 
-	if containers:
+	for container_type, label, symbol, size in (
+		("cluster", "Nested containers", "diamond", 11),
+		("conversation", "Conversation container", "diamond-open", 15),
+	):
+		container_nodes = [container for container in all_containers if container.get("container_type") == container_type]
+		if not container_nodes:
+			continue
 		figure.add_trace(
 			go.Scatter3d(
-				x=[positions[node["_render_id"]][0] for node in containers],
-				y=[positions[node["_render_id"]][1] for node in containers],
-				z=[positions[node["_render_id"]][2] for node in containers],
+				x=[positions[node["_render_id"]][0] for node in container_nodes],
+				y=[positions[node["_render_id"]][1] for node in container_nodes],
+				z=[positions[node["_render_id"]][2] for node in container_nodes],
 				mode="markers+text",
-				name="Nested topology clusters",
-				text=[node.get("label", node["id"]) for node in containers],
+				name=label,
+				text=[node.get("label", node["id"]) for node in container_nodes],
 				textposition="top center",
 				customdata=[
 					[
 						node["id"],
 						len(node.get("contains", [])),
+						node.get("parent_id", "Top level"),
+						*(node.get("semantic_position") or [0.0, 0.0, 0.0]),
 						node.get("lattice_mode", ""),
-						", ".join(
-							f"{core['label']} ({core['node_id']})"
-							for core in node.get("core_indices", [])
-						),
-						", ".join(node.get("source_example_ids", [])),
-						", ".join(str(value) for value in node["cell_coordinate"]),
+						", ".join(core["label"] for core in node.get("core_indices", [])),
 					]
-					for node in containers
+					for node in container_nodes
 				],
 				marker={
-					"size": 8,
-					"symbol": "diamond",
+					"size": size,
+					"symbol": symbol,
 					"color": "#245b78",
 					"line": {"color": "white", "width": 1.2},
 				},
 				hovertemplate=(
-					"<b>%{text}</b><br>Topology cluster"
+					"<b>%{text}</b><br>Container particle"
 					+ "<br>ID: %{customdata[0]}"
 					+ "<br>Contains: %{customdata[1]} particles"
-					+ "<br>Inner lattice: %{customdata[2]}"
-					+ "<br>Core indices: %{customdata[3]}"
-					+ "<br>Source examples: %{customdata[4]}"
-					+ "<br>Outer cell: (%{customdata[5]})"
+					+ "<br>Parent: %{customdata[2]}"
+					+ "<br>Semantic center: (%{customdata[3]:.2f}, %{customdata[4]:.2f}, %{customdata[5]:.2f})"
+					+ "<br>Inner lattice: %{customdata[6]}"
+					+ "<br>Core indices: %{customdata[7]}"
 					+ "<extra></extra>"
 				),
 			)
 		)
 
 	coordinates = list(positions.values())
-	unit_cell = crystal.get("unit_cell")
-	if unit_cell is not None:
-		for cell in cell_coordinates:
-			cell_center = [
-				unit_cell["center"][axis] + cell[axis] * unit_cell["size"][axis]
-				for axis in range(3)
-			]
-			for corner in itertools.product((-1, 1), repeat=3):
-				coordinates.append([
-					cell_center[axis] + corner[axis] * unit_cell["size"][axis] / 2
-					for axis in range(3)
-				])
 	axis_ranges = []
 	for axis_index in range(3):
 		axis_values = [point[axis_index] for point in coordinates]
@@ -572,21 +586,21 @@ def render_graph(graph_data, output_path):
 		axis_ranges.append([minimum - padding, maximum + padding])
 
 	figure.update_layout(
-		title="Nested Topological Crystal (finite 3×3×3 preview)",
+		title="Semantic Topology in a Periodic Crystal Lattice",
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
 		legend={"title": "Category"},
 		hovermode="closest",
 		scene={
 			"xaxis": {
-				"title": "Outer crystal lattice X",
+				"title": "Crystal lattice X",
 				"range": axis_ranges[0],
 			},
 			"yaxis": {
-				"title": "Outer crystal lattice Y",
+				"title": "Crystal lattice Y",
 				"range": axis_ranges[1],
 			},
 			"zaxis": {
-				"title": "Outer crystal lattice Z",
+				"title": "Crystal lattice Z",
 				"range": axis_ranges[2],
 			},
 			"aspectmode": "data",
