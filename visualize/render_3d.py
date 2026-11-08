@@ -134,7 +134,7 @@ def _unit_cell_trace(crystal, cell_coordinates):
 		line={"color": "rgba(75, 80, 86, 0.78)", "width": 2},
 		hoverinfo="skip",
 		showlegend=True,
-		name="Outer crystal unit cells",
+		name="Outer supercell boundaries (unit cells)",
 	)
 
 
@@ -174,46 +174,139 @@ def _outer_lattice_bond_trace(crystal, cell_coordinates):
 		line={"color": "rgba(35, 40, 45, 0.62)", "width": 4},
 		hoverinfo="skip",
 		showlegend=True,
-		name="Outer crystal lattice bonds",
+		name="Supercell repeat connections",
 	)
 
 
-def _lattice_bond_trace(particles, positions):
-	particles_by_cell_and_cluster = {}
+def _inner_lattice_geometry(containers, particles, positions):
+	containers_by_cluster_and_cell = {
+		(container["id"], tuple(container["cell_coordinate"])): container
+		for container in containers
+	}
+	particles_by_cluster_and_cell = {}
 	for node in particles:
-		if not isinstance(node.get("lattice_coordinate"), list):
-			continue
-		key = (tuple(node["cell_coordinate"]), node.get("topology_cluster_id"))
-		particles_by_cell_and_cluster.setdefault(key, []).append(node)
+		if isinstance(node.get("lattice_coordinate"), list):
+			key = (node.get("topology_cluster_id"), tuple(node["cell_coordinate"]))
+			particles_by_cluster_and_cell.setdefault(key, []).append(node)
 
 	x_values = []
 	y_values = []
 	z_values = []
-	for group in particles_by_cell_and_cluster.values():
-		for index, left in enumerate(group):
-			left_coordinate = left["lattice_coordinate"]
-			for right in group[index + 1:]:
-				right_coordinate = right["lattice_coordinate"]
-				delta = [
-					abs(float(left_coordinate[axis]) - float(right_coordinate[axis]))
-					for axis in range(3)
-				]
-				if left.get("lattice_site") != right.get("lattice_site"):
-					is_neighbor = all(math.isclose(value, 0.5) for value in delta)
-				else:
-					is_neighbor = (
-						sum(math.isclose(value, 1.0) for value in delta) == 1
-						and all(math.isclose(value, 0.0) or math.isclose(value, 1.0) for value in delta)
-					)
-				if not is_neighbor:
+	vertex_x = []
+	vertex_y = []
+	vertex_z = []
+	vertex_coordinates = []
+	center_x = []
+	center_y = []
+	center_z = []
+	center_coordinates = []
+
+	for (cluster_id, cell), group in particles_by_cluster_and_cell.items():
+		container = containers_by_cluster_and_cell.get((cluster_id, cell))
+		if container is None:
+			continue
+
+		lattice_coordinates = [
+			tuple(float(value) for value in node["lattice_coordinate"])
+			for node in group
+		]
+		lower = []
+		upper = []
+		for axis in range(3):
+			minimum = min(point[axis] for point in lattice_coordinates)
+			maximum = max(point[axis] for point in lattice_coordinates)
+			axis_lower = math.floor(minimum + 1e-9)
+			axis_upper = math.ceil(maximum - 1e-9)
+			if axis_upper <= axis_lower:
+				axis_upper = axis_lower + 1
+			lower.append(axis_lower)
+			upper.append(axis_upper)
+
+		container_center = positions[container["_render_id"]]
+		target_extents = [
+			float(container["capsule_half_length"]) * 0.72,
+			float(container["capsule_radius"]) * 0.62,
+			float(container["capsule_radius"]) * 0.62,
+		]
+
+		def lattice_position(coordinate):
+			return [
+				container_center[axis]
+				+ (
+					(coordinate[axis] - (lower[axis] + upper[axis]) / 2)
+					/ (upper[axis] - lower[axis])
+					* 2
+					* target_extents[axis]
+				)
+				for axis in range(3)
+			]
+
+		for node, coordinate in zip(group, lattice_coordinates):
+			positions[node["_render_id"]] = lattice_position(coordinate)
+
+		corners = {
+			(x, y, z)
+			for x in range(lower[0], upper[0] + 1)
+			for y in range(lower[1], upper[1] + 1)
+			for z in range(lower[2], upper[2] + 1)
+		}
+		sites = set(corners)
+		body_centers = set()
+		if container.get("lattice_mode") == "body_centered_cubic":
+			body_centers = {
+				(x + 0.5, y + 0.5, z + 0.5)
+				for x in range(lower[0], upper[0])
+				for y in range(lower[1], upper[1])
+				for z in range(lower[2], upper[2])
+			}
+			sites.update(body_centers)
+
+		site_positions = {site: lattice_position(site) for site in sites}
+		occupied = {
+			tuple(round(value, 8) for value in coordinate)
+			for coordinate in lattice_coordinates
+		}
+		for site in corners:
+			if site in occupied:
+				continue
+			position = site_positions[site]
+			vertex_x.append(position[0])
+			vertex_y.append(position[1])
+			vertex_z.append(position[2])
+			vertex_coordinates.append(", ".join(f"{value:g}" for value in site))
+		for site in body_centers:
+			if site in occupied:
+				continue
+			position = site_positions[site]
+			center_x.append(position[0])
+			center_y.append(position[1])
+			center_z.append(position[2])
+			center_coordinates.append(", ".join(f"{value:g}" for value in site))
+
+		for site in corners:
+			for axis in range(3):
+				neighbor = list(site)
+				neighbor[axis] += 1
+				neighbor = tuple(neighbor)
+				if neighbor not in corners:
 					continue
-				left_position = positions[left["_render_id"]]
-				right_position = positions[right["_render_id"]]
+				left_position = site_positions[site]
+				right_position = site_positions[neighbor]
 				x_values.extend([left_position[0], right_position[0], None])
 				y_values.extend([left_position[1], right_position[1], None])
 				z_values.extend([left_position[2], right_position[2], None])
 
-	return go.Scatter3d(
+		for site in body_centers:
+			cell_origin = tuple(math.floor(value) for value in site)
+			for corner in itertools.product((0, 1), repeat=3):
+				vertex = tuple(cell_origin[axis] + corner[axis] for axis in range(3))
+				left_position = site_positions[site]
+				right_position = site_positions[vertex]
+				x_values.extend([left_position[0], right_position[0], None])
+				y_values.extend([left_position[1], right_position[1], None])
+				z_values.extend([left_position[2], right_position[2], None])
+
+	bond_trace = go.Scatter3d(
 		x=x_values,
 		y=y_values,
 		z=z_values,
@@ -223,6 +316,38 @@ def _lattice_bond_trace(particles, positions):
 		showlegend=True,
 		name="Inner SC / BCC lattice bonds",
 	)
+	vertex_trace = go.Scatter3d(
+		x=vertex_x,
+		y=vertex_y,
+		z=vertex_z,
+		mode="markers",
+		marker={
+			"size": 6,
+			"color": "rgba(145, 153, 160, 0.78)",
+			"line": {"color": "white", "width": 0.8},
+		},
+		customdata=vertex_coordinates,
+		hovertemplate="Unassigned lattice vertex<br>Coordinate: (%{customdata})<extra></extra>",
+		name="Unassigned lattice vertices",
+		showlegend=bool(vertex_x),
+	)
+	center_trace = go.Scatter3d(
+		x=center_x,
+		y=center_y,
+		z=center_z,
+		mode="markers",
+		marker={
+			"size": 7,
+			"symbol": "diamond",
+			"color": "rgba(110, 119, 127, 0.82)",
+			"line": {"color": "white", "width": 0.8},
+		},
+		customdata=center_coordinates,
+		hovertemplate="Unassigned BCC center site<br>Coordinate: (%{customdata})<extra></extra>",
+		name="Unassigned BCC center sites",
+		showlegend=bool(center_x),
+	)
+	return bond_trace, vertex_trace, center_trace
 
 
 def render_graph(graph_data, output_path):
@@ -279,9 +404,17 @@ def render_graph(graph_data, output_path):
 		figure.add_trace(outer_lattice_bonds)
 	if containers:
 		figure.add_trace(_container_capsule_trace(containers, positions))
-	lattice_bonds = _lattice_bond_trace(leaf_nodes, positions)
+	lattice_bonds, unassigned_vertices, unassigned_centers = _inner_lattice_geometry(
+		containers,
+		leaf_nodes,
+		positions,
+	)
 	if lattice_bonds.x:
 		figure.add_trace(lattice_bonds)
+	if unassigned_vertices.x:
+		figure.add_trace(unassigned_vertices)
+	if unassigned_centers.x:
+		figure.add_trace(unassigned_centers)
 
 	edge_x = []
 	edge_y = []
