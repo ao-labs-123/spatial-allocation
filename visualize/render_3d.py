@@ -16,49 +16,6 @@ def _axis_label(node, attribute):
 	return "Unspecified" if value.casefold() == "unspecified" else value
 
 
-def _container_capsule_trace(containers, positions):
-	x_values = []
-	y_values = []
-	z_values = []
-	for container in containers:
-		center = positions[container.get("_render_id", container["id"])]
-		radius = float(container["capsule_radius"])
-		half_length = float(container["capsule_half_length"])
-
-		for x_offset in (-half_length, 0.0, half_length):
-			for index in range(25):
-				angle = 2 * math.pi * index / 24
-				x_values.append(center[0] + x_offset)
-				y_values.append(center[1] + radius * math.cos(angle))
-				z_values.append(center[2] + radius * math.sin(angle))
-			x_values.append(None)
-			y_values.append(None)
-			z_values.append(None)
-
-		for index in range(12):
-			angle = 2 * math.pi * index / 12
-			for side in (-1, 1):
-				for step in range(13):
-					arc = (math.pi / 2) * step / 12
-					x_values.append(center[0] + side * (half_length + radius * math.sin(arc)))
-					radial = radius * math.cos(arc)
-					y_values.append(center[1] + radial * math.cos(angle))
-					z_values.append(center[2] + radial * math.sin(angle))
-				x_values.append(None)
-				y_values.append(None)
-				z_values.append(None)
-	return go.Scatter3d(
-		x=x_values,
-		y=y_values,
-		z=z_values,
-		mode="lines",
-		line={"color": "rgba(55, 110, 140, 0.55)", "width": 2},
-		hoverinfo="skip",
-		showlegend=False,
-		name="Capsule containers",
-	)
-
-
 def _crystal_geometry(crystal):
 	repeats = crystal.get("preview_repeats", [1, 1, 1])
 	unit_cell = crystal.get("unit_cell")
@@ -438,8 +395,6 @@ def render_graph(graph_data, output_path):
 	if outer_geometry[0] is not None:
 		figure.add_trace(outer_geometry[0])
 		figure.add_trace(outer_geometry[1])
-	if containers:
-		figure.add_trace(_container_capsule_trace(containers, positions))
 	lattice_bonds, unassigned_vertices, unassigned_centers = _inner_lattice_geometry(
 		containers,
 		leaf_nodes,
