@@ -297,7 +297,7 @@ def _inner_lattice_geometry(containers, particles, positions):
 		z=vertex_z,
 		mode="markers",
 		marker={
-			"size": 6,
+			"size": 11,
 			"color": "rgba(145, 153, 160, 0.78)",
 			"line": {"color": "white", "width": 0.8},
 		},
