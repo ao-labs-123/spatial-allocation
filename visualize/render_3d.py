@@ -16,6 +16,15 @@ def _axis_label(node, attribute):
 	return "Unspecified" if value.casefold() == "unspecified" else value
 
 
+def _particle_marker_color(node, category_color):
+	if (
+		str(node.get("category", "")).casefold() == "event"
+		and node.get("lattice_role") != "vertex"
+	):
+		return "rgba(145, 153, 160, 0.9)"
+	return category_color
+
+
 def _crystal_geometry(crystal):
 	repeats = crystal.get("preview_repeats", [1, 1, 1])
 	unit_cell = crystal.get("unit_cell")
@@ -173,12 +182,10 @@ def _inner_lattice_geometry(containers, particles, positions):
 	vertex_y = []
 	vertex_z = []
 	vertex_coordinates = []
-	vertex_colors = []
 	center_x = []
 	center_y = []
 	center_z = []
 	center_coordinates = []
-	center_colors = []
 
 	for (cluster_id, cell), group in particles_by_cluster_and_cell.items():
 		container = container_by_cluster_and_cell.get((cluster_id, cell))
@@ -239,39 +246,21 @@ def _inner_lattice_geometry(containers, particles, positions):
 			}
 		sites = corners | body_centers
 		site_positions = {site: lattice_position(site) for site in sites}
-		occupied = {
-			tuple(round(value, 8) for value in coordinate)
-			for coordinate in lattice_coordinates
-		}
 		for site in corners:
 			position = site_positions[site]
 			vertex_x.append(position[0])
 			vertex_y.append(position[1])
 			vertex_z.append(position[2])
-			is_occupied = tuple(round(value, 8) for value in site) in occupied
 			vertex_coordinates.append(
-				f"{'Occupied' if is_occupied else 'Empty'} lattice vertex: "
-				+ ", ".join(f"{value:g}" for value in site)
-			)
-			vertex_colors.append(
-				"rgba(55, 160, 190, 0.3)"
-				if is_occupied
-				else "rgba(145, 153, 160, 0.55)"
+				"Lattice vertex: " + ", ".join(f"{value:g}" for value in site)
 			)
 		for site in body_centers:
 			position = site_positions[site]
 			center_x.append(position[0])
 			center_y.append(position[1])
 			center_z.append(position[2])
-			is_occupied = tuple(round(value, 8) for value in site) in occupied
 			center_coordinates.append(
-				f"{'Occupied' if is_occupied else 'Empty'} BCC center: "
-				+ ", ".join(f"{value:g}" for value in site)
-			)
-			center_colors.append(
-				"rgba(55, 160, 190, 0.3)"
-				if is_occupied
-				else "rgba(145, 153, 160, 0.55)"
+				"BCC center: " + ", ".join(f"{value:g}" for value in site)
 			)
 
 		for site in corners:
@@ -314,7 +303,7 @@ def _inner_lattice_geometry(containers, particles, positions):
 		mode="markers",
 		marker={
 			"size": 14,
-			"color": vertex_colors,
+			"color": "rgba(145, 153, 160, 0.55)",
 			"line": {"color": "white", "width": 0.8},
 		},
 		customdata=vertex_coordinates,
@@ -330,7 +319,7 @@ def _inner_lattice_geometry(containers, particles, positions):
 		marker={
 			"size": 14,
 			"symbol": "diamond",
-			"color": center_colors,
+			"color": "rgba(145, 153, 160, 0.55)",
 			"line": {"color": "white", "width": 0.8},
 		},
 		customdata=center_coordinates,
@@ -454,7 +443,10 @@ def render_graph(graph_data, output_path):
 						9 if node.get("lattice_role") == "core" else 6
 						for node in category_nodes
 					],
-					"color": category_colors[category],
+					"color": [
+						_particle_marker_color(node, category_colors[category])
+						for node in category_nodes
+					],
 					"line": {"color": "white", "width": 0.7},
 				},
 				customdata=[
@@ -464,7 +456,12 @@ def render_graph(graph_data, output_path):
 						_axis_label(node, "who"),
 						_axis_label(node, "when"),
 						_axis_label(node, "where"),
-						node.get("lattice_role", "particle"),
+						(
+							"Unassigned"
+							if str(node.get("category", "")).casefold() == "event"
+							and node.get("lattice_role") != "vertex"
+							else node.get("lattice_role", "particle")
+						),
 						node.get("lattice_index", ""),
 						node.get("lattice_site", ""),
 						", ".join(str(value) for value in node.get("lattice_coordinate", [])),
@@ -479,7 +476,7 @@ def render_graph(graph_data, output_path):
 					+ "<br>Who: %{customdata[2]}"
 					+ "<br>When: %{customdata[3]}"
 					+ "<br>Where: %{customdata[4]}"
-					+ "<br>Lattice role: %{customdata[5]}"
+					+ "<br>Lattice assignment: %{customdata[5]}"
 					+ "<br>Index: %{customdata[6]}"
 					+ "<br>Lattice site: %{customdata[7]}"
 					+ "<br>Lattice coordinate: %{customdata[8]}"

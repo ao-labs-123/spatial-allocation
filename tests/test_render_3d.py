@@ -1,6 +1,23 @@
 import unittest
 
-from visualize.render_3d import _inner_lattice_geometry, _outer_lattice_bond_trace
+from visualize.render_3d import (
+	_inner_lattice_geometry,
+	_outer_lattice_bond_trace,
+	_particle_marker_color,
+)
+
+
+class EventParticleColorTests(unittest.TestCase):
+	def test_unassigned_event_is_muted_and_assigned_event_keeps_category_color(self):
+		category_color = "#4477aa"
+		unassigned = {"category": "Event", "lattice_site": "vertex"}
+		assigned = {"category": "Event", "lattice_role": "vertex"}
+
+		self.assertEqual(
+			_particle_marker_color(unassigned, category_color),
+			"rgba(145, 153, 160, 0.9)",
+		)
+		self.assertEqual(_particle_marker_color(assigned, category_color), category_color)
 
 
 class OuterLatticeBondTraceTests(unittest.TestCase):
@@ -51,7 +68,7 @@ class InnerLatticeGeometryTests(unittest.TestCase):
 			"lattice_site": lattice_site,
 		}
 
-	def test_simple_cubic_draws_occupied_and_empty_vertices_and_bonds(self):
+	def test_simple_cubic_draws_uniform_lattice_vertices_and_bonds(self):
 		container = self._container("simple_cubic")
 		particle = self._particle("particle", (0, 0, 0), "vertex")
 		positions = {
@@ -66,12 +83,21 @@ class InnerLatticeGeometryTests(unittest.TestCase):
 		self.assertEqual(len(bonds.x), 12 * 3)
 		self.assertEqual(len(vertices.x), 8)
 		self.assertEqual(vertices.name, "Lattice vertices")
-		self.assertEqual(sum("Occupied" in value for value in vertices.customdata), 1)
-		self.assertEqual(sum("Empty" in value for value in vertices.customdata), 7)
+		self.assertEqual(set(vertices.customdata), {
+			"Lattice vertex: 0, 0, 0",
+			"Lattice vertex: 0, 0, 1",
+			"Lattice vertex: 0, 1, 0",
+			"Lattice vertex: 0, 1, 1",
+			"Lattice vertex: 1, 0, 0",
+			"Lattice vertex: 1, 0, 1",
+			"Lattice vertex: 1, 1, 0",
+			"Lattice vertex: 1, 1, 1",
+		})
+		self.assertEqual(vertices.marker.color, "rgba(145, 153, 160, 0.55)")
 		self.assertEqual(len(centers.x), 0)
 		self.assertEqual(positions[particle["_render_id"]], [-0.72, -0.62, -0.62])
 
-	def test_body_centered_cubic_draws_occupied_and_empty_sites_and_bonds(self):
+	def test_body_centered_cubic_draws_uniform_sites_and_bonds(self):
 		container = self._container("body_centered_cubic")
 		particles = [
 			self._particle("core", (0.5, 0.5, 0.5), "body_center"),
@@ -90,7 +116,8 @@ class InnerLatticeGeometryTests(unittest.TestCase):
 		self.assertEqual(len(bonds.x), (12 + 8) * 3)
 		self.assertEqual(len(vertices.x), 8)
 		self.assertEqual(len(centers.x), 1)
-		self.assertIn("Occupied", centers.customdata[0])
+		self.assertEqual(centers.customdata[0], "BCC center: 0.5, 0.5, 0.5")
+		self.assertEqual(centers.marker.color, "rgba(145, 153, 160, 0.55)")
 		self.assertEqual(positions["core@0,0,0"], [0.0, 0.0, 0.0])
 
 
