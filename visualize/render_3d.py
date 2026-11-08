@@ -173,10 +173,12 @@ def _inner_lattice_geometry(containers, particles, positions):
 	vertex_y = []
 	vertex_z = []
 	vertex_coordinates = []
+	vertex_colors = []
 	center_x = []
 	center_y = []
 	center_z = []
 	center_coordinates = []
+	center_colors = []
 
 	for (cluster_id, cell), group in particles_by_cluster_and_cell.items():
 		container = container_by_cluster_and_cell.get((cluster_id, cell))
@@ -242,21 +244,35 @@ def _inner_lattice_geometry(containers, particles, positions):
 			for coordinate in lattice_coordinates
 		}
 		for site in corners:
-			if site in occupied:
-				continue
 			position = site_positions[site]
 			vertex_x.append(position[0])
 			vertex_y.append(position[1])
 			vertex_z.append(position[2])
-			vertex_coordinates.append(", ".join(f"{value:g}" for value in site))
+			is_occupied = tuple(round(value, 8) for value in site) in occupied
+			vertex_coordinates.append(
+				f"{'Occupied' if is_occupied else 'Empty'} lattice vertex: "
+				+ ", ".join(f"{value:g}" for value in site)
+			)
+			vertex_colors.append(
+				"rgba(55, 160, 190, 0.3)"
+				if is_occupied
+				else "rgba(145, 153, 160, 0.55)"
+			)
 		for site in body_centers:
-			if site in occupied:
-				continue
 			position = site_positions[site]
 			center_x.append(position[0])
 			center_y.append(position[1])
 			center_z.append(position[2])
-			center_coordinates.append(", ".join(f"{value:g}" for value in site))
+			is_occupied = tuple(round(value, 8) for value in site) in occupied
+			center_coordinates.append(
+				f"{'Occupied' if is_occupied else 'Empty'} BCC center: "
+				+ ", ".join(f"{value:g}" for value in site)
+			)
+			center_colors.append(
+				"rgba(55, 160, 190, 0.3)"
+				if is_occupied
+				else "rgba(145, 153, 160, 0.55)"
+			)
 
 		for site in corners:
 			for axis in range(3):
@@ -297,13 +313,13 @@ def _inner_lattice_geometry(containers, particles, positions):
 		z=vertex_z,
 		mode="markers",
 		marker={
-			"size": 11,
-			"color": "rgba(145, 153, 160, 0.78)",
+			"size": 14,
+			"color": vertex_colors,
 			"line": {"color": "white", "width": 0.8},
 		},
 		customdata=vertex_coordinates,
-		hovertemplate="Unassigned lattice vertex<br>Coordinate: (%{customdata})<extra></extra>",
-		name="Unassigned lattice vertices",
+		hovertemplate="%{customdata}<extra></extra>",
+		name="Lattice vertices",
 		showlegend=bool(vertex_x),
 	)
 	center_trace = go.Scatter3d(
@@ -312,14 +328,14 @@ def _inner_lattice_geometry(containers, particles, positions):
 		z=center_z,
 		mode="markers",
 		marker={
-			"size": 7,
+			"size": 14,
 			"symbol": "diamond",
-			"color": "rgba(110, 119, 127, 0.82)",
+			"color": center_colors,
 			"line": {"color": "white", "width": 0.8},
 		},
 		customdata=center_coordinates,
-		hovertemplate="Unassigned BCC center site<br>Coordinate: (%{customdata})<extra></extra>",
-		name="Unassigned BCC center sites",
+		hovertemplate="%{customdata}<extra></extra>",
+		name="BCC center sites",
 		showlegend=bool(center_x),
 	)
 	return bond_trace, vertex_trace, center_trace

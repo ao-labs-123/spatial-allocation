@@ -51,7 +51,7 @@ class InnerLatticeGeometryTests(unittest.TestCase):
 			"lattice_site": lattice_site,
 		}
 
-	def test_simple_cubic_draws_all_eight_vertices_and_twelve_bonds(self):
+	def test_simple_cubic_draws_occupied_and_empty_vertices_and_bonds(self):
 		container = self._container("simple_cubic")
 		particle = self._particle("particle", (0, 0, 0), "vertex")
 		positions = {
@@ -64,11 +64,14 @@ class InnerLatticeGeometryTests(unittest.TestCase):
 		)
 
 		self.assertEqual(len(bonds.x), 12 * 3)
-		self.assertEqual(len(vertices.x), 7)
+		self.assertEqual(len(vertices.x), 8)
+		self.assertEqual(vertices.name, "Lattice vertices")
+		self.assertEqual(sum("Occupied" in value for value in vertices.customdata), 1)
+		self.assertEqual(sum("Empty" in value for value in vertices.customdata), 7)
 		self.assertEqual(len(centers.x), 0)
 		self.assertEqual(positions[particle["_render_id"]], [-0.72, -0.62, -0.62])
 
-	def test_body_centered_cubic_draws_all_eight_vertices_and_center_bonds(self):
+	def test_body_centered_cubic_draws_occupied_and_empty_sites_and_bonds(self):
 		container = self._container("body_centered_cubic")
 		particles = [
 			self._particle("core", (0.5, 0.5, 0.5), "body_center"),
@@ -85,8 +88,9 @@ class InnerLatticeGeometryTests(unittest.TestCase):
 		)
 
 		self.assertEqual(len(bonds.x), (12 + 8) * 3)
-		self.assertEqual(len(vertices.x), 7)
-		self.assertEqual(len(centers.x), 0)
+		self.assertEqual(len(vertices.x), 8)
+		self.assertEqual(len(centers.x), 1)
+		self.assertIn("Occupied", centers.customdata[0])
 		self.assertEqual(positions["core@0,0,0"], [0.0, 0.0, 0.0])
 
 
