@@ -448,7 +448,7 @@ def _crystal_metadata(containers, preview_repeats):
 	}
 
 
-def _add_container_particles(nodes, edges, seed=42, preview_repeats=(3, 3, 3)):
+def _add_container_particles(nodes, edges, seed=42, preview_repeats=(2, 2, 2)):
 	if not nodes:
 		return nodes
 
@@ -555,7 +555,7 @@ def allocate_coordinates(graph_data, seed=42):
 	crystal_config = graph_data.get("crystal") or {}
 	if not isinstance(crystal_config, dict):
 		raise ValueError("Graph crystal metadata must be an object")
-	preview_repeats = crystal_config.get("preview_repeats", [3, 3, 3])
+	preview_repeats = crystal_config.get("preview_repeats", [2, 2, 2])
 	graph_data["nodes"] = _add_container_particles(
 		nodes,
 		edges,

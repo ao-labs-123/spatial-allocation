@@ -3789,9 +3789,9 @@
     "periodic": true,
     "lattice_mode": "body_centered_cubic",
     "preview_repeats": [
-      3,
-      3,
-      3
+      2,
+      2,
+      2
     ],
     "unit_cell": {
       "center": [

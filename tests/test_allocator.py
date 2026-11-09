@@ -228,7 +228,7 @@ class AllocateCoordinatesTests(unittest.TestCase):
 		self.assertEqual(container["lattice_mode"], "simple_cubic")
 		self.assertEqual(container["core_indices"], [])
 		self.assertTrue(all(node["lattice_site"] == "vertex" for node in (nodes["entity"], nodes["event"])))
-		self.assertEqual(allocated["crystal"]["preview_repeats"], [3, 3, 3])
+		self.assertEqual(allocated["crystal"]["preview_repeats"], [2, 2, 2])
 		self.assertTrue(allocated["crystal"]["periodic"])
 		allocated["crystal"]["preview_repeats"] = [1, 2, 1]
 		allocated_again = allocate_coordinates(allocated)
