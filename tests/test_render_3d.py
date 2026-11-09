@@ -126,6 +126,7 @@ class RenderGraphTests(unittest.TestCase):
 
 		figure = write_html.call_args.args[0]
 		traces = {trace.name: trace for trace in figure.data}
+		self.assertNotIn("Outer lattice sites", traces)
 		entity_trace = traces["Entity"]
 		container_outline = traces["Topology containers"]
 		container_labels = traces["Topology container labels"]

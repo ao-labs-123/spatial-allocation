@@ -436,8 +436,6 @@ def render_graph(graph_data, output_path):
 	palette = qualitative.Safe + qualitative.Vivid + qualitative.Pastel
 	category_colors = {category: palette[index % len(palette)] for index, category in enumerate(categories)}
 	figure = go.Figure()
-	if outer_geometry[0] is not None:
-		figure.add_trace(outer_geometry[1])
 	if containers:
 		figure.add_trace(_topology_container_trace(containers, positions))
 	lattice_bonds, unassigned_vertices, unassigned_centers = _inner_lattice_geometry(
