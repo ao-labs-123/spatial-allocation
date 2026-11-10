@@ -22,7 +22,50 @@ class EventParticleColorTests(unittest.TestCase):
 
 
 class RenderGraphTests(unittest.TestCase):
-	def test_supercell_lattice_shares_vertices_without_adding_particles(self):
+	def test_simple_cubic_inner_lattice_bonds_connect_across_repeated_cells(self):
+		graph_data = {
+			"nodes": [
+				{
+					"id": "particle",
+					"label": "Particle",
+					"category": "Entity",
+					"node_type": "particle",
+					"parent_id": "cluster",
+					"lattice_coordinate": [0.0, 0.0, 0.0],
+					"position": [0.0, 0.0, 0.0],
+				},
+				{
+					"id": "cluster",
+					"label": "Local cluster",
+					"node_type": "container",
+					"container_type": "cluster",
+					"position": [0.0, 0.0, 0.0],
+					"capsule_half_length": 1.0,
+					"capsule_radius": 1.0,
+					"lattice_mode": "simple_cubic",
+				},
+			],
+			"edges": [],
+			"crystal": {
+				"lattice_mode": "simple_cubic",
+				"preview_repeats": [2, 1, 1],
+				"unit_cell": {"center": [0.0, 0.0, 0.0], "size": [4.0, 4.0, 4.0]},
+			},
+		}
+
+		with patch(
+			"visualize.render_3d.go.Figure.write_html",
+			autospec=True,
+		) as write_html:
+			render_graph(graph_data, "unused.html")
+
+		figure = write_html.call_args.args[0]
+		traces = {trace.name: trace for trace in figure.data}
+		self.assertEqual(len(traces["Inner SC / BCC lattice bonds"].x), 28 * 3)
+		self.assertEqual(len(traces["Lattice vertices"].x), 16)
+		self.assertNotIn("BCC center sites", traces)
+
+	def test_inner_lattices_connect_across_repeated_cells_with_empty_bcc_sites(self):
 		graph_data = {
 			"nodes": [
 				{
@@ -75,18 +118,19 @@ class RenderGraphTests(unittest.TestCase):
 
 		figure = write_html.call_args.args[0]
 		traces = {trace.name: trace for trace in figure.data}
-		self.assertIn("Outer lattice sites", traces)
-		self.assertIn("Outer BCC center sites", traces)
-		self.assertIn("Supercell lattice bonds", traces)
+		self.assertNotIn("Outer lattice sites", traces)
+		self.assertNotIn("Supercell lattice bonds", traces)
+		self.assertIn("Inner SC / BCC lattice bonds", traces)
 		self.assertNotIn("Topology containers", traces)
-		self.assertEqual(len(traces["Outer lattice sites"].x), 27)
-		self.assertEqual(len(set(zip(
-			traces["Outer lattice sites"].x,
-			traces["Outer lattice sites"].y,
-			traces["Outer lattice sites"].z,
-		))), 27)
-		self.assertEqual(len(traces["Outer BCC center sites"].x), 8)
-		self.assertEqual(len(traces["Supercell lattice bonds"].x), 118 * 3)
+		self.assertEqual(len(traces["Inner SC / BCC lattice bonds"].x), 304 * 3)
+		self.assertEqual(len(traces["BCC center sites"].x), 20)
+		self.assertEqual(
+			sum(
+				label.startswith("Empty BCC center:")
+				for label in traces["BCC center sites"].customdata
+			),
+			12,
+		)
 		entity_trace = traces["Entity"]
 		container_labels = traces["Topology container labels"]
 
