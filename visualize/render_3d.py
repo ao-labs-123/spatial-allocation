@@ -60,46 +60,7 @@ def _crystal_geometry(crystal):
 		for side in itertools.product((-1, 1), repeat=3)
 	}
 	body_centers = set(cells) if crystal.get("lattice_mode") == "body_centered_cubic" else set()
-
-	x_values = []
-	y_values = []
-	z_values = []
-	if not body_centers:
-		for vertex in sorted(vertices):
-			for axis in range(3):
-				neighbor = list(vertex)
-				neighbor[axis] += 1
-				neighbor = tuple(neighbor)
-				if neighbor not in vertices:
-					continue
-				left = [center[index] + vertex[index] * size[index] for index in range(3)]
-				right = [center[index] + neighbor[index] * size[index] for index in range(3)]
-				x_values.extend([left[0], right[0], None])
-				y_values.extend([left[1], right[1], None])
-				z_values.extend([left[2], right[2], None])
-
-	if body_centers:
-		for cell in sorted(body_centers):
-			body_position = [center[axis] + cell[axis] * size[axis] for axis in range(3)]
-			for corner in itertools.product((-0.5, 0.5), repeat=3):
-				vertex = tuple(cell[axis] + corner[axis] for axis in range(3))
-				if vertex not in vertices:
-					continue
-				vertex_position = [center[axis] + vertex[axis] * size[axis] for axis in range(3)]
-				x_values.extend([body_position[0], vertex_position[0], None])
-				y_values.extend([body_position[1], vertex_position[1], None])
-				z_values.extend([body_position[2], vertex_position[2], None])
-
-	bond_trace = go.Scatter3d(
-		x=x_values,
-		y=y_values,
-		z=z_values,
-		mode="lines",
-		line={"color": "rgba(35, 40, 45, 0.58)", "width": 3},
-		hoverinfo="skip",
-		showlegend=True,
-		name=f"Outer {crystal.get('lattice_mode', 'simple_cubic')} lattice",
-	)
+	bond_trace = _outer_lattice_bond_trace(crystal, cells)
 	lattice_sites = sorted(vertices | body_centers)
 	site_positions = [
 		[center[axis] + site[axis] * size[axis] for axis in range(3)]
@@ -132,26 +93,47 @@ def _outer_lattice_bond_trace(crystal, cell_coordinates):
 
 	center = unit_cell["center"]
 	size = unit_cell["size"]
-	cell_centers = {
-		tuple(cell): [
-			center[axis] + cell[axis] * size[axis]
-			for axis in range(3)
-		]
-		for cell in cell_coordinates
+	cells = {tuple(cell) for cell in cell_coordinates}
+	vertices = {
+		tuple(cell[axis] + side[axis] * 0.5 for axis in range(3))
+		for cell in cells
+		for side in itertools.product((-1, 1), repeat=3)
 	}
+	body_centers = (
+		cells if crystal.get("lattice_mode") == "body_centered_cubic" else set()
+	)
 	x_values = []
 	y_values = []
 	z_values = []
-	for cell, position in cell_centers.items():
-		for axis in range(3):
-			neighbor = list(cell)
-			neighbor[axis] += 1
-			neighbor_position = cell_centers.get(tuple(neighbor))
-			if neighbor_position is None:
-				continue
-			x_values.extend([position[0], neighbor_position[0], None])
-			y_values.extend([position[1], neighbor_position[1], None])
-			z_values.extend([position[2], neighbor_position[2], None])
+
+	def append_bond(left, right):
+		left_position = [
+			center[axis] + left[axis] * size[axis]
+			for axis in range(3)
+		]
+		right_position = [
+			center[axis] + right[axis] * size[axis]
+			for axis in range(3)
+		]
+		x_values.extend([left_position[0], right_position[0], None])
+		y_values.extend([left_position[1], right_position[1], None])
+		z_values.extend([left_position[2], right_position[2], None])
+
+	if body_centers:
+		for body_center in sorted(body_centers):
+			for corner in itertools.product((-0.5, 0.5), repeat=3):
+				vertex = tuple(body_center[axis] + corner[axis] for axis in range(3))
+				if vertex in vertices:
+					append_bond(body_center, vertex)
+	else:
+		for vertex in sorted(vertices):
+			for axis in range(3):
+				neighbor = list(vertex)
+				neighbor[axis] += 1
+				neighbor = tuple(neighbor)
+				if neighbor in vertices:
+					append_bond(vertex, neighbor)
+
 	return go.Scatter3d(
 		x=x_values,
 		y=y_values,
@@ -160,7 +142,7 @@ def _outer_lattice_bond_trace(crystal, cell_coordinates):
 		line={"color": "rgba(35, 40, 45, 0.62)", "width": 4},
 		hoverinfo="skip",
 		showlegend=True,
-		name="Supercell repeat connections",
+		name="Supercell lattice bonds",
 	)
 
 
@@ -436,7 +418,7 @@ def render_graph(graph_data, output_path):
 	palette = qualitative.Safe + qualitative.Vivid + qualitative.Pastel
 	category_colors = {category: palette[index % len(palette)] for index, category in enumerate(categories)}
 	figure = go.Figure()
-	repeat_bonds = _outer_lattice_bond_trace(crystal, cells)
+	repeat_bonds = outer_geometry[0]
 	if repeat_bonds is not None:
 		figure.add_trace(repeat_bonds)
 	if containers:

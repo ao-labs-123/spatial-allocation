@@ -24,8 +24,9 @@ class EventParticleColorTests(unittest.TestCase):
 
 
 class OuterLatticeBondTraceTests(unittest.TestCase):
-	def test_connects_adjacent_repeated_unit_cells(self):
+	def test_connects_simple_cubic_sites_across_repeated_unit_cells(self):
 		crystal = {
+			"lattice_mode": "simple_cubic",
 			"unit_cell": {
 				"center": [1.0, 2.0, 3.0],
 				"size": [4.0, 5.0, 6.0],
@@ -40,11 +41,33 @@ class OuterLatticeBondTraceTests(unittest.TestCase):
 
 		trace = _outer_lattice_bond_trace(crystal, cell_coordinates)
 
-		self.assertEqual(trace.name, "Supercell repeat connections")
-		self.assertEqual(len(trace.x), 54 * 3)
-		self.assertEqual(trace.x.count(None), 54)
-		self.assertEqual(trace.y.count(None), 54)
-		self.assertEqual(trace.z.count(None), 54)
+		self.assertEqual(trace.name, "Supercell lattice bonds")
+		self.assertEqual(len(trace.x), 144 * 3)
+		self.assertEqual(trace.x.count(None), 144)
+		self.assertEqual(trace.y.count(None), 144)
+		self.assertEqual(trace.z.count(None), 144)
+
+	def test_connects_body_centers_to_shared_vertices_in_bcc_supercell(self):
+		crystal = {
+			"lattice_mode": "body_centered_cubic",
+			"unit_cell": {
+				"center": [1.0, 2.0, 3.0],
+				"size": [4.0, 5.0, 6.0],
+			},
+		}
+		cell_coordinates = [
+			(x, y, z)
+			for x in range(-1, 2)
+			for y in range(-1, 2)
+			for z in range(-1, 2)
+		]
+
+		trace = _outer_lattice_bond_trace(crystal, cell_coordinates)
+
+		self.assertEqual(len(trace.x), 216 * 3)
+		self.assertEqual(trace.x.count(None), 216)
+		self.assertEqual(trace.y.count(None), 216)
+		self.assertEqual(trace.z.count(None), 216)
 
 	def test_returns_no_trace_without_unit_cell(self):
 		self.assertIsNone(_outer_lattice_bond_trace({}, [(0, 0, 0)]))
@@ -127,8 +150,8 @@ class RenderGraphTests(unittest.TestCase):
 		figure = write_html.call_args.args[0]
 		traces = {trace.name: trace for trace in figure.data}
 		self.assertNotIn("Outer lattice sites", traces)
-		self.assertIn("Supercell repeat connections", traces)
-		self.assertEqual(len(traces["Supercell repeat connections"].x), 12 * 3)
+		self.assertIn("Supercell lattice bonds", traces)
+		self.assertEqual(len(traces["Supercell lattice bonds"].x), 8 * 8 * 3)
 		entity_trace = traces["Entity"]
 		container_outline = traces["Topology containers"]
 		container_labels = traces["Topology container labels"]
