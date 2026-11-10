@@ -22,7 +22,7 @@ class EventParticleColorTests(unittest.TestCase):
 
 
 class RenderGraphTests(unittest.TestCase):
-	def test_container_outlines_and_supercell_bonds_are_hidden(self):
+	def test_supercell_lattice_shares_vertices_without_adding_particles(self):
 		graph_data = {
 			"nodes": [
 				{
@@ -75,9 +75,18 @@ class RenderGraphTests(unittest.TestCase):
 
 		figure = write_html.call_args.args[0]
 		traces = {trace.name: trace for trace in figure.data}
-		self.assertNotIn("Outer lattice sites", traces)
-		self.assertNotIn("Supercell lattice bonds", traces)
+		self.assertIn("Outer lattice sites", traces)
+		self.assertIn("Outer BCC center sites", traces)
+		self.assertIn("Supercell lattice bonds", traces)
 		self.assertNotIn("Topology containers", traces)
+		self.assertEqual(len(traces["Outer lattice sites"].x), 27)
+		self.assertEqual(len(set(zip(
+			traces["Outer lattice sites"].x,
+			traces["Outer lattice sites"].y,
+			traces["Outer lattice sites"].z,
+		))), 27)
+		self.assertEqual(len(traces["Outer BCC center sites"].x), 8)
+		self.assertEqual(len(traces["Supercell lattice bonds"].x), 118 * 3)
 		entity_trace = traces["Entity"]
 		container_labels = traces["Topology container labels"]
 

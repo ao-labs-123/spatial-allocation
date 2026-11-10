@@ -218,6 +218,107 @@ def _inner_lattice_geometry(containers, particles, positions):
 	return bond_trace, vertex_trace, center_trace
 
 
+def _outer_lattice_geometry(crystal, cell_ranges):
+	unit_cell = crystal.get("unit_cell")
+	if unit_cell is None:
+		return None, None, None
+
+	size = [float(value) for value in unit_cell["size"]]
+	mode = crystal.get("lattice_mode")
+	vertices = set()
+	centers = set()
+	bonds = set()
+
+	def point_key(point):
+		return tuple(round(value, 10) for value in point)
+
+	def add_bond(left, right):
+		bonds.add(tuple(sorted((left, right))))
+
+	for cell in itertools.product(*cell_ranges):
+		corner_positions = {
+			corner: point_key(
+				tuple(
+					(cell[axis] + corner[axis] - 0.5) * size[axis]
+					for axis in range(3)
+				)
+			)
+			for corner in itertools.product((0, 1), repeat=3)
+		}
+		corners = set(corner_positions.values())
+		vertices.update(corners)
+		for corner, point in corner_positions.items():
+			for axis in range(3):
+				if corner[axis] == 0:
+					neighbor = list(corner)
+					neighbor[axis] = 1
+					add_bond(point, corner_positions[tuple(neighbor)])
+
+		if mode == "body_centered_cubic":
+			center = point_key(tuple(cell[axis] * size[axis] for axis in range(3)))
+			centers.add(center)
+			for corner in corners:
+				add_bond(center, corner)
+
+	bond_x = []
+	bond_y = []
+	bond_z = []
+	for left, right in sorted(bonds):
+		bond_x.extend([left[0], right[0], None])
+		bond_y.extend([left[1], right[1], None])
+		bond_z.extend([left[2], right[2], None])
+	bond_trace = go.Scatter3d(
+		x=bond_x,
+		y=bond_y,
+		z=bond_z,
+		mode="lines",
+		line={"color": "rgba(35, 40, 45, 0.42)", "width": 2},
+		hoverinfo="skip",
+		showlegend=True,
+		name="Supercell lattice bonds",
+	)
+	vertex_points = sorted(vertices)
+	vertex_trace = go.Scatter3d(
+		x=[point[0] for point in vertex_points],
+		y=[point[1] for point in vertex_points],
+		z=[point[2] for point in vertex_points],
+		mode="markers",
+		marker={
+			"size": 8,
+			"color": "rgba(145, 153, 160, 0.36)",
+			"line": {"color": "white", "width": 0.6},
+		},
+		customdata=[
+			"Crystal lattice vertex: " + ", ".join(f"{value:g}" for value in point)
+			for point in vertex_points
+		],
+		hovertemplate="%{customdata}<extra></extra>",
+		name="Outer lattice sites",
+		showlegend=bool(vertex_points),
+	)
+	center_points = sorted(centers)
+	center_trace = go.Scatter3d(
+		x=[point[0] for point in center_points],
+		y=[point[1] for point in center_points],
+		z=[point[2] for point in center_points],
+		mode="markers",
+		marker={
+			"size": 8,
+			"symbol": "diamond",
+			"color": "rgba(145, 153, 160, 0.36)",
+			"line": {"color": "white", "width": 0.6},
+		},
+		customdata=[
+			"BCC center: " + ", ".join(f"{value:g}" for value in point)
+			for point in center_points
+		],
+		hovertemplate="%{customdata}<extra></extra>",
+		name="Outer BCC center sites",
+		showlegend=bool(center_points),
+	)
+	return bond_trace, vertex_trace, center_trace
+
+
 def render_graph(graph_data, output_path):
 	source_nodes = graph_data["nodes"]
 	source_positions = {}
@@ -272,6 +373,16 @@ def render_graph(graph_data, output_path):
 	palette = qualitative.Safe + qualitative.Vivid + qualitative.Pastel
 	category_colors = {category: palette[index % len(palette)] for index, category in enumerate(categories)}
 	figure = go.Figure()
+	outer_bonds, outer_vertices, outer_centers = _outer_lattice_geometry(
+		crystal,
+		cell_ranges,
+	)
+	if outer_bonds is not None and outer_bonds.x:
+		figure.add_trace(outer_bonds)
+	if outer_vertices is not None and outer_vertices.x:
+		figure.add_trace(outer_vertices)
+	if outer_centers is not None and outer_centers.x:
+		figure.add_trace(outer_centers)
 	lattice_bonds, unassigned_vertices, unassigned_centers = _inner_lattice_geometry(
 		containers,
 		leaf_nodes,
