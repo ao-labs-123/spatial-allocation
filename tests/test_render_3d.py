@@ -113,7 +113,7 @@ class RenderGraphTests(unittest.TestCase):
 			"edges": [],
 			"crystal": {
 				"lattice_mode": "body_centered_cubic",
-				"preview_repeats": [1, 1, 1],
+				"preview_repeats": [2, 2, 2],
 				"unit_cell": {"center": [0.0, 0.0, 0.0], "size": [4.0, 4.0, 4.0]},
 			},
 		}
@@ -127,13 +127,15 @@ class RenderGraphTests(unittest.TestCase):
 		figure = write_html.call_args.args[0]
 		traces = {trace.name: trace for trace in figure.data}
 		self.assertNotIn("Outer lattice sites", traces)
+		self.assertIn("Supercell repeat connections", traces)
+		self.assertEqual(len(traces["Supercell repeat connections"].x), 12 * 3)
 		entity_trace = traces["Entity"]
 		container_outline = traces["Topology containers"]
 		container_labels = traces["Topology container labels"]
 
-		self.assertEqual(entity_trace.x[0], 0.0)
-		self.assertEqual(entity_trace.y[0], 0.0)
-		self.assertEqual(entity_trace.z[0], 0.0)
+		self.assertEqual(entity_trace.x[0], -4.0)
+		self.assertEqual(entity_trace.y[0], -4.0)
+		self.assertEqual(entity_trace.z[0], -4.0)
 		self.assertEqual(container_outline.mode, "lines")
 		self.assertEqual(container_labels.mode, "text")
 		self.assertGreater(container_labels.z[0], entity_trace.z[0])
