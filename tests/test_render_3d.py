@@ -3,10 +3,8 @@ from unittest.mock import patch
 
 from visualize.render_3d import (
 	_inner_lattice_geometry,
-	_outer_lattice_bond_trace,
 	_particle_marker_color,
 	render_graph,
-	_topology_container_trace,
 )
 
 
@@ -23,80 +21,8 @@ class EventParticleColorTests(unittest.TestCase):
 		self.assertEqual(_particle_marker_color(assigned, category_color), category_color)
 
 
-class OuterLatticeBondTraceTests(unittest.TestCase):
-	def test_connects_simple_cubic_sites_across_repeated_unit_cells(self):
-		crystal = {
-			"lattice_mode": "simple_cubic",
-			"unit_cell": {
-				"center": [1.0, 2.0, 3.0],
-				"size": [4.0, 5.0, 6.0],
-			},
-		}
-		cell_coordinates = [
-			(x, y, z)
-			for x in range(-1, 2)
-			for y in range(-1, 2)
-			for z in range(-1, 2)
-		]
-
-		trace = _outer_lattice_bond_trace(crystal, cell_coordinates)
-
-		self.assertEqual(trace.name, "Supercell lattice bonds")
-		self.assertEqual(len(trace.x), 144 * 3)
-		self.assertEqual(trace.x.count(None), 144)
-		self.assertEqual(trace.y.count(None), 144)
-		self.assertEqual(trace.z.count(None), 144)
-
-	def test_connects_body_centers_to_shared_vertices_in_bcc_supercell(self):
-		crystal = {
-			"lattice_mode": "body_centered_cubic",
-			"unit_cell": {
-				"center": [1.0, 2.0, 3.0],
-				"size": [4.0, 5.0, 6.0],
-			},
-		}
-		cell_coordinates = [
-			(x, y, z)
-			for x in range(-1, 2)
-			for y in range(-1, 2)
-			for z in range(-1, 2)
-		]
-
-		trace = _outer_lattice_bond_trace(crystal, cell_coordinates)
-
-		self.assertEqual(len(trace.x), 216 * 3)
-		self.assertEqual(trace.x.count(None), 216)
-		self.assertEqual(trace.y.count(None), 216)
-		self.assertEqual(trace.z.count(None), 216)
-
-	def test_returns_no_trace_without_unit_cell(self):
-		self.assertIsNone(_outer_lattice_bond_trace({}, [(0, 0, 0)]))
-
-
-class TopologyContainerTraceTests(unittest.TestCase):
-	def test_draws_an_outline_around_the_container_center(self):
-		container = {
-			"_render_id": "cluster@0,0,0",
-			"capsule_half_length": 0.5,
-			"capsule_radius": 1.0,
-		}
-		trace = _topology_container_trace(
-			[container],
-			{"cluster@0,0,0": [2.0, 3.0, 4.0]},
-		)
-
-		self.assertEqual(trace.name, "Topology containers")
-		self.assertEqual(trace.mode, "lines")
-		self.assertEqual(min(value for value in trace.x if value is not None), 0.5)
-		self.assertEqual(max(value for value in trace.x if value is not None), 3.5)
-		self.assertEqual(min(value for value in trace.y if value is not None), 2.0)
-		self.assertEqual(max(value for value in trace.y if value is not None), 4.0)
-		self.assertEqual(min(value for value in trace.z if value is not None), 3.0)
-		self.assertEqual(max(value for value in trace.z if value is not None), 5.0)
-
-
 class RenderGraphTests(unittest.TestCase):
-	def test_entity_core_remains_visible_inside_topology_container(self):
+	def test_container_outlines_and_supercell_bonds_are_hidden(self):
 		graph_data = {
 			"nodes": [
 				{
@@ -150,16 +76,14 @@ class RenderGraphTests(unittest.TestCase):
 		figure = write_html.call_args.args[0]
 		traces = {trace.name: trace for trace in figure.data}
 		self.assertNotIn("Outer lattice sites", traces)
-		self.assertIn("Supercell lattice bonds", traces)
-		self.assertEqual(len(traces["Supercell lattice bonds"].x), 8 * 8 * 3)
+		self.assertNotIn("Supercell lattice bonds", traces)
+		self.assertNotIn("Topology containers", traces)
 		entity_trace = traces["Entity"]
-		container_outline = traces["Topology containers"]
 		container_labels = traces["Topology container labels"]
 
 		self.assertEqual(entity_trace.x[0], -4.0)
 		self.assertEqual(entity_trace.y[0], -4.0)
 		self.assertEqual(entity_trace.z[0], -4.0)
-		self.assertEqual(container_outline.mode, "lines")
 		self.assertEqual(container_labels.mode, "text")
 		self.assertGreater(container_labels.z[0], entity_trace.z[0])
 
