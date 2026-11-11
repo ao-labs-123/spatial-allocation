@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from visualize.render_3d import (
-	CELLS_PER_AXIS,
+	MIN_CELLS_PER_AXIS,
 	_mixed_lattice_geometry,
 	render_lattice,
 )
@@ -62,24 +62,65 @@ def _graph_data():
 
 
 class MixedLatticeGeometryTests(unittest.TestCase):
-	def test_graph_components_are_assigned_to_random_sc_or_bcc_cells(self):
-		graph = _graph_data()
-		first = _mixed_lattice_geometry(graph, seed=42)
-		second = _mixed_lattice_geometry(graph, seed=42)
+	def test_topology_particles_are_nested_in_vertex_and_bcc_center_sites(self):
+		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
+		site_contents = geometry["site_contents"]
+		all_nodes = [
+			node
+			for nodes in site_contents.values()
+			for node in nodes
+		]
 
-		self.assertEqual(CELLS_PER_AXIS, 3)
-		self.assertEqual(first["bcc_cells"], second["bcc_cells"])
-		self.assertEqual(len(first["bcc_cells"]), 2)
-		self.assertEqual(len(first["cell_groups"]), 4)
+		self.assertEqual(geometry["cells_per_axis"], MIN_CELLS_PER_AXIS)
+		self.assertEqual(len(geometry["cell_groups"]), 4)
+		self.assertEqual(len(geometry["bcc_cells"]), 2)
+		self.assertEqual(len(all_nodes), 8)
+		self.assertEqual({node["id"] for node in all_nodes}, {
+			"entity-0",
+			"mapped-event-0",
+			"plain-entity-0",
+			"plain-event-0",
+			"entity-1",
+			"mapped-event-1",
+			"plain-entity-1",
+			"plain-event-1",
+		})
+		for nodes in site_contents.values():
+			for node in nodes:
+				if node["id"].startswith("plain-"):
+					self.assertEqual(node["lattice_site"], "vertex")
+				elif node["id"].startswith("entity-"):
+					self.assertEqual(node["lattice_site"], "body_center")
+				else:
+					self.assertEqual(node["lattice_site"], "vertex")
 		self.assertEqual(
-			sum(len(groups) for groups in first["cell_groups"].values()),
-			4,
+			sum(
+				node["category"] == "Entity"
+				and node.get("lattice_site") == "body_center"
+				for node in all_nodes
+			),
+			2,
 		)
-		self.assertEqual(len(first["bcc_bonds"].x), 2 * 8 * 3)
-		self.assertEqual(len(first["simple_cubic_bonds"].x), 3 * 3 * 4**2 * 3)
-		self.assertEqual(len(first["vertices"].x), 4**3)
 
-	def test_lattice_and_bcc_bonds_are_connected(self):
+	def test_shared_lattice_vertices_and_bcc_centers_are_the_clickable_capsules(self):
+		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
+		self.assertEqual(geometry["vertices"].name, "Shared lattice vertices")
+		self.assertEqual(geometry["centers"].name, "BCC centers")
+		self.assertEqual(len(geometry["vertices"].x), 4**3)
+		self.assertEqual(len(geometry["centers"].x), 2)
+		self.assertTrue(all(
+			"nested graph particles" in hover
+			for hover in geometry["vertices"].text
+		))
+		self.assertTrue(all(
+			"nested graph particles" in hover
+			for hover in geometry["centers"].text
+		))
+		self.assertTrue(all(
+			trace.visible is False for trace in geometry["topology_traces"]
+		))
+
+	def test_lattice_bonds_are_connected_and_expand_trace_is_site_scoped(self):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
 		adjacency = {}
 		for trace in (geometry["simple_cubic_bonds"], geometry["bcc_bonds"]):
@@ -90,7 +131,11 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				adjacency.setdefault(start, set()).add(end)
 				adjacency.setdefault(end, set()).add(start)
 
-		self.assertEqual(len(adjacency), 4**3 + 2)
+		self.assertEqual(
+			len(geometry["simple_cubic_bonds"].x),
+			3 * MIN_CELLS_PER_AXIS * (MIN_CELLS_PER_AXIS + 1) ** 2 * 3,
+		)
+		self.assertEqual(len(geometry["bcc_bonds"].x), 2 * 8 * 3)
 		reached = set()
 		pending = [next(iter(adjacency))]
 		while pending:
@@ -100,8 +145,11 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			reached.add(vertex)
 			pending.extend(adjacency[vertex] - reached)
 		self.assertEqual(reached, set(adjacency))
+		for site_key, trace_indices in geometry["site_trace_indices"].items():
+			traces = [geometry["topology_traces"][index] for index in trace_indices]
+			self.assertTrue(all(trace.meta == site_key for trace in traces))
 
-	def test_renderer_hides_originally_labeled_particles_until_cell_click(self):
+	def test_renderer_toggles_the_actual_lattice_site_topology(self):
 		with patch(
 			"visualize.render_3d.go.Figure.write_html",
 			autospec=True,
@@ -110,27 +158,19 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 
 		figure = write_html.call_args.args[0]
 		self.assertEqual(
-			[trace.name for trace in figure.data[:5]],
+			[trace.name for trace in figure.data[:4]],
 			[
 				"Simple cubic bonds",
 				"BCC body-center bonds",
 				"Shared lattice vertices",
-				"SC cells (click to expand)",
-				"BCC centers (click to expand)",
+				"BCC centers",
 			],
 		)
 		self.assertIn("3 x 3 x 3", figure.layout.title.text)
-		particle_traces = [
-			trace
-			for trace in figure.data
-			if trace.name.startswith("Topology particles ")
-		]
-		self.assertEqual(len(particle_traces), 4)
-		self.assertTrue(all(trace.visible is False for trace in particle_traces))
-		self.assertTrue(all(trace.meta for trace in particle_traces))
 		labels = {
 			label
-			for trace in particle_traces
+			for trace in figure.data[4:]
+			if trace.name.startswith("Topology particles ")
 			for label in trace.text
 		}
 		self.assertEqual(
@@ -147,9 +187,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			},
 		)
 		post_script = write_html.call_args.kwargs["post_script"]
-		self.assertIn("plotly_click", post_script)
+		self.assertIn("Shared lattice vertices", post_script)
+		self.assertIn("BCC centers", post_script)
 		self.assertIn("Plotly.restyle", post_script)
-		self.assertIn("isExpandedParticle", post_script)
 
 
 if __name__ == "__main__":
