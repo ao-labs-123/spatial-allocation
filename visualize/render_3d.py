@@ -174,6 +174,9 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			node["id"]: str(node.get("label", node["id"]))
 			for node in nodes_by_id.values()
 		}
+		graph_node_ids = set(site_node_ids)
+		for edge in site_edges:
+			graph_node_ids.update((edge["source"], edge["target"]))
 		site_graph_data[key] = {
 			"kind": "BCC center" if key.startswith("center:") else "Shared lattice vertex",
 			"nodes": [
@@ -183,13 +186,16 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 					"category": str(node.get("category", "")),
 					"lattice_role": str(node.get("lattice_role", "")),
 					"lattice_index": str(node.get("lattice_index", "")),
+					"nested": node["id"] in site_node_ids,
 				}
-				for node in site_nodes
+				for node in (nodes_by_id[node_id] for node_id in sorted(graph_node_ids))
 			],
 			"edges": [
 				{
-					"source": label_by_id[edge["source"]],
-					"target": label_by_id[edge["target"]],
+					"source": edge["source"],
+					"target": edge["target"],
+					"source_label": label_by_id[edge["source"]],
+					"target_label": label_by_id[edge["target"]],
 					"type": str(edge.get("morphism_type", "Relation")),
 				}
 				for edge in site_edges
@@ -290,6 +296,7 @@ panel.appendChild(panelHeader);
 panel.appendChild(panelBody);
 document.body.appendChild(panel);
 closeButton.addEventListener('click', function() { panel.style.display = 'none'; });
+var svgNS = 'http://www.w3.org/2000/svg';
 plot.on('plotly_click', function(eventData) {
     var point = eventData.points && eventData.points[0];
     if (!point) return;
@@ -302,36 +309,101 @@ plot.on('plotly_click', function(eventData) {
     panelTitle.textContent = data.kind + ' [' + siteKey.split(':')[1] + ']';
     panelBody.replaceChildren();
     var particleHeading = document.createElement('div');
-    particleHeading.textContent = 'Nested graph particles (' + data.nodes.length + ')';
+    particleHeading.textContent = 'Nested particles and connections';
     particleHeading.style.cssText = 'font-weight:600;margin:8px 0';
     panelBody.appendChild(particleHeading);
+    var width = 340;
+    var height = Math.max(180, Math.ceil(data.nodes.length / 4) * 112 + 40);
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', data.nodes.length + ' graph particles and ' + data.edges.length + ' connections');
+    svg.style.cssText = 'display:block;width:100%;height:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px';
+    var defs = document.createElementNS(svgNS, 'defs');
+    var marker = document.createElementNS(svgNS, 'marker');
+    marker.setAttribute('id', 'graph-arrow');
+    marker.setAttribute('markerWidth', '8');
+    marker.setAttribute('markerHeight', '8');
+    marker.setAttribute('refX', '7');
+    marker.setAttribute('refY', '4');
+    marker.setAttribute('orient', 'auto');
+    marker.setAttribute('markerUnits', 'strokeWidth');
+    var arrow = document.createElementNS(svgNS, 'path');
+    arrow.setAttribute('d', 'M0,0 L8,4 L0,8 z');
+    arrow.setAttribute('fill', '#64748b');
+    marker.appendChild(arrow);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+
+    var positions = {};
+    var columns = Math.min(4, Math.max(1, data.nodes.length));
+    var rows = Math.ceil(data.nodes.length / columns);
+    data.nodes.forEach(function(node, index) {
+        var column = index % columns;
+        var row = Math.floor(index / columns);
+        positions[node.id] = {
+            x: (column + 0.5) * width / columns,
+            y: 38 + (row + 0.5) * (height - 46) / rows
+        };
+    });
+    data.edges.forEach(function(edge) {
+        var source = positions[edge.source];
+        var target = positions[edge.target];
+        if (!source || !target) return;
+        var line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('x1', source.x);
+        line.setAttribute('y1', source.y);
+        line.setAttribute('x2', target.x);
+        line.setAttribute('y2', target.y);
+        line.setAttribute('stroke', '#64748b');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('marker-end', 'url(#graph-arrow)');
+        var edgeTitle = document.createElementNS(svgNS, 'title');
+        edgeTitle.textContent = edge.type;
+        line.appendChild(edgeTitle);
+        svg.appendChild(line);
+
+        var edgeLabel = document.createElementNS(svgNS, 'text');
+        edgeLabel.setAttribute('x', (source.x + target.x) / 2);
+        edgeLabel.setAttribute('y', (source.y + target.y) / 2 - 5);
+        edgeLabel.setAttribute('text-anchor', 'middle');
+        edgeLabel.setAttribute('font-size', '10');
+        edgeLabel.setAttribute('fill', '#475569');
+        edgeLabel.textContent = edge.type;
+        svg.appendChild(edgeLabel);
+    });
     data.nodes.forEach(function(node) {
-        var item = document.createElement('div');
-        item.style.cssText = 'padding:7px 9px;margin:5px 0;background:#f1f5f9;border-radius:6px;overflow-wrap:anywhere';
-        var label = document.createElement('div');
-        label.textContent = node.label;
-        label.style.fontWeight = '600';
-        item.appendChild(label);
-        var detail = document.createElement('div');
-        detail.textContent = node.category +
+        var position = positions[node.id];
+        var group = document.createElementNS(svgNS, 'g');
+        var circle = document.createElementNS(svgNS, 'circle');
+        circle.setAttribute('cx', position.x);
+        circle.setAttribute('cy', position.y);
+        circle.setAttribute('r', node.nested ? '13' : '10');
+        circle.setAttribute('fill', node.category.toLowerCase() === 'entity' ? '#4477aa' : '#cc6677');
+        circle.setAttribute('stroke', node.nested ? '#1e293b' : '#94a3b8');
+        circle.setAttribute('stroke-width', node.nested ? '2' : '1');
+        var nodeTitle = document.createElementNS(svgNS, 'title');
+        nodeTitle.textContent = node.label + ' · ' + node.category +
             (node.lattice_role ? ' · ' + node.lattice_role : '') +
             (node.lattice_index ? ' · index: ' + node.lattice_index : '');
-        detail.style.cssText = 'color:#64748b;font-size:12px';
-        item.appendChild(detail);
-        panelBody.appendChild(item);
+        circle.appendChild(nodeTitle);
+        group.appendChild(circle);
+        var label = document.createElementNS(svgNS, 'text');
+        label.setAttribute('x', position.x);
+        label.setAttribute('y', position.y + 27);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('font-size', '11');
+        label.setAttribute('fill', '#1e293b');
+        label.textContent = node.label;
+        group.appendChild(label);
+        svg.appendChild(group);
     });
-    if (data.edges.length) {
-        var edgeHeading = document.createElement('div');
-        edgeHeading.textContent = 'Connections (' + data.edges.length + ')';
-        edgeHeading.style.cssText = 'font-weight:600;margin:14px 0 8px';
-        panelBody.appendChild(edgeHeading);
-        data.edges.forEach(function(edge) {
-            var item = document.createElement('div');
-            item.textContent = edge.source + ' —' + edge.type + '→ ' + edge.target;
-            item.style.cssText = 'padding:5px 0;border-top:1px solid #e2e8f0;overflow-wrap:anywhere';
-            panelBody.appendChild(item);
-        });
-    }
+    panelBody.appendChild(svg);
+    var caption = document.createElement('div');
+    caption.textContent = data.nodes.filter(function(node) { return node.nested; }).length +
+        ' nested particles · ' + data.edges.length + ' connections';
+    caption.style.cssText = 'margin-top:8px;color:#64748b;font-size:12px';
+    panelBody.appendChild(caption);
     panel.style.display = 'block';
 });
 """.replace("__SITE_GRAPH_DATA__", json.dumps(geometry["site_graph_data"]))

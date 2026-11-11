@@ -147,6 +147,11 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			self.assertTrue(site_key.startswith(("vertex:", "center:")))
 			self.assertTrue(site_data["nodes"])
 			self.assertTrue(all("label" in node for node in site_data["nodes"]))
+			self.assertTrue(all(
+				edge["source"] in {node["id"] for node in site_data["nodes"]}
+				and edge["target"] in {node["id"] for node in site_data["nodes"]}
+				for edge in site_data["edges"]
+			))
 
 	def test_renderer_expands_site_contents_without_plotly_redraw(self):
 		with patch(
@@ -188,8 +193,10 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertIn("Shared lattice vertices", post_script)
 		self.assertIn("BCC centers", post_script)
 		self.assertIn("document.createElement('section')", post_script)
-		self.assertIn("Nested graph particles", post_script)
-		self.assertIn("panelBody.replaceChildren()", post_script)
+		self.assertIn("Nested particles and connections", post_script)
+		self.assertIn("document.createElementNS(svgNS, 'circle')", post_script)
+		self.assertIn("document.createElementNS(svgNS, 'line')", post_script)
+		self.assertIn("marker-end", post_script)
 		self.assertNotIn("Plotly.restyle", post_script)
 
 
