@@ -12,11 +12,11 @@ The 3D allocator uses the input node attributes and directed morphisms as follow
 - **Y — Causal / hierarchical depth:** the longest directed path of `Cause` and `Hierarchy` morphisms from a root. Cycles are treated as a single depth level.
 - **Z — Process stage:** directed `Temporal` morphisms (source precedes target) and optional numeric `attributes.stage`, `attributes.stage_index`, or `attributes.process_stage` values establish ordering. ISO-formatted `attributes.when` values can also establish order when no explicit stage is given. Free-text `when` values are not guessed to be chronological; nodes without ordering evidence remain at the baseline.
 
-`attributes.where` is shown as contextual information in each node's hover details, rather than as an axis. `who`, `when`, and `where` are likewise retained as useful node context. Temporal relationships and explicit stage values must not conflict; cyclic temporal relationships are collapsed into one stage.
+`attributes.where` is retained as contextual information rather than used as an axis. `who`, `when`, and `where` are likewise retained in the allocated node data. Temporal relationships and explicit stage values must not conflict; cyclic temporal relationships are collapsed into one stage.
 
-Each connected component is placed in a container particle, and its topology is embedded on a discrete inner lattice. A labeled `Entity` directly connected to an `Event` with non-empty `*_mapping` data becomes a core/index and selects a body-centered cubic (BCC) lattice; connected mapped Events occupy auxiliary vertex sites. Event particles without that core association are muted to distinguish them from assigned auxiliary Events; lattice-site markers themselves use a uniform neutral color. Otherwise the component uses a simple cubic (SC) lattice, which is the neutral choice for incomplete or unstructured topology. A component's `attributes.lattice_mode` may explicitly override the inferred mode with `simple_cubic`, `body_centered_cubic`, `sc`, or `bcc`.
+Each connected component is placed in a container particle, and its topology is embedded on a discrete inner lattice. A labeled `Entity` directly connected to an `Event` with non-empty `*_mapping` data becomes a core/index and selects a body-centered cubic (BCC) lattice; connected mapped Events occupy auxiliary vertex sites. Event particles without that core association are muted to distinguish them from assigned auxiliary Events; lattice-site markers themselves use a uniform neutral color. Otherwise the component uses a simple cubic (SC) lattice, which is the neutral choice for incomplete or unstructured topology. A component's `attributes.lattice_mode` may explicitly override the inferred mode with `simple_cubic`, `body_centered_cubic`, `sc`, or `bcc`. The allocator retains this topology-allocation output as `data/topological_graph_3d.json`.
 
-The complete allocated dataset forms an outer periodic crystal supercell. Its lattice mode is BCC if any inner component is BCC, and SC otherwise. `crystal.preview_repeats` controls the finite visualization preview (default `2 × 2 × 2`); repetitions are rendered copies and are not written as duplicate graph particles. Graph particles and semantic morphism edges appear as separate copies in repeated cells. Inner SC/BCC lattice bonds continue between repeated copies of the same component, with particle-free lattice cells in the gaps; BCC gaps include the corresponding center sites. The renderer shows these inner lattice sites and bonds, graph morphisms, and container labels; it omits outer lattice sites and container outlines. Component containers are top-level particles; each contains its member IDs, semantic center, and lattice classification metadata. Containment is separate from semantic morphism edges, and derived containers are rebuilt on every allocation.
+The GitHub Pages visualization is a standalone mixed crystal lattice rather than a rendering of the allocated topology. It contains a `2 × 2 × 2` arrangement of unit cells, with four SC and four BCC cells assigned to random positions on each generation. SC cube edges share vertices across cells, while BCC cells add a body-center site and bonds to all eight corners, so the complete lattice remains connected. Run the renderer again to generate another random arrangement.
 
 ---
 
@@ -47,20 +47,22 @@ Spatial-allocation/
 ```
 
 ## Getting Started
-Install the dependencies, then generate coordinates and the interactive visualization:
+Install the dependencies, then generate coordinates (optional for the lattice visualization) and the interactive page:
 
 ```bash
 python -m pip install -r requirements.txt
-python src/allocator.py
 python visualize/render_3d.py
+
+# Optional: generate the topology allocation output
+python src/allocator.py
 ```
 
-The coordinate graph is written to `data/topological_graph_3d.json`. The standalone Plotly page is written to `docs/index.html`.
+The standalone Plotly page is written to `docs/index.html`. The optional allocator writes coordinates to `data/topological_graph_3d.json`.
 ## Pipeline Workflow
 ```text
 [topological-mapper] -> data/topological_graph.json
-    -> python src/allocator.py -> data/topological_graph_3d.json
-    -> python visualize/render_3d.py -> docs/index.html
+    -> python src/allocator.py -> data/topological_graph_3d.json (optional topology allocation)
+python visualize/render_3d.py -> docs/index.html (random mixed SC/BCC lattice)
 ```
 ## Tech Stack
 - Language: Python 3.x
