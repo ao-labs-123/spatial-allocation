@@ -160,95 +160,66 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 		for center in bcc_centers
 	}
 	all_sites = {**vertex_contents, **center_contents}
-	site_trace_indices = {}
-	topology_traces = []
+	site_graph_data = {}
 	for key, site_nodes in all_sites.items():
 		if not site_nodes:
 			continue
-		site_trace_indices[key] = []
 		site_node_ids = {node["id"] for node in site_nodes}
 		site_edges = [
 			edge
 			for edge in edges
 			if edge["source"] in site_node_ids or edge["target"] in site_node_ids
 		]
-		if site_edges:
-			edge_x = []
-			edge_y = []
-			edge_z = []
-			for edge in site_edges:
-				add_segment(
-					edge_x,
-					edge_y,
-					edge_z,
-					node_positions[edge["source"]],
-					node_positions[edge["target"]],
-				)
-			site_trace_indices[key].append(len(topology_traces))
-			topology_traces.append(
-				go.Scatter3d(
-					x=edge_x,
-					y=edge_y,
-					z=edge_z,
-					mode="lines",
-					line={"color": "rgba(47, 55, 64, 0.78)", "width": 3},
-					hoverinfo="skip",
-					showlegend=False,
-					visible=False,
-					meta=key,
-					name=f"Topology edges {key}",
-				)
-			)
-
 		site_x = []
 		site_y = []
 		site_z = []
+		site_colors = []
+		site_text = []
+		site_customdata = []
 		for index, node in enumerate(site_nodes):
 			position = node_positions[node["id"]]
 			offset = (index - (len(site_nodes) - 1) / 2) * 0.08
 			site_x.append(position[0] + offset)
 			site_y.append(position[1] + offset)
 			site_z.append(position[2] + offset)
-		site_trace_indices[key].append(len(topology_traces))
-		topology_traces.append(
-			go.Scatter3d(
-				x=site_x,
-				y=site_y,
-				z=site_z,
-				mode="markers+text",
-				marker={
-					"size": 6,
-					"color": [
-						"#4477aa"
-						if str(node.get("category", "")).casefold() == "entity"
-						else "#cc6677"
-						for node in site_nodes
-					],
-					"line": {"color": "white", "width": 0.8},
-				},
-				text=[node.get("label", "") for node in site_nodes],
-				textposition="top center",
-				customdata=[
-					[
-						node["id"],
-						node.get("category", ""),
-						node.get("lattice_role", ""),
-						node.get("lattice_index", ""),
-					]
-					for node in site_nodes
-				],
-				hovertemplate=(
-					"<b>%{text}</b><br>Category: %{customdata[1]}"
-					+ "<br>ID: %{customdata[0]}"
-					+ "<br>Lattice role: %{customdata[2]}"
-					+ "<br>Index label: %{customdata[3]}<extra></extra>"
-				),
-				showlegend=False,
-				visible=False,
-				meta=key,
-				name=f"Topology particles {key}",
+			site_colors.append(
+				"#4477aa"
+				if str(node.get("category", "")).casefold() == "entity"
+				else "#cc6677"
 			)
-		)
+			site_text.append(node.get("label", ""))
+			site_customdata.append(
+				[
+					node["id"],
+					node.get("category", ""),
+					node.get("lattice_role", ""),
+					node.get("lattice_index", ""),
+					key,
+				]
+			)
+
+		edge_x = []
+		edge_y = []
+		edge_z = []
+		for edge in site_edges:
+			add_segment(
+				edge_x,
+				edge_y,
+				edge_z,
+				node_positions[edge["source"]],
+				node_positions[edge["target"]],
+			)
+		site_graph_data[key] = {
+			"x": site_x,
+			"y": site_y,
+			"z": site_z,
+			"colors": site_colors,
+			"text": site_text,
+			"customdata": site_customdata,
+			"edge_x": edge_x,
+			"edge_y": edge_y,
+			"edge_z": edge_z,
+		}
 
 	def site_hover(kind, coordinate):
 		key = _site_key(kind, coordinate)
@@ -305,12 +276,44 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			hovertemplate="%{text}<extra></extra>",
 			name="BCC centers",
 		),
+		go.Scatter3d(
+			x=[],
+			y=[],
+			z=[],
+			mode="lines",
+			line={"color": "rgba(47, 55, 64, 0.78)", "width": 3},
+			hoverinfo="skip",
+			showlegend=False,
+			visible=False,
+			name="Expanded topology edges",
+		),
+		go.Scatter3d(
+			x=[],
+			y=[],
+			z=[],
+			mode="markers+text",
+			marker={
+				"size": 6,
+				"line": {"color": "white", "width": 0.8},
+			},
+			text=[],
+			textposition="top center",
+			customdata=[],
+			hovertemplate=(
+				"<b>%{text}</b><br>Category: %{customdata[1]}"
+				+ "<br>ID: %{customdata[0]}"
+				+ "<br>Lattice role: %{customdata[2]}"
+				+ "<br>Index label: %{customdata[3]}<extra></extra>"
+			),
+			showlegend=False,
+			visible=False,
+			name="Expanded topology particles",
+		),
 	]
 
 	return {
 		"traces": geometry,
-		"topology_traces": topology_traces,
-		"site_trace_indices": site_trace_indices,
+		"site_graph_data": site_graph_data,
 		"cell_groups": cell_groups,
 		"bcc_cells": bcc_cells,
 		"cells_per_axis": cells_per_axis,
@@ -325,15 +328,13 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 def render_lattice(graph_data, output_path, seed=None):
 	geometry = _mixed_lattice_geometry(graph_data, seed)
 	figure = go.Figure(data=geometry["traces"])
-	site_trace_indices = {}
-	for key, traces in geometry["site_trace_indices"].items():
-		site_trace_indices[key] = [len(figure.data) + index for index in traces]
-	figure.add_traces(geometry["topology_traces"])
 
 	post_script = """
 var plot = document.getElementById('{plot_id}');
-var siteTraces = __SITE_TRACE_INDICES__;
-var expanded = new Set();
+var siteData = __SITE_GRAPH_DATA__;
+var edgeTrace = 4;
+var particleTrace = 5;
+var expandedSite = null;
 var status = document.createElement('div');
 status.textContent = 'Click a Shared lattice vertex or BCC center to expand its nested graph particles.';
 status.style.cssText = 'font: 14px sans-serif; padding: 8px 12px; color: #334155;';
@@ -343,19 +344,34 @@ plot.on('plotly_click', function(eventData) {
     if (!point) return;
     var isLatticeSite = point.data.name === 'Shared lattice vertices' ||
                         point.data.name === 'BCC centers';
-    var isExpandedParticle = point.data.name.indexOf('Topology particles ') === 0;
+    var isExpandedParticle = point.data.name === 'Expanded topology particles';
     if (!isLatticeSite && !isExpandedParticle) return;
-    var siteKey = isLatticeSite ? point.customdata : point.data.meta;
-    var traceIndices = siteTraces[siteKey] || [];
-    if (traceIndices.length === 0) return;
-    var shouldExpand = !expanded.has(siteKey);
-    Plotly.restyle(plot, {visible: shouldExpand}, traceIndices);
-    if (shouldExpand) expanded.add(siteKey);
-    else expanded.delete(siteKey);
-    status.textContent = (shouldExpand ? 'Expanded ' : 'Collapsed ') +
-        siteKey + '. Click the site or one of its graph particles to toggle.';
+    var siteKey = isLatticeSite ? point.customdata : point.customdata[4];
+    var shouldExpand = expandedSite !== siteKey;
+    var data = shouldExpand ? siteData[siteKey] : null;
+    if (shouldExpand && !data) return;
+    var edgeUpdate = data ? {
+        x: [data.edge_x], y: [data.edge_y], z: [data.edge_z],
+        visible: [data.edge_x.length > 0]
+    } : {x: [[]], y: [[]], z: [[]], visible: [false]};
+    var particleUpdate = data ? {
+        x: [data.x], y: [data.y], z: [data.z],
+        text: [data.text], customdata: [data.customdata],
+        'marker.color': [data.colors], visible: [true]
+    } : {
+        x: [[]], y: [[]], z: [[]], text: [[]], customdata: [[]],
+        'marker.color': [[]], visible: [false]
+    };
+    Promise.all([
+        Plotly.restyle(plot, edgeUpdate, [edgeTrace]),
+        Plotly.restyle(plot, particleUpdate, [particleTrace])
+    ]).then(function() {
+        expandedSite = shouldExpand ? siteKey : null;
+        status.textContent = (shouldExpand ? 'Expanded ' : 'Collapsed ') +
+            siteKey + '. Click a lattice site or graph particle to toggle.';
+    });
 });
-""".replace("__SITE_TRACE_INDICES__", json.dumps(site_trace_indices))
+""".replace("__SITE_GRAPH_DATA__", json.dumps(geometry["site_graph_data"]))
 
 	cells_per_axis = geometry["cells_per_axis"]
 	figure.update_layout(
@@ -375,12 +391,19 @@ plot.on('plotly_click', function(eventData) {
 			"camera": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},
 		},
 	)
+	output_path = Path(output_path)
 	figure.write_html(
 		output_path,
 		include_plotlyjs=True,
 		full_html=True,
 		post_script=post_script,
 	)
+	if output_path.exists():
+		html_lines = output_path.read_text(encoding="utf-8").splitlines()
+		output_path.write_text(
+			"\n".join(line.rstrip() for line in html_lines) + "\n",
+			encoding="utf-8",
+		)
 
 
 def main():

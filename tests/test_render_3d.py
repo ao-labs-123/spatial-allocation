@@ -116,9 +116,11 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			"nested graph particles" in hover
 			for hover in geometry["centers"].text
 		))
-		self.assertTrue(all(
-			trace.visible is False for trace in geometry["topology_traces"]
-		))
+		self.assertEqual(len(geometry["traces"]), 6)
+		self.assertFalse(geometry["traces"][4].visible)
+		self.assertFalse(geometry["traces"][5].visible)
+		self.assertEqual(geometry["traces"][4].name, "Expanded topology edges")
+		self.assertEqual(geometry["traces"][5].name, "Expanded topology particles")
 
 	def test_lattice_bonds_are_connected_and_expand_trace_is_site_scoped(self):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
@@ -145,9 +147,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			reached.add(vertex)
 			pending.extend(adjacency[vertex] - reached)
 		self.assertEqual(reached, set(adjacency))
-		for site_key, trace_indices in geometry["site_trace_indices"].items():
-			traces = [geometry["topology_traces"][index] for index in trace_indices]
-			self.assertTrue(all(trace.meta == site_key for trace in traces))
+		for site_key, site_data in geometry["site_graph_data"].items():
+			self.assertEqual(len(site_data["x"]), len(site_data["customdata"]))
+			self.assertTrue(all(row[4] == site_key for row in site_data["customdata"]))
 
 	def test_renderer_toggles_the_actual_lattice_site_topology(self):
 		with patch(
@@ -158,20 +160,21 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 
 		figure = write_html.call_args.args[0]
 		self.assertEqual(
-			[trace.name for trace in figure.data[:4]],
+			[trace.name for trace in figure.data],
 			[
 				"Simple cubic bonds",
 				"BCC body-center bonds",
 				"Shared lattice vertices",
 				"BCC centers",
+				"Expanded topology edges",
+				"Expanded topology particles",
 			],
 		)
 		self.assertIn("3 x 3 x 3", figure.layout.title.text)
 		labels = {
 			label
-			for trace in figure.data[4:]
-			if trace.name.startswith("Topology particles ")
-			for label in trace.text
+			for data in _mixed_lattice_geometry(_graph_data(), seed=42)["site_graph_data"].values()
+			for label in data["text"]
 		}
 		self.assertEqual(
 			labels,
@@ -190,6 +193,8 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertIn("Shared lattice vertices", post_script)
 		self.assertIn("BCC centers", post_script)
 		self.assertIn("Plotly.restyle", post_script)
+		self.assertIn("var edgeTrace = 4", post_script)
+		self.assertIn("var particleTrace = 5", post_script)
 
 
 if __name__ == "__main__":
