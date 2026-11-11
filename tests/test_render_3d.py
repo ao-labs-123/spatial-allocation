@@ -195,6 +195,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertIn("Plotly.restyle", post_script)
 		self.assertIn("var edgeTrace = 4", post_script)
 		self.assertIn("var particleTrace = 5", post_script)
+		self.assertEqual(post_script.count("Plotly.restyle("), 1)
+		self.assertNotIn("Promise.all", post_script)
+		self.assertIn("[edgeTrace, particleTrace]", post_script)
 
 
 if __name__ == "__main__":

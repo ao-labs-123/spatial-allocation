@@ -350,22 +350,21 @@ plot.on('plotly_click', function(eventData) {
     var shouldExpand = expandedSite !== siteKey;
     var data = shouldExpand ? siteData[siteKey] : null;
     if (shouldExpand && !data) return;
-    var edgeUpdate = data ? {
-        x: [data.edge_x], y: [data.edge_y], z: [data.edge_z],
-        visible: [data.edge_x.length > 0]
-    } : {x: [[]], y: [[]], z: [[]], visible: [false]};
-    var particleUpdate = data ? {
-        x: [data.x], y: [data.y], z: [data.z],
-        text: [data.text], customdata: [data.customdata],
-        'marker.color': [data.colors], visible: [true]
-    } : {
-        x: [[]], y: [[]], z: [[]], text: [[]], customdata: [[]],
-        'marker.color': [[]], visible: [false]
-    };
-    Promise.all([
-        Plotly.restyle(plot, edgeUpdate, [edgeTrace]),
-        Plotly.restyle(plot, particleUpdate, [particleTrace])
-    ]).then(function() {
+    var edgeX = data ? data.edge_x : [];
+    var edgeY = data ? data.edge_y : [];
+    var edgeZ = data ? data.edge_z : [];
+    var particleX = data ? data.x : [];
+    var particleY = data ? data.y : [];
+    var particleZ = data ? data.z : [];
+    Plotly.restyle(plot, {
+        x: [edgeX, particleX],
+        y: [edgeY, particleY],
+        z: [edgeZ, particleZ],
+        visible: [!!data && edgeX.length > 0, !!data],
+        text: [[], data ? data.text : []],
+        customdata: [[], data ? data.customdata : []],
+        'marker.color': [[], data ? data.colors : []]
+    }, [edgeTrace, particleTrace]).then(function() {
         expandedSite = shouldExpand ? siteKey : null;
         status.textContent = (shouldExpand ? 'Expanded ' : 'Collapsed ') +
             siteKey + '. Click a lattice site or graph particle to toggle.';
