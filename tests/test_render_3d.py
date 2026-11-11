@@ -116,13 +116,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			"nested graph particles" in hover
 			for hover in geometry["centers"].text
 		))
-		self.assertEqual(len(geometry["traces"]), 6)
-		self.assertFalse(geometry["traces"][4].visible)
-		self.assertFalse(geometry["traces"][5].visible)
-		self.assertEqual(geometry["traces"][4].name, "Expanded topology edges")
-		self.assertEqual(geometry["traces"][5].name, "Expanded topology particles")
+		self.assertEqual(len(geometry["traces"]), 4)
 
-	def test_lattice_bonds_are_connected_and_expand_trace_is_site_scoped(self):
+	def test_lattice_bonds_are_connected_and_capsule_data_is_site_scoped(self):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
 		adjacency = {}
 		for trace in (geometry["simple_cubic_bonds"], geometry["bcc_bonds"]):
@@ -148,10 +144,11 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			pending.extend(adjacency[vertex] - reached)
 		self.assertEqual(reached, set(adjacency))
 		for site_key, site_data in geometry["site_graph_data"].items():
-			self.assertEqual(len(site_data["x"]), len(site_data["customdata"]))
-			self.assertTrue(all(row[4] == site_key for row in site_data["customdata"]))
+			self.assertTrue(site_key.startswith(("vertex:", "center:")))
+			self.assertTrue(site_data["nodes"])
+			self.assertTrue(all("label" in node for node in site_data["nodes"]))
 
-	def test_renderer_toggles_the_actual_lattice_site_topology(self):
+	def test_renderer_expands_site_contents_without_plotly_redraw(self):
 		with patch(
 			"visualize.render_3d.go.Figure.write_html",
 			autospec=True,
@@ -166,15 +163,13 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"BCC body-center bonds",
 				"Shared lattice vertices",
 				"BCC centers",
-				"Expanded topology edges",
-				"Expanded topology particles",
 			],
 		)
 		self.assertIn("3 x 3 x 3", figure.layout.title.text)
 		labels = {
 			label
 			for data in _mixed_lattice_geometry(_graph_data(), seed=42)["site_graph_data"].values()
-			for label in data["text"]
+			for label in [node["label"] for node in data["nodes"]]
 		}
 		self.assertEqual(
 			labels,
@@ -192,12 +187,10 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		post_script = write_html.call_args.kwargs["post_script"]
 		self.assertIn("Shared lattice vertices", post_script)
 		self.assertIn("BCC centers", post_script)
-		self.assertIn("Plotly.restyle", post_script)
-		self.assertIn("var edgeTrace = 4", post_script)
-		self.assertIn("var particleTrace = 5", post_script)
-		self.assertEqual(post_script.count("Plotly.restyle("), 1)
-		self.assertNotIn("Promise.all", post_script)
-		self.assertIn("[edgeTrace, particleTrace]", post_script)
+		self.assertIn("document.createElement('section')", post_script)
+		self.assertIn("Nested graph particles", post_script)
+		self.assertIn("panelBody.replaceChildren()", post_script)
+		self.assertNotIn("Plotly.restyle", post_script)
 
 
 if __name__ == "__main__":

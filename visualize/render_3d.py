@@ -170,55 +170,30 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			for edge in edges
 			if edge["source"] in site_node_ids or edge["target"] in site_node_ids
 		]
-		site_x = []
-		site_y = []
-		site_z = []
-		site_colors = []
-		site_text = []
-		site_customdata = []
-		for index, node in enumerate(site_nodes):
-			position = node_positions[node["id"]]
-			offset = (index - (len(site_nodes) - 1) / 2) * 0.08
-			site_x.append(position[0] + offset)
-			site_y.append(position[1] + offset)
-			site_z.append(position[2] + offset)
-			site_colors.append(
-				"#4477aa"
-				if str(node.get("category", "")).casefold() == "entity"
-				else "#cc6677"
-			)
-			site_text.append(node.get("label", ""))
-			site_customdata.append(
-				[
-					node["id"],
-					node.get("category", ""),
-					node.get("lattice_role", ""),
-					node.get("lattice_index", ""),
-					key,
-				]
-			)
-
-		edge_x = []
-		edge_y = []
-		edge_z = []
-		for edge in site_edges:
-			add_segment(
-				edge_x,
-				edge_y,
-				edge_z,
-				node_positions[edge["source"]],
-				node_positions[edge["target"]],
-			)
+		label_by_id = {
+			node["id"]: str(node.get("label", node["id"]))
+			for node in nodes_by_id.values()
+		}
 		site_graph_data[key] = {
-			"x": site_x,
-			"y": site_y,
-			"z": site_z,
-			"colors": site_colors,
-			"text": site_text,
-			"customdata": site_customdata,
-			"edge_x": edge_x,
-			"edge_y": edge_y,
-			"edge_z": edge_z,
+			"kind": "BCC center" if key.startswith("center:") else "Shared lattice vertex",
+			"nodes": [
+				{
+					"id": node["id"],
+					"label": str(node.get("label", node["id"])),
+					"category": str(node.get("category", "")),
+					"lattice_role": str(node.get("lattice_role", "")),
+					"lattice_index": str(node.get("lattice_index", "")),
+				}
+				for node in site_nodes
+			],
+			"edges": [
+				{
+					"source": label_by_id[edge["source"]],
+					"target": label_by_id[edge["target"]],
+					"type": str(edge.get("morphism_type", "Relation")),
+				}
+				for edge in site_edges
+			],
 		}
 
 	def site_hover(kind, coordinate):
@@ -276,39 +251,6 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			hovertemplate="%{text}<extra></extra>",
 			name="BCC centers",
 		),
-		go.Scatter3d(
-			x=[],
-			y=[],
-			z=[],
-			mode="lines",
-			line={"color": "rgba(47, 55, 64, 0.78)", "width": 3},
-			hoverinfo="skip",
-			showlegend=False,
-			visible=False,
-			name="Expanded topology edges",
-		),
-		go.Scatter3d(
-			x=[],
-			y=[],
-			z=[],
-			mode="markers+text",
-			marker={
-				"size": 6,
-				"line": {"color": "white", "width": 0.8},
-			},
-			text=[],
-			textposition="top center",
-			customdata=[],
-			hovertemplate=(
-				"<b>%{text}</b><br>Category: %{customdata[1]}"
-				+ "<br>ID: %{customdata[0]}"
-				+ "<br>Lattice role: %{customdata[2]}"
-				+ "<br>Index label: %{customdata[3]}<extra></extra>"
-			),
-			showlegend=False,
-			visible=False,
-			name="Expanded topology particles",
-		),
 	]
 
 	return {
@@ -332,50 +274,72 @@ def render_lattice(graph_data, output_path, seed=None):
 	post_script = """
 var plot = document.getElementById('{plot_id}');
 var siteData = __SITE_GRAPH_DATA__;
-var edgeTrace = 4;
-var particleTrace = 5;
-var expandedSite = null;
-var status = document.createElement('div');
-status.textContent = 'Click a Shared lattice vertex or BCC center to expand its nested graph particles.';
-status.style.cssText = 'font: 14px sans-serif; padding: 8px 12px; color: #334155;';
-plot.parentNode.insertBefore(status, plot);
+var panel = document.createElement('section');
+panel.style.cssText = 'display:none;position:fixed;right:16px;top:64px;z-index:10000;width:min(380px,calc(100vw - 32px));max-height:70vh;overflow:auto;box-sizing:border-box;padding:16px;background:rgba(255,255,255,.97);border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 8px 28px rgba(15,23,42,.22);font:14px/1.45 system-ui,sans-serif;color:#1e293b';
+var panelHeader = document.createElement('div');
+panelHeader.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px';
+var panelTitle = document.createElement('strong');
+var closeButton = document.createElement('button');
+closeButton.type = 'button';
+closeButton.textContent = 'Close';
+closeButton.style.cssText = 'padding:5px 9px;border:1px solid #cbd5e1;border-radius:6px;background:white;cursor:pointer';
+var panelBody = document.createElement('div');
+panelHeader.appendChild(panelTitle);
+panelHeader.appendChild(closeButton);
+panel.appendChild(panelHeader);
+panel.appendChild(panelBody);
+document.body.appendChild(panel);
+closeButton.addEventListener('click', function() { panel.style.display = 'none'; });
 plot.on('plotly_click', function(eventData) {
     var point = eventData.points && eventData.points[0];
     if (!point) return;
     var isLatticeSite = point.data.name === 'Shared lattice vertices' ||
                         point.data.name === 'BCC centers';
-    var isExpandedParticle = point.data.name === 'Expanded topology particles';
-    if (!isLatticeSite && !isExpandedParticle) return;
-    var siteKey = isLatticeSite ? point.customdata : point.customdata[4];
-    var shouldExpand = expandedSite !== siteKey;
-    var data = shouldExpand ? siteData[siteKey] : null;
-    if (shouldExpand && !data) return;
-    var edgeX = data ? data.edge_x : [];
-    var edgeY = data ? data.edge_y : [];
-    var edgeZ = data ? data.edge_z : [];
-    var particleX = data ? data.x : [];
-    var particleY = data ? data.y : [];
-    var particleZ = data ? data.z : [];
-    Plotly.restyle(plot, {
-        x: [edgeX, particleX],
-        y: [edgeY, particleY],
-        z: [edgeZ, particleZ],
-        visible: [!!data && edgeX.length > 0, !!data],
-        text: [[], data ? data.text : []],
-        customdata: [[], data ? data.customdata : []],
-        'marker.color': [[], data ? data.colors : []]
-    }, [edgeTrace, particleTrace]).then(function() {
-        expandedSite = shouldExpand ? siteKey : null;
-        status.textContent = (shouldExpand ? 'Expanded ' : 'Collapsed ') +
-            siteKey + '. Click a lattice site or graph particle to toggle.';
+    if (!isLatticeSite) return;
+    var siteKey = point.customdata;
+    var data = siteData[siteKey];
+    if (!data || !data.nodes.length) return;
+    panelTitle.textContent = data.kind + ' [' + siteKey.split(':')[1] + ']';
+    panelBody.replaceChildren();
+    var particleHeading = document.createElement('div');
+    particleHeading.textContent = 'Nested graph particles (' + data.nodes.length + ')';
+    particleHeading.style.cssText = 'font-weight:600;margin:8px 0';
+    panelBody.appendChild(particleHeading);
+    data.nodes.forEach(function(node) {
+        var item = document.createElement('div');
+        item.style.cssText = 'padding:7px 9px;margin:5px 0;background:#f1f5f9;border-radius:6px;overflow-wrap:anywhere';
+        var label = document.createElement('div');
+        label.textContent = node.label;
+        label.style.fontWeight = '600';
+        item.appendChild(label);
+        var detail = document.createElement('div');
+        detail.textContent = node.category +
+            (node.lattice_role ? ' · ' + node.lattice_role : '') +
+            (node.lattice_index ? ' · index: ' + node.lattice_index : '');
+        detail.style.cssText = 'color:#64748b;font-size:12px';
+        item.appendChild(detail);
+        panelBody.appendChild(item);
     });
+    if (data.edges.length) {
+        var edgeHeading = document.createElement('div');
+        edgeHeading.textContent = 'Connections (' + data.edges.length + ')';
+        edgeHeading.style.cssText = 'font-weight:600;margin:14px 0 8px';
+        panelBody.appendChild(edgeHeading);
+        data.edges.forEach(function(edge) {
+            var item = document.createElement('div');
+            item.textContent = edge.source + ' —' + edge.type + '→ ' + edge.target;
+            item.style.cssText = 'padding:5px 0;border-top:1px solid #e2e8f0;overflow-wrap:anywhere';
+            panelBody.appendChild(item);
+        });
+    }
+    panel.style.display = 'block';
 });
 """.replace("__SITE_GRAPH_DATA__", json.dumps(geometry["site_graph_data"]))
 
 	cells_per_axis = geometry["cells_per_axis"]
 	figure.update_layout(
 		title=(
-			"Mixed SC / BCC crystal lattice with nested graph particles "
+			"Mixed SC / BCC crystal lattice with expandable graph capsules "
 			f"({cells_per_axis} x {cells_per_axis} x {cells_per_axis})"
 		),
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
