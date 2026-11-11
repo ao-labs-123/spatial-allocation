@@ -14,9 +14,9 @@ The 3D allocator uses the input node attributes and directed morphisms as follow
 
 `attributes.where` is retained as contextual information rather than used as an axis. `who`, `when`, and `where` are likewise retained in the allocated node data. Temporal relationships and explicit stage values must not conflict; cyclic temporal relationships are collapsed into one stage.
 
-Each connected component is placed in a container particle, and its topology is embedded on a discrete inner lattice. A labeled `Entity` directly connected to an `Event` with non-empty `*_mapping` data becomes a core/index and selects a body-centered cubic (BCC) lattice; connected mapped Events occupy auxiliary vertex sites. Event particles without that core association are muted to distinguish them from assigned auxiliary Events; lattice-site markers themselves use a uniform neutral color. Otherwise the component uses a simple cubic (SC) lattice, which is the neutral choice for incomplete or unstructured topology. A component's `attributes.lattice_mode` may explicitly override the inferred mode with `simple_cubic`, `body_centered_cubic`, `sc`, or `bcc`. The allocator retains this topology-allocation output as `data/topological_graph_3d.json`.
+Each connected component is placed in a container particle, and its topology is embedded on a discrete inner lattice. A labeled `Entity` directly connected to an `Event` with non-empty `*_mapping` data becomes a core/index and is assigned to the BCC body-center site; mapped Events are assigned to vertex sites. Otherwise the component uses a simple cubic (SC) lattice, the neutral choice for unstructured topology. A component's `attributes.lattice_mode` may explicitly override the inferred mode with `simple_cubic`, `body_centered_cubic`, `sc`, or `bcc`. The allocator retains this topology-allocation output as `data/topological_graph_3d.json`.
 
-The GitHub Pages visualization is a standalone mixed crystal lattice rather than a rendering of the allocated topology. It contains a `3 × 3 × 3` arrangement of unit cells (27 total), with SC and BCC cells assigned to random positions on each generation. SC cube edges share vertices across cells, while BCC cells add a body-center site and bonds to all eight corners, so the complete lattice remains connected. Run the renderer again to generate another random arrangement.
+The GitHub Pages visualization embeds the graph particles from `data/topological_graph.json` in a `3 × 3 × 3` mixed lattice. SC/BCC cell positions are randomized on each generation while component modes follow the topology classification above. Lattice sites and bonds stay visible by default; click an SC cell marker or BCC center to expand that cell's graph particles and morphism edges, and click it again to collapse them. Expanded particle text uses each input node's original `label`.
 
 ---
 
@@ -57,12 +57,12 @@ python visualize/render_3d.py
 python src/allocator.py
 ```
 
-The standalone Plotly page is written to `docs/index.html`. The optional allocator writes coordinates to `data/topological_graph_3d.json`.
+The renderer reads `data/topological_graph.json` and writes the interactive page to `docs/index.html`. The optional allocator writes coordinates to `data/topological_graph_3d.json`.
 ## Pipeline Workflow
 ```text
 [topological-mapper] -> data/topological_graph.json
+    -> python visualize/render_3d.py -> docs/index.html (expandable mixed SC/BCC lattice)
     -> python src/allocator.py -> data/topological_graph_3d.json (optional topology allocation)
-python visualize/render_3d.py -> docs/index.html (random mixed SC/BCC lattice)
 ```
 ## Tech Stack
 - Language: Python 3.x
