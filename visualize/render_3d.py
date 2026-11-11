@@ -5,7 +5,7 @@ from pathlib import Path
 import plotly.graph_objects as go
 
 
-CELLS_PER_AXIS = 2
+CELLS_PER_AXIS = 3
 
 
 def _mixed_lattice_geometry(seed=None):
@@ -125,14 +125,17 @@ def render_lattice(output_path, seed=None):
 		]
 	)
 	figure.update_layout(
-		title="Random mixed SC / BCC crystal lattice (2 x 2 x 2)",
+		title=(
+			"Random mixed SC / BCC crystal lattice "
+			f"({CELLS_PER_AXIS} x {CELLS_PER_AXIS} x {CELLS_PER_AXIS})"
+		),
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
 		legend={"title": "Crystal lattice"},
 		hovermode="closest",
 		scene={
-			"xaxis": {"title": "X", "range": [-0.25, 2.25]},
-			"yaxis": {"title": "Y", "range": [-0.25, 2.25]},
-			"zaxis": {"title": "Z", "range": [-0.25, 2.25]},
+			"xaxis": {"title": "X", "range": [-0.25, CELLS_PER_AXIS + 0.25]},
+			"yaxis": {"title": "Y", "range": [-0.25, CELLS_PER_AXIS + 0.25]},
+			"zaxis": {"title": "Z", "range": [-0.25, CELLS_PER_AXIS + 0.25]},
 			"aspectmode": "data",
 			"dragmode": "orbit",
 			"camera": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},

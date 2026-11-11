@@ -2,20 +2,22 @@ import itertools
 import unittest
 from unittest.mock import patch
 
-from visualize.render_3d import _mixed_lattice_geometry, render_lattice
+from visualize.render_3d import CELLS_PER_AXIS, _mixed_lattice_geometry, render_lattice
 
 
 class MixedLatticeGeometryTests(unittest.TestCase):
-	def test_two_by_two_by_two_cells_have_a_random_mixed_assignment(self):
+	def test_three_by_three_by_three_cells_have_a_random_mixed_assignment(self):
 		first = _mixed_lattice_geometry(seed=42)
 		second = _mixed_lattice_geometry(seed=42)
 		cells = set(first["bcc_cells"])
-		ordered_cells = list(itertools.product(range(2), repeat=3))
+		ordered_cells = list(itertools.product(range(CELLS_PER_AXIS), repeat=3))
 		all_cells = set(ordered_cells)
 
-		self.assertEqual(len(cells), 4)
+		self.assertEqual(CELLS_PER_AXIS, 3)
+		self.assertEqual(len(all_cells), 27)
+		self.assertEqual(len(cells), len(all_cells) // 2)
 		self.assertEqual(first["bcc_cells"], second["bcc_cells"])
-		self.assertEqual(len(all_cells - cells), 4)
+		self.assertEqual(len(all_cells - cells), len(all_cells) - len(all_cells) // 2)
 		self.assertNotEqual(cells, set(ordered_cells[:4]))
 
 	def test_all_simple_cubic_and_bcc_bonds_form_one_connected_lattice(self):
@@ -31,9 +33,10 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				adjacency.setdefault(start, set()).add(end)
 				adjacency.setdefault(end, set()).add(start)
 
-		self.assertEqual(len(geometry["simple_cubic_bonds"].x), 54 * 3)
-		self.assertEqual(len(geometry["bcc_bonds"].x), 4 * 8 * 3)
-		self.assertEqual(len(adjacency), 27 + 4)
+		sc_edge_count = 3 * CELLS_PER_AXIS * (CELLS_PER_AXIS + 1) ** 2
+		self.assertEqual(len(geometry["simple_cubic_bonds"].x), sc_edge_count * 3)
+		self.assertEqual(len(geometry["bcc_bonds"].x), len(geometry["bcc_cells"]) * 8 * 3)
+		self.assertEqual(len(adjacency), (CELLS_PER_AXIS + 1) ** 3 + len(geometry["bcc_cells"]))
 
 		reached = set()
 		pending = [next(iter(adjacency))]
@@ -62,9 +65,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"BCC body-center atoms",
 			],
 		)
-		self.assertEqual(len(figure.data[2].x), 27)
-		self.assertEqual(len(figure.data[3].x), 4)
-		self.assertIn("2 x 2 x 2", figure.layout.title.text)
+		self.assertEqual(len(figure.data[2].x), 64)
+		self.assertEqual(len(figure.data[3].x), 13)
+		self.assertIn("3 x 3 x 3", figure.layout.title.text)
 
 
 if __name__ == "__main__":
