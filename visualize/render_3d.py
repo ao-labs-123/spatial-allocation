@@ -227,38 +227,63 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 	capsule_x = []
 	capsule_y = []
 	capsule_z = []
+	capsule_i = []
+	capsule_j = []
+	capsule_k = []
+	capsule_radius = 0.4
+	latitude_steps = 8
+	longitude_steps = 12
 	for key in site_graph_data:
 		center = [
 			float(value)
 			for value in key.split(":", 1)[1].split(",")
 		]
-		radius = 0.36
-		for latitude in (-math.pi / 3, -math.pi / 6, 0, math.pi / 6, math.pi / 3):
-			ring = [
-				(
-					center[0] + radius * math.cos(latitude) * math.cos(step * math.tau / 16),
-					center[1] + radius * math.cos(latitude) * math.sin(step * math.tau / 16),
-					center[2] + radius * math.sin(latitude),
+		base = len(capsule_x)
+		capsule_x.append(center[0])
+		capsule_y.append(center[1])
+		capsule_z.append(center[2] - capsule_radius)
+		ring_indices = []
+		for latitude_index in range(1, latitude_steps):
+			latitude = -math.pi / 2 + latitude_index * math.pi / latitude_steps
+			ring = []
+			for longitude_index in range(longitude_steps):
+				longitude = longitude_index * math.tau / longitude_steps
+				ring.append(len(capsule_x))
+				capsule_x.append(
+					center[0]
+					+ capsule_radius * math.cos(latitude) * math.cos(longitude)
 				)
-				for step in range(17)
-			]
-			for start, end in zip(ring, ring[1:]):
-				add_segment(capsule_x, capsule_y, capsule_z, start, end)
-		for longitude in range(8):
-			angle = longitude * math.tau / 8
-			meridian = [
-				(
-					center[0] + radius * math.cos(latitude) * math.cos(angle),
-					center[1] + radius * math.cos(latitude) * math.sin(angle),
-					center[2] + radius * math.sin(latitude),
+				capsule_y.append(
+					center[1]
+					+ capsule_radius * math.cos(latitude) * math.sin(longitude)
 				)
-				for latitude in (
-					-math.pi / 2 + step * math.pi / 12
-					for step in range(13)
+				capsule_z.append(center[2] + capsule_radius * math.sin(latitude))
+			ring_indices.append(ring)
+		top = len(capsule_x)
+		capsule_x.append(center[0])
+		capsule_y.append(center[1])
+		capsule_z.append(center[2] + capsule_radius)
+
+		for longitude_index in range(longitude_steps):
+			next_longitude = (longitude_index + 1) % longitude_steps
+			capsule_i.append(base)
+			capsule_j.append(ring_indices[0][next_longitude])
+			capsule_k.append(ring_indices[0][longitude_index])
+			for ring_index in range(len(ring_indices) - 1):
+				lower = ring_indices[ring_index]
+				upper = ring_indices[ring_index + 1]
+				capsule_i.extend(
+					[lower[longitude_index], lower[next_longitude]]
 				)
-			]
-			for start, end in zip(meridian, meridian[1:]):
-				add_segment(capsule_x, capsule_y, capsule_z, start, end)
+				capsule_j.extend(
+					[lower[next_longitude], upper[next_longitude]]
+				)
+				capsule_k.extend(
+					[upper[longitude_index], upper[longitude_index]]
+				)
+			capsule_i.append(top)
+			capsule_j.append(ring_indices[-1][longitude_index])
+			capsule_k.append(ring_indices[-1][next_longitude])
 
 	def site_hover(kind, coordinate):
 		key = _site_key(kind, coordinate)
@@ -315,15 +340,19 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			hovertemplate="%{text}<extra></extra>",
 			name="BCC centers",
 		),
-		go.Scatter3d(
+		go.Mesh3d(
 			x=capsule_x,
 			y=capsule_y,
 			z=capsule_z,
-			mode="lines",
-			line={"color": "rgba(60, 130, 170, 0.55)", "width": 2},
+			i=capsule_i,
+			j=capsule_j,
+			k=capsule_k,
+			color="rgba(100, 180, 215, 0.22)",
+			opacity=0.22,
+			flatshading=False,
 			hoverinfo="skip",
 			showlegend=True,
-			name="Topology capsules",
+			name="Lattice site capsules",
 		),
 		go.Scatter3d(
 			x=[],
@@ -468,9 +497,9 @@ plot.on('plotly_click', function(eventData) {
     changingView = true;
     updateNestedTraces(data).then(function() {
         return Plotly.relayout(plot, {
-            'scene.xaxis.range': [center[0] - 0.72, center[0] + 0.72],
-            'scene.yaxis.range': [center[1] - 0.72, center[1] + 0.72],
-            'scene.zaxis.range': [center[2] - 0.72, center[2] + 0.72]
+            'scene.xaxis.range': [center[0] - 0.52, center[0] + 0.52],
+            'scene.yaxis.range': [center[1] - 0.52, center[1] + 0.52],
+            'scene.zaxis.range': [center[2] - 0.52, center[2] + 0.52]
         });
     }).then(function() {
         changingView = false;
@@ -491,9 +520,9 @@ plot.on('plotly_click', function(eventData) {
 		legend={"title": "Crystal lattice"},
 		hovermode="closest",
 		scene={
-			"xaxis": {"title": "X", "range": [-0.25, cells_per_axis + 0.25]},
-			"yaxis": {"title": "Y", "range": [-0.25, cells_per_axis + 0.25]},
-			"zaxis": {"title": "Z", "range": [-0.25, cells_per_axis + 0.25]},
+			"xaxis": {"title": "X", "range": [-0.5, cells_per_axis + 0.5]},
+			"yaxis": {"title": "Y", "range": [-0.5, cells_per_axis + 0.5]},
+			"zaxis": {"title": "Z", "range": [-0.5, cells_per_axis + 0.5]},
 			"aspectmode": "data",
 			"dragmode": "orbit",
 			"camera": {"eye": {"x": 1.5, "y": 1.5, "z": 1.2}},

@@ -117,7 +117,26 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			for hover in geometry["centers"].text
 		))
 		self.assertEqual(len(geometry["traces"]), 7)
-		self.assertEqual(geometry["capsules"].name, "Topology capsules")
+		self.assertGreater(len(geometry["capsules"].i), 0)
+		self.assertEqual(
+			len(geometry["capsules"].i),
+			len(geometry["capsules"].j),
+		)
+		self.assertEqual(
+			len(geometry["capsules"].i),
+			len(geometry["capsules"].k),
+		)
+		first_site = next(iter(geometry["site_graph_data"]))
+		first_center = [
+			float(value) for value in first_site.split(":", 1)[1].split(",")
+		]
+		self.assertAlmostEqual(geometry["capsules"].x[0], first_center[0])
+		self.assertAlmostEqual(geometry["capsules"].y[0], first_center[1])
+		self.assertAlmostEqual(
+			geometry["capsules"].z[0],
+			first_center[2] - 0.4,
+		)
+		self.assertEqual(geometry["capsules"].name, "Lattice site capsules")
 		self.assertEqual(geometry["nested_edges"].name, "Nested topology edges")
 		self.assertEqual(geometry["nested_particles"].name, "Nested topology particles")
 		self.assertFalse(geometry["nested_edges"].visible)
@@ -151,9 +170,18 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		for site_key, site_data in geometry["site_graph_data"].items():
 			self.assertTrue(site_key.startswith(("vertex:", "center:")))
 			self.assertTrue(site_data["nodes"])
+			center = [
+				float(value)
+				for value in site_key.split(":", 1)[1].split(",")
+			]
 			self.assertTrue(all("label" in node for node in site_data["nodes"]))
 			self.assertTrue(all(
 				len(node["position"]) == 3
+				for node in site_data["nodes"]
+			))
+			self.assertTrue(all(
+				sum((node["position"][axis] - center[axis]) ** 2 for axis in range(3))
+				<= 0.24**2 + 1e-12
 				for node in site_data["nodes"]
 			))
 			self.assertTrue(all(
@@ -179,7 +207,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"BCC body-center bonds",
 				"Shared lattice vertices",
 				"BCC centers",
-				"Topology capsules",
+				"Lattice site capsules",
 				"Nested topology edges",
 				"Nested topology particles",
 			],
@@ -210,8 +238,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertEqual(post_script.count("Plotly.restyle(plot"), 1)
 		self.assertIn("Plotly.relayout(plot", post_script)
 		capsule_trace = _mixed_lattice_geometry(_graph_data(), seed=42)["traces"][4]
-		self.assertGreater(len(capsule_trace.x), 0)
-		self.assertEqual(len(capsule_trace.x) % 3, 0)
+		self.assertEqual(capsule_trace.type, "mesh3d")
+		self.assertGreater(len(capsule_trace.i), 0)
+		self.assertIn("0.52", post_script)
 		self.assertIn("function collapseSite()", post_script)
 		self.assertIn("Close capsule", post_script)
 		self.assertNotIn("createElementNS", post_script)
