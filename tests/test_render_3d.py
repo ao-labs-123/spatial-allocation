@@ -116,7 +116,12 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			"nested graph particles" in hover
 			for hover in geometry["centers"].text
 		))
-		self.assertEqual(len(geometry["traces"]), 4)
+		self.assertEqual(len(geometry["traces"]), 7)
+		self.assertEqual(geometry["capsules"].name, "Topology capsules")
+		self.assertEqual(geometry["nested_edges"].name, "Nested topology edges")
+		self.assertEqual(geometry["nested_particles"].name, "Nested topology particles")
+		self.assertFalse(geometry["nested_edges"].visible)
+		self.assertFalse(geometry["nested_particles"].visible)
 
 	def test_lattice_bonds_are_connected_and_capsule_data_is_site_scoped(self):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
@@ -148,12 +153,18 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			self.assertTrue(site_data["nodes"])
 			self.assertTrue(all("label" in node for node in site_data["nodes"]))
 			self.assertTrue(all(
+				len(node["position"]) == 3
+				for node in site_data["nodes"]
+			))
+			self.assertTrue(all(
 				edge["source"] in {node["id"] for node in site_data["nodes"]}
 				and edge["target"] in {node["id"] for node in site_data["nodes"]}
+				and len(edge["source_position"]) == 3
+				and len(edge["target_position"]) == 3
 				for edge in site_data["edges"]
 			))
 
-	def test_renderer_expands_site_contents_without_plotly_redraw(self):
+	def test_renderer_expands_three_dimensional_particles_inside_capsule(self):
 		with patch(
 			"visualize.render_3d.go.Figure.write_html",
 			autospec=True,
@@ -168,6 +179,9 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"BCC body-center bonds",
 				"Shared lattice vertices",
 				"BCC centers",
+				"Topology capsules",
+				"Nested topology edges",
+				"Nested topology particles",
 			],
 		)
 		self.assertIn("3 x 3 x 3", figure.layout.title.text)
@@ -192,16 +206,15 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		post_script = write_html.call_args.kwargs["post_script"]
 		self.assertIn("Shared lattice vertices", post_script)
 		self.assertIn("BCC centers", post_script)
-		self.assertIn("document.createElement('section')", post_script)
-		self.assertIn("Nested particles and connections", post_script)
-		self.assertIn("document.createElementNS(svgNS, 'circle')", post_script)
-		self.assertIn("document.createElementNS(svgNS, 'line')", post_script)
-		self.assertIn("marker-end", post_script)
-		self.assertNotIn("Plotly.restyle", post_script)
+		self.assertIn("Plotly.restyle(plot", post_script)
+		self.assertEqual(post_script.count("Plotly.restyle(plot"), 1)
 		self.assertIn("Plotly.relayout(plot", post_script)
-		self.assertIn("var halfWidth = 0.72", post_script)
+		capsule_trace = _mixed_lattice_geometry(_graph_data(), seed=42)["traces"][4]
+		self.assertGreater(len(capsule_trace.x), 0)
+		self.assertEqual(len(capsule_trace.x) % 3, 0)
 		self.assertIn("function collapseSite()", post_script)
-		self.assertIn("position:absolute;left:50%;top:50%", post_script)
+		self.assertIn("Close capsule", post_script)
+		self.assertNotIn("createElementNS", post_script)
 
 
 if __name__ == "__main__":

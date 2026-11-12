@@ -177,6 +177,25 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 		graph_node_ids = set(site_node_ids)
 		for edge in site_edges:
 			graph_node_ids.update((edge["source"], edge["target"]))
+		center = tuple(
+			float(value)
+			for value in key.split(":", 1)[1].split(",")
+		)
+		graph_nodes = [
+			nodes_by_id[node_id]
+			for node_id in sorted(graph_node_ids)
+		]
+		node_count = len(graph_nodes)
+		node_positions_in_capsule = {}
+		for index, node in enumerate(graph_nodes):
+			angle = index * math.pi * (3 - math.sqrt(5))
+			z_unit = 1 - 2 * (index + 0.5) / node_count
+			radial_unit = math.sqrt(max(0.0, 1 - z_unit * z_unit))
+			node_positions_in_capsule[node["id"]] = [
+				center[0] + 0.24 * radial_unit * math.cos(angle),
+				center[1] + 0.24 * radial_unit * math.sin(angle),
+				center[2] + 0.24 * z_unit,
+			]
 		site_graph_data[key] = {
 			"kind": "BCC center" if key.startswith("center:") else "Shared lattice vertex",
 			"nodes": [
@@ -187,8 +206,9 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 					"lattice_role": str(node.get("lattice_role", "")),
 					"lattice_index": str(node.get("lattice_index", "")),
 					"nested": node["id"] in site_node_ids,
+					"position": node_positions_in_capsule[node["id"]],
 				}
-				for node in (nodes_by_id[node_id] for node_id in sorted(graph_node_ids))
+				for node in graph_nodes
 			],
 			"edges": [
 				{
@@ -197,10 +217,48 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 					"source_label": label_by_id[edge["source"]],
 					"target_label": label_by_id[edge["target"]],
 					"type": str(edge.get("morphism_type", "Relation")),
+					"source_position": node_positions_in_capsule[edge["source"]],
+					"target_position": node_positions_in_capsule[edge["target"]],
 				}
 				for edge in site_edges
 			],
 		}
+
+	capsule_x = []
+	capsule_y = []
+	capsule_z = []
+	for key in site_graph_data:
+		center = [
+			float(value)
+			for value in key.split(":", 1)[1].split(",")
+		]
+		radius = 0.36
+		for latitude in (-math.pi / 3, -math.pi / 6, 0, math.pi / 6, math.pi / 3):
+			ring = [
+				(
+					center[0] + radius * math.cos(latitude) * math.cos(step * math.tau / 16),
+					center[1] + radius * math.cos(latitude) * math.sin(step * math.tau / 16),
+					center[2] + radius * math.sin(latitude),
+				)
+				for step in range(17)
+			]
+			for start, end in zip(ring, ring[1:]):
+				add_segment(capsule_x, capsule_y, capsule_z, start, end)
+		for longitude in range(8):
+			angle = longitude * math.tau / 8
+			meridian = [
+				(
+					center[0] + radius * math.cos(latitude) * math.cos(angle),
+					center[1] + radius * math.cos(latitude) * math.sin(angle),
+					center[2] + radius * math.sin(latitude),
+				)
+				for latitude in (
+					-math.pi / 2 + step * math.pi / 12
+					for step in range(13)
+				)
+			]
+			for start, end in zip(meridian, meridian[1:]):
+				add_segment(capsule_x, capsule_y, capsule_z, start, end)
 
 	def site_hover(kind, coordinate):
 		key = _site_key(kind, coordinate)
@@ -257,6 +315,49 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			hovertemplate="%{text}<extra></extra>",
 			name="BCC centers",
 		),
+		go.Scatter3d(
+			x=capsule_x,
+			y=capsule_y,
+			z=capsule_z,
+			mode="lines",
+			line={"color": "rgba(60, 130, 170, 0.55)", "width": 2},
+			hoverinfo="skip",
+			showlegend=True,
+			name="Topology capsules",
+		),
+		go.Scatter3d(
+			x=[],
+			y=[],
+			z=[],
+			mode="lines",
+			line={"color": "rgba(47, 55, 64, 0.95)", "width": 5},
+			hoverinfo="skip",
+			showlegend=False,
+			visible=False,
+			name="Nested topology edges",
+		),
+		go.Scatter3d(
+			x=[],
+			y=[],
+			z=[],
+			mode="markers+text",
+			marker={
+				"size": 8,
+				"line": {"color": "white", "width": 1},
+			},
+			text=[],
+			textposition="top center",
+			customdata=[],
+			hovertemplate=(
+				"<b>%{text}</b><br>Category: %{customdata[1]}"
+				+ "<br>ID: %{customdata[0]}"
+				+ "<br>Lattice role: %{customdata[2]}"
+				+ "<br>Index label: %{customdata[3]}<extra></extra>"
+			),
+			showlegend=False,
+			visible=False,
+			name="Nested topology particles",
+		),
 	]
 
 	return {
@@ -270,6 +371,9 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 		"vertices": geometry[2],
 		"centers": geometry[3],
 		"site_contents": all_sites,
+		"capsules": geometry[4],
+		"nested_edges": geometry[5],
+		"nested_particles": geometry[6],
 	}
 
 
@@ -281,23 +385,16 @@ def render_lattice(graph_data, output_path, seed=None):
 var plot = document.getElementById('{plot_id}');
 var siteData = __SITE_GRAPH_DATA__;
 var plotHost = plot.parentNode;
-if (!plotHost.style.position) plotHost.style.position = 'relative';
-var panel = document.createElement('section');
-panel.style.cssText = 'display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;width:min(560px,calc(100% - 32px));max-height:80%;overflow:auto;box-sizing:border-box;padding:16px;background:rgba(255,255,255,.94);border:1px solid #94a3b8;border-radius:12px;box-shadow:0 12px 36px rgba(15,23,42,.3);font:14px/1.45 system-ui,sans-serif;color:#1e293b';
-var panelHeader = document.createElement('div');
-panelHeader.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px';
-var panelTitle = document.createElement('strong');
+var control = document.createElement('div');
+control.style.cssText = 'display:none;position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:20;padding:8px 12px;background:rgba(255,255,255,.94);border:1px solid #94a3b8;border-radius:8px;box-shadow:0 4px 16px rgba(15,23,42,.2);font:13px system-ui,sans-serif;color:#1e293b';
+var controlText = document.createElement('span');
 var closeButton = document.createElement('button');
 closeButton.type = 'button';
-closeButton.textContent = 'Close';
-closeButton.style.cssText = 'padding:5px 9px;border:1px solid #cbd5e1;border-radius:6px;background:white;cursor:pointer';
-var panelBody = document.createElement('div');
-panelHeader.appendChild(panelTitle);
-panelHeader.appendChild(closeButton);
-panel.appendChild(panelHeader);
-panel.appendChild(panelBody);
-plotHost.appendChild(panel);
-var svgNS = 'http://www.w3.org/2000/svg';
+closeButton.textContent = 'Close capsule';
+closeButton.style.cssText = 'margin-left:12px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;background:white;cursor:pointer';
+control.appendChild(controlText);
+control.appendChild(closeButton);
+plotHost.appendChild(control);
 var originalRanges = {
     x: plot._fullLayout.scene.xaxis.range.slice(),
     y: plot._fullLayout.scene.yaxis.range.slice(),
@@ -305,26 +402,49 @@ var originalRanges = {
 };
 var expandedSite = null;
 var changingView = false;
-function setSceneRanges(ranges) {
+function updateNestedTraces(data) {
+    var edges = data ? data.edges : [];
+    var nodes = data ? data.nodes : [];
+    var edgeX = [];
+    var edgeY = [];
+    var edgeZ = [];
+    edges.forEach(function(edge) {
+        edgeX.push(edge.source_position[0], edge.target_position[0], null);
+        edgeY.push(edge.source_position[1], edge.target_position[1], null);
+        edgeZ.push(edge.source_position[2], edge.target_position[2], null);
+    });
+    return Plotly.restyle(plot, {
+        x: [edgeX, nodes.map(function(node) { return node.position[0]; })],
+        y: [edgeY, nodes.map(function(node) { return node.position[1]; })],
+        z: [edgeZ, nodes.map(function(node) { return node.position[2]; })],
+        visible: [edges.length > 0, nodes.length > 0],
+        text: [[], nodes.map(function(node) { return node.label; })],
+        customdata: [[], nodes.map(function(node) {
+            return [node.id, node.category, node.lattice_role, node.lattice_index];
+        })],
+        'marker.color': [[], nodes.map(function(node) {
+            return node.category.toLowerCase() === 'entity' ? '#4477aa' : '#cc6677';
+        })]
+    }, [5, 6]);
+}
+function collapseSite() {
+    if (changingView) return;
+    control.style.display = 'none';
+    expandedSite = null;
     changingView = true;
-    Plotly.relayout(plot, {
-        'scene.xaxis.range': ranges.x,
-        'scene.yaxis.range': ranges.y,
-        'scene.zaxis.range': ranges.z
+    updateNestedTraces(null).then(function() {
+        return Plotly.relayout(plot, {
+            'scene.xaxis.range': originalRanges.x,
+            'scene.yaxis.range': originalRanges.y,
+            'scene.zaxis.range': originalRanges.z
+        });
     }).then(function() {
         changingView = false;
     }, function(error) {
         changingView = false;
-        panelTitle.textContent = 'Could not change lattice view';
-        panelBody.textContent = String(error);
-        panel.style.display = 'block';
+        controlText.textContent = 'Could not close capsule: ' + String(error);
+        control.style.display = 'block';
     });
-}
-function collapseSite() {
-    if (changingView) return;
-    panel.style.display = 'none';
-    expandedSite = null;
-    setSceneRanges(originalRanges);
 }
 closeButton.addEventListener('click', collapseSite);
 plot.on('plotly_click', function(eventData) {
@@ -340,112 +460,23 @@ plot.on('plotly_click', function(eventData) {
         collapseSite();
         return;
     }
-    panelTitle.textContent = data.kind + ' [' + siteKey.split(':')[1] + ']';
-    panelBody.replaceChildren();
-    var particleHeading = document.createElement('div');
-    particleHeading.textContent = 'Nested particles and connections';
-    particleHeading.style.cssText = 'font-weight:600;margin:8px 0';
-    panelBody.appendChild(particleHeading);
-    var width = 340;
-    var height = Math.max(180, Math.ceil(data.nodes.length / 4) * 112 + 40);
-    var svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-    svg.setAttribute('role', 'img');
-    svg.setAttribute('aria-label', data.nodes.length + ' graph particles and ' + data.edges.length + ' connections');
-    svg.style.cssText = 'display:block;width:100%;height:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px';
-    var defs = document.createElementNS(svgNS, 'defs');
-    var marker = document.createElementNS(svgNS, 'marker');
-    marker.setAttribute('id', 'graph-arrow');
-    marker.setAttribute('markerWidth', '8');
-    marker.setAttribute('markerHeight', '8');
-    marker.setAttribute('refX', '7');
-    marker.setAttribute('refY', '4');
-    marker.setAttribute('orient', 'auto');
-    marker.setAttribute('markerUnits', 'strokeWidth');
-    var arrow = document.createElementNS(svgNS, 'path');
-    arrow.setAttribute('d', 'M0,0 L8,4 L0,8 z');
-    arrow.setAttribute('fill', '#64748b');
-    marker.appendChild(arrow);
-    defs.appendChild(marker);
-    svg.appendChild(defs);
-
-    var positions = {};
-    var columns = Math.min(4, Math.max(1, data.nodes.length));
-    var rows = Math.ceil(data.nodes.length / columns);
-    data.nodes.forEach(function(node, index) {
-        var column = index % columns;
-        var row = Math.floor(index / columns);
-        positions[node.id] = {
-            x: (column + 0.5) * width / columns,
-            y: 38 + (row + 0.5) * (height - 46) / rows
-        };
-    });
-    data.edges.forEach(function(edge) {
-        var source = positions[edge.source];
-        var target = positions[edge.target];
-        if (!source || !target) return;
-        var line = document.createElementNS(svgNS, 'line');
-        line.setAttribute('x1', source.x);
-        line.setAttribute('y1', source.y);
-        line.setAttribute('x2', target.x);
-        line.setAttribute('y2', target.y);
-        line.setAttribute('stroke', '#64748b');
-        line.setAttribute('stroke-width', '2');
-        line.setAttribute('marker-end', 'url(#graph-arrow)');
-        var edgeTitle = document.createElementNS(svgNS, 'title');
-        edgeTitle.textContent = edge.type;
-        line.appendChild(edgeTitle);
-        svg.appendChild(line);
-
-        var edgeLabel = document.createElementNS(svgNS, 'text');
-        edgeLabel.setAttribute('x', (source.x + target.x) / 2);
-        edgeLabel.setAttribute('y', (source.y + target.y) / 2 - 5);
-        edgeLabel.setAttribute('text-anchor', 'middle');
-        edgeLabel.setAttribute('font-size', '10');
-        edgeLabel.setAttribute('fill', '#475569');
-        edgeLabel.textContent = edge.type;
-        svg.appendChild(edgeLabel);
-    });
-    data.nodes.forEach(function(node) {
-        var position = positions[node.id];
-        var group = document.createElementNS(svgNS, 'g');
-        var circle = document.createElementNS(svgNS, 'circle');
-        circle.setAttribute('cx', position.x);
-        circle.setAttribute('cy', position.y);
-        circle.setAttribute('r', node.nested ? '13' : '10');
-        circle.setAttribute('fill', node.category.toLowerCase() === 'entity' ? '#4477aa' : '#cc6677');
-        circle.setAttribute('stroke', node.nested ? '#1e293b' : '#94a3b8');
-        circle.setAttribute('stroke-width', node.nested ? '2' : '1');
-        var nodeTitle = document.createElementNS(svgNS, 'title');
-        nodeTitle.textContent = node.label + ' · ' + node.category +
-            (node.lattice_role ? ' · ' + node.lattice_role : '') +
-            (node.lattice_index ? ' · index: ' + node.lattice_index : '');
-        circle.appendChild(nodeTitle);
-        group.appendChild(circle);
-        var label = document.createElementNS(svgNS, 'text');
-        label.setAttribute('x', position.x);
-        label.setAttribute('y', position.y + 27);
-        label.setAttribute('text-anchor', 'middle');
-        label.setAttribute('font-size', '11');
-        label.setAttribute('fill', '#1e293b');
-        label.textContent = node.label;
-        group.appendChild(label);
-        svg.appendChild(group);
-    });
-    panelBody.appendChild(svg);
-    var caption = document.createElement('div');
-    caption.textContent = data.nodes.filter(function(node) { return node.nested; }).length +
-        ' nested particles · ' + data.edges.length + ' connections';
-    caption.style.cssText = 'margin-top:8px;color:#64748b;font-size:12px';
-    panelBody.appendChild(caption);
-    panel.style.display = 'block';
+    controlText.textContent = data.kind + ' [' + siteKey.split(':')[1] + '] · ' +
+        data.nodes.length + ' graph particles, ' + data.edges.length + ' edges';
+    control.style.display = 'block';
     expandedSite = siteKey;
     var center = siteKey.split(':')[1].split(',').map(Number);
-    var halfWidth = 0.72;
-    setSceneRanges({
-        x: [center[0] - halfWidth, center[0] + halfWidth],
-        y: [center[1] - halfWidth, center[1] + halfWidth],
-        z: [center[2] - halfWidth, center[2] + halfWidth]
+    changingView = true;
+    updateNestedTraces(data).then(function() {
+        return Plotly.relayout(plot, {
+            'scene.xaxis.range': [center[0] - 0.72, center[0] + 0.72],
+            'scene.yaxis.range': [center[1] - 0.72, center[1] + 0.72],
+            'scene.zaxis.range': [center[2] - 0.72, center[2] + 0.72]
+        });
+    }).then(function() {
+        changingView = false;
+    }, function(error) {
+        changingView = false;
+        controlText.textContent = 'Could not expand capsule: ' + String(error);
     });
 });
 """.replace("__SITE_GRAPH_DATA__", json.dumps(geometry["site_graph_data"]))
@@ -453,7 +484,7 @@ plot.on('plotly_click', function(eventData) {
 	cells_per_axis = geometry["cells_per_axis"]
 	figure.update_layout(
 		title=(
-			"Mixed SC / BCC crystal lattice with expandable graph capsules "
+			"Mixed SC / BCC crystal lattice with expandable 3D capsules "
 			f"({cells_per_axis} x {cells_per_axis} x {cells_per_axis})"
 		),
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
