@@ -36,8 +36,8 @@ def _site_capsule_trace(
 	face_i = []
 	face_j = []
 	face_k = []
-	face_customdata = []
-	face_text = []
+	vertex_customdata = []
+	vertex_text = []
 	latitude_steps = 8
 	longitude_steps = 12
 
@@ -68,7 +68,6 @@ def _site_capsule_trace(
 		x_values.append(center[0])
 		y_values.append(center[1])
 		z_values.append(center[2] + radius)
-		face_count = 0
 
 		for longitude_index in range(longitude_steps):
 			next_longitude = (longitude_index + 1) % longitude_steps
@@ -90,12 +89,12 @@ def _site_capsule_trace(
 			face_i.append(top)
 			face_j.append(rings[-1][longitude_index])
 			face_k.append(rings[-1][next_longitude])
-			face_count += 2 + 2 * (len(rings) - 1)
 
 		populated_count = len(populated_sites.get(key, []))
 		hover_text = f"{name}<br>{populated_count} nested graph particles"
-		face_customdata.extend([key] * face_count)
-		face_text.extend([hover_text] * face_count)
+		vertex_count = len(x_values) - base
+		vertex_customdata.extend([key] * vertex_count)
+		vertex_text.extend([hover_text] * vertex_count)
 
 	return go.Mesh3d(
 		x=x_values,
@@ -104,8 +103,8 @@ def _site_capsule_trace(
 		i=face_i,
 		j=face_j,
 		k=face_k,
-		customdata=face_customdata,
-		text=face_text,
+		customdata=vertex_customdata,
+		text=vertex_text,
 		hovertemplate="%{text}<extra></extra>",
 		color=color,
 		opacity=0.28,
@@ -438,10 +437,23 @@ def render_lattice(graph_data, output_path, seed=None):
 						"category",
 						"lattice_role",
 						"lattice_index",
+						"nested",
 					)
 				}
 				for node in data["nodes"]
-				if node["nested"]
+			],
+			"edges": [
+				{
+					field: edge[field]
+					for field in (
+						"source",
+						"target",
+						"source_label",
+						"target_label",
+						"type",
+					)
+				}
+				for edge in data["edges"]
 			],
 		}
 		for key, data in geometry["site_graph_data"].items()
@@ -490,20 +502,37 @@ plot.on('plotly_click', function(eventData) {
         panel.style.display = 'none';
         return;
     }
+    var nestedCount = data.nodes.filter(function(node) { return node.nested; }).length;
+    var connectedCount = data.nodes.length - nestedCount;
     heading.textContent = data.kind + ' [' + siteKey.split(':')[1] + '] · ' +
-        data.nodes.length + ' particle' + (data.nodes.length === 1 ? '' : 's');
+        nestedCount + ' inside, ' + connectedCount + ' connected';
     particleList.replaceChildren();
     data.nodes.forEach(function(node) {
         var item = document.createElement('article');
         item.style.cssText = 'padding:10px 0;border-top:1px solid #e2e8f0';
         appendText(item, 'strong', node.label);
         appendText(item, 'div', 'ID: ' + node.id, 'margin-top:4px;overflow-wrap:anywhere;color:#334155');
-        var metadata = [node.category || 'Uncategorized'];
+        var metadata = [
+            node.nested ? 'In this lattice site' : 'Connected via edge',
+            node.category || 'Uncategorized'
+        ];
         if (node.lattice_role) metadata.push('Role: ' + node.lattice_role);
         if (node.lattice_index) metadata.push('Index: ' + node.lattice_index);
         appendText(item, 'div', metadata.join(' | '), 'margin-top:4px;color:#64748b');
         particleList.appendChild(item);
     });
+    if (data.edges.length) {
+        appendText(particleList, 'strong', 'Edges', 'display:block;margin-top:12px');
+        data.edges.forEach(function(edge) {
+            appendText(
+                particleList,
+                'div',
+                edge.source_label + ' (' + edge.source + ') → ' +
+                    edge.target_label + ' (' + edge.target + ') · ' + edge.type,
+                'padding:8px 0;border-top:1px solid #e2e8f0;overflow-wrap:anywhere'
+            );
+        });
+    }
     panel.style.display = 'block';
 });
 """.replace(

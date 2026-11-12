@@ -116,17 +116,32 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertEqual(len(geometry["centers"].i), 2 * 168)
 		self.assertEqual(
 			len(geometry["vertices"].customdata),
-			len(geometry["vertices"].i),
+			len(geometry["vertices"].x),
 		)
 		self.assertEqual(
 			len(geometry["centers"].customdata),
-			len(geometry["centers"].i),
+			len(geometry["centers"].x),
 		)
 		self.assertTrue(any("nested graph particles" in text for text in geometry["vertices"].text))
 		self.assertTrue(any("nested graph particles" in text for text in geometry["centers"].text))
 		self.assertAlmostEqual(SITE_CAPSULE_RADIUS, 0.28)
 		self.assertAlmostEqual(NESTED_PARTICLE_RADIUS, 0.16)
 		self.assertEqual(len(geometry["traces"]), 6)
+		for trace in (geometry["vertices"], geometry["centers"]):
+			for key in set(trace.customdata):
+				expected_count = len(geometry["site_contents"][key])
+				vertex_indexes = [
+					index
+					for index, vertex_key in enumerate(trace.customdata)
+					if vertex_key == key
+				]
+				self.assertTrue(vertex_indexes)
+				self.assertTrue(all(
+					f"{expected_count} nested graph particles" in trace.text[index]
+					for index in vertex_indexes
+				))
+		self.assertTrue(any(not nodes for nodes in geometry["site_contents"].values()))
+		self.assertTrue(any(geometry["site_contents"].values()))
 		self.assertAlmostEqual(geometry["vertices"].x[0], 0)
 		self.assertAlmostEqual(geometry["vertices"].y[0], 0)
 		self.assertAlmostEqual(
@@ -246,8 +261,11 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertIn("plotly_click", post_script)
 		self.assertIn("Lattice particle details", post_script)
 		self.assertIn("ID: ' + node.id", post_script)
+		self.assertIn("Connected via edge", post_script)
+		self.assertIn("'Edges'", post_script)
 		self.assertIn('"entity-0"', post_script)
-		self.assertNotIn('"nested": false', post_script)
+		self.assertIn('"nested": true', post_script)
+		self.assertIn('"nested": false', post_script)
 
 
 if __name__ == "__main__":
