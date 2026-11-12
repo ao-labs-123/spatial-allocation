@@ -280,8 +280,10 @@ def render_lattice(graph_data, output_path, seed=None):
 	post_script = """
 var plot = document.getElementById('{plot_id}');
 var siteData = __SITE_GRAPH_DATA__;
+var plotHost = plot.parentNode;
+if (!plotHost.style.position) plotHost.style.position = 'relative';
 var panel = document.createElement('section');
-panel.style.cssText = 'display:none;position:fixed;right:16px;top:64px;z-index:10000;width:min(380px,calc(100vw - 32px));max-height:70vh;overflow:auto;box-sizing:border-box;padding:16px;background:rgba(255,255,255,.97);border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 8px 28px rgba(15,23,42,.22);font:14px/1.45 system-ui,sans-serif;color:#1e293b';
+panel.style.cssText = 'display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;width:min(560px,calc(100% - 32px));max-height:80%;overflow:auto;box-sizing:border-box;padding:16px;background:rgba(255,255,255,.94);border:1px solid #94a3b8;border-radius:12px;box-shadow:0 12px 36px rgba(15,23,42,.3);font:14px/1.45 system-ui,sans-serif;color:#1e293b';
 var panelHeader = document.createElement('div');
 panelHeader.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px';
 var panelTitle = document.createElement('strong');
@@ -294,18 +296,50 @@ panelHeader.appendChild(panelTitle);
 panelHeader.appendChild(closeButton);
 panel.appendChild(panelHeader);
 panel.appendChild(panelBody);
-document.body.appendChild(panel);
-closeButton.addEventListener('click', function() { panel.style.display = 'none'; });
+plotHost.appendChild(panel);
 var svgNS = 'http://www.w3.org/2000/svg';
+var originalRanges = {
+    x: plot._fullLayout.scene.xaxis.range.slice(),
+    y: plot._fullLayout.scene.yaxis.range.slice(),
+    z: plot._fullLayout.scene.zaxis.range.slice()
+};
+var expandedSite = null;
+var changingView = false;
+function setSceneRanges(ranges) {
+    changingView = true;
+    Plotly.relayout(plot, {
+        'scene.xaxis.range': ranges.x,
+        'scene.yaxis.range': ranges.y,
+        'scene.zaxis.range': ranges.z
+    }).then(function() {
+        changingView = false;
+    }, function(error) {
+        changingView = false;
+        panelTitle.textContent = 'Could not change lattice view';
+        panelBody.textContent = String(error);
+        panel.style.display = 'block';
+    });
+}
+function collapseSite() {
+    if (changingView) return;
+    panel.style.display = 'none';
+    expandedSite = null;
+    setSceneRanges(originalRanges);
+}
+closeButton.addEventListener('click', collapseSite);
 plot.on('plotly_click', function(eventData) {
     var point = eventData.points && eventData.points[0];
-    if (!point) return;
+    if (!point || changingView) return;
     var isLatticeSite = point.data.name === 'Shared lattice vertices' ||
                         point.data.name === 'BCC centers';
     if (!isLatticeSite) return;
     var siteKey = point.customdata;
     var data = siteData[siteKey];
     if (!data || !data.nodes.length) return;
+    if (expandedSite === siteKey) {
+        collapseSite();
+        return;
+    }
     panelTitle.textContent = data.kind + ' [' + siteKey.split(':')[1] + ']';
     panelBody.replaceChildren();
     var particleHeading = document.createElement('div');
@@ -405,6 +439,14 @@ plot.on('plotly_click', function(eventData) {
     caption.style.cssText = 'margin-top:8px;color:#64748b;font-size:12px';
     panelBody.appendChild(caption);
     panel.style.display = 'block';
+    expandedSite = siteKey;
+    var center = siteKey.split(':')[1].split(',').map(Number);
+    var halfWidth = 0.72;
+    setSceneRanges({
+        x: [center[0] - halfWidth, center[0] + halfWidth],
+        y: [center[1] - halfWidth, center[1] + halfWidth],
+        z: [center[2] - halfWidth, center[2] + halfWidth]
+    });
 });
 """.replace("__SITE_GRAPH_DATA__", json.dumps(geometry["site_graph_data"]))
 

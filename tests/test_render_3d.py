@@ -198,6 +198,10 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertIn("document.createElementNS(svgNS, 'line')", post_script)
 		self.assertIn("marker-end", post_script)
 		self.assertNotIn("Plotly.restyle", post_script)
+		self.assertIn("Plotly.relayout(plot", post_script)
+		self.assertIn("var halfWidth = 0.72", post_script)
+		self.assertIn("function collapseSite()", post_script)
+		self.assertIn("position:absolute;left:50%;top:50%", post_script)
 
 
 if __name__ == "__main__":
