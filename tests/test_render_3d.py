@@ -106,37 +106,26 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
 		self.assertEqual(geometry["vertices"].name, "Shared lattice vertices")
 		self.assertEqual(geometry["centers"].name, "BCC centers")
-		self.assertEqual(len(geometry["vertices"].x), 4**3)
-		self.assertEqual(len(geometry["centers"].x), 2)
-		self.assertTrue(all(
-			"nested graph particles" in hover
-			for hover in geometry["vertices"].text
-		))
-		self.assertTrue(all(
-			"nested graph particles" in hover
-			for hover in geometry["centers"].text
-		))
-		self.assertEqual(len(geometry["traces"]), 7)
-		self.assertGreater(len(geometry["capsules"].i), 0)
+		self.assertEqual(geometry["vertices"].type, "mesh3d")
+		self.assertEqual(geometry["centers"].type, "mesh3d")
+		self.assertEqual(len(geometry["vertices"].x), 4**3 * 86)
+		self.assertEqual(len(geometry["centers"].x), 2 * 86)
+		self.assertEqual(len(geometry["vertices"].i), 4**3 * 168)
+		self.assertEqual(len(geometry["centers"].i), 2 * 168)
 		self.assertEqual(
-			len(geometry["capsules"].i),
-			len(geometry["capsules"].j),
+			len(geometry["vertices"].customdata),
+			len(geometry["vertices"].i),
 		)
 		self.assertEqual(
-			len(geometry["capsules"].i),
-			len(geometry["capsules"].k),
+			len(geometry["centers"].customdata),
+			len(geometry["centers"].i),
 		)
-		first_site = next(iter(geometry["site_graph_data"]))
-		first_center = [
-			float(value) for value in first_site.split(":", 1)[1].split(",")
-		]
-		self.assertAlmostEqual(geometry["capsules"].x[0], first_center[0])
-		self.assertAlmostEqual(geometry["capsules"].y[0], first_center[1])
-		self.assertAlmostEqual(
-			geometry["capsules"].z[0],
-			first_center[2] - 0.4,
-		)
-		self.assertEqual(geometry["capsules"].name, "Lattice site capsules")
+		self.assertTrue(any("Click to look inside" in text for text in geometry["vertices"].text))
+		self.assertTrue(any("Click to look inside" in text for text in geometry["centers"].text))
+		self.assertEqual(len(geometry["traces"]), 6)
+		self.assertAlmostEqual(geometry["vertices"].x[0], 0)
+		self.assertAlmostEqual(geometry["vertices"].y[0], 0)
+		self.assertAlmostEqual(geometry["vertices"].z[0], -0.4)
 		self.assertEqual(geometry["nested_edges"].name, "Nested topology edges")
 		self.assertEqual(geometry["nested_particles"].name, "Nested topology particles")
 		self.assertFalse(geometry["nested_edges"].visible)
@@ -207,7 +196,6 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"BCC body-center bonds",
 				"Shared lattice vertices",
 				"BCC centers",
-				"Lattice site capsules",
 				"Nested topology edges",
 				"Nested topology particles",
 			],
@@ -237,9 +225,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertIn("Plotly.restyle(plot", post_script)
 		self.assertEqual(post_script.count("Plotly.restyle(plot"), 1)
 		self.assertIn("Plotly.relayout(plot", post_script)
-		capsule_trace = _mixed_lattice_geometry(_graph_data(), seed=42)["traces"][4]
-		self.assertEqual(capsule_trace.type, "mesh3d")
-		self.assertGreater(len(capsule_trace.i), 0)
+		self.assertIn("[4, 5]", post_script)
 		self.assertIn("0.52", post_script)
 		self.assertIn("function collapseSite()", post_script)
 		self.assertIn("Close capsule", post_script)

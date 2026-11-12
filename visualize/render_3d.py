@@ -21,6 +21,96 @@ def _site_key(kind, coordinate):
 	return kind + ":" + ",".join(f"{value:g}" for value in coordinate)
 
 
+def _site_capsule_trace(sites, populated_sites, name, color, radius=0.4):
+	x_values = []
+	y_values = []
+	z_values = []
+	face_i = []
+	face_j = []
+	face_k = []
+	face_customdata = []
+	face_text = []
+	latitude_steps = 8
+	longitude_steps = 12
+
+	for kind, center in sites:
+		key = _site_key(kind, center)
+		base = len(x_values)
+		x_values.append(center[0])
+		y_values.append(center[1])
+		z_values.append(center[2] - radius)
+		rings = []
+		for latitude_index in range(1, latitude_steps):
+			latitude = -math.pi / 2 + latitude_index * math.pi / latitude_steps
+			ring = []
+			for longitude_index in range(longitude_steps):
+				longitude = longitude_index * math.tau / longitude_steps
+				ring.append(len(x_values))
+				x_values.append(
+					center[0]
+					+ radius * math.cos(latitude) * math.cos(longitude)
+				)
+				y_values.append(
+					center[1]
+					+ radius * math.cos(latitude) * math.sin(longitude)
+				)
+				z_values.append(center[2] + radius * math.sin(latitude))
+			rings.append(ring)
+		top = len(x_values)
+		x_values.append(center[0])
+		y_values.append(center[1])
+		z_values.append(center[2] + radius)
+		face_count = 0
+
+		for longitude_index in range(longitude_steps):
+			next_longitude = (longitude_index + 1) % longitude_steps
+			face_i.append(base)
+			face_j.append(rings[0][next_longitude])
+			face_k.append(rings[0][longitude_index])
+			for ring_index in range(len(rings) - 1):
+				lower = rings[ring_index]
+				upper = rings[ring_index + 1]
+				face_i.extend(
+					[lower[longitude_index], lower[next_longitude]]
+				)
+				face_j.extend(
+					[lower[next_longitude], upper[next_longitude]]
+				)
+				face_k.extend(
+					[upper[longitude_index], upper[longitude_index]]
+				)
+			face_i.append(top)
+			face_j.append(rings[-1][longitude_index])
+			face_k.append(rings[-1][next_longitude])
+			face_count += 2 + 2 * (len(rings) - 1)
+
+		populated_count = len(populated_sites.get(key, []))
+		hover_text = (
+			f"{name}<br>{populated_count} nested graph particles"
+			+ ("<br>Click to look inside" if populated_count else "")
+		)
+		face_customdata.extend([key] * face_count)
+		face_text.extend([hover_text] * face_count)
+
+	return go.Mesh3d(
+		x=x_values,
+		y=y_values,
+		z=z_values,
+		i=face_i,
+		j=face_j,
+		k=face_k,
+		customdata=face_customdata,
+		text=face_text,
+		hovertemplate="%{text}<extra></extra>",
+		color=color,
+		opacity=0.28,
+		flatshading=False,
+		lighting={"ambient": 0.7, "diffuse": 0.5, "specular": 0.25, "roughness": 0.65},
+		lightposition={"x": 100, "y": 200, "z": 300},
+		name=name,
+	)
+
+
 def _allocate_components(graph_data, seed):
 	allocated = allocate_coordinates(deepcopy(graph_data))
 	nodes = {
@@ -224,72 +314,6 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			],
 		}
 
-	capsule_x = []
-	capsule_y = []
-	capsule_z = []
-	capsule_i = []
-	capsule_j = []
-	capsule_k = []
-	capsule_radius = 0.4
-	latitude_steps = 8
-	longitude_steps = 12
-	for key in site_graph_data:
-		center = [
-			float(value)
-			for value in key.split(":", 1)[1].split(",")
-		]
-		base = len(capsule_x)
-		capsule_x.append(center[0])
-		capsule_y.append(center[1])
-		capsule_z.append(center[2] - capsule_radius)
-		ring_indices = []
-		for latitude_index in range(1, latitude_steps):
-			latitude = -math.pi / 2 + latitude_index * math.pi / latitude_steps
-			ring = []
-			for longitude_index in range(longitude_steps):
-				longitude = longitude_index * math.tau / longitude_steps
-				ring.append(len(capsule_x))
-				capsule_x.append(
-					center[0]
-					+ capsule_radius * math.cos(latitude) * math.cos(longitude)
-				)
-				capsule_y.append(
-					center[1]
-					+ capsule_radius * math.cos(latitude) * math.sin(longitude)
-				)
-				capsule_z.append(center[2] + capsule_radius * math.sin(latitude))
-			ring_indices.append(ring)
-		top = len(capsule_x)
-		capsule_x.append(center[0])
-		capsule_y.append(center[1])
-		capsule_z.append(center[2] + capsule_radius)
-
-		for longitude_index in range(longitude_steps):
-			next_longitude = (longitude_index + 1) % longitude_steps
-			capsule_i.append(base)
-			capsule_j.append(ring_indices[0][next_longitude])
-			capsule_k.append(ring_indices[0][longitude_index])
-			for ring_index in range(len(ring_indices) - 1):
-				lower = ring_indices[ring_index]
-				upper = ring_indices[ring_index + 1]
-				capsule_i.extend(
-					[lower[longitude_index], lower[next_longitude]]
-				)
-				capsule_j.extend(
-					[lower[next_longitude], upper[next_longitude]]
-				)
-				capsule_k.extend(
-					[upper[longitude_index], upper[longitude_index]]
-				)
-			capsule_i.append(top)
-			capsule_j.append(ring_indices[-1][longitude_index])
-			capsule_k.append(ring_indices[-1][next_longitude])
-
-	def site_hover(kind, coordinate):
-		key = _site_key(kind, coordinate)
-		count = len(all_sites.get(key, []))
-		return f"{kind.title()}<br>{count} nested graph particles<br>Click to expand"
-
 	geometry = [
 		go.Scatter3d(
 			x=sc_x,
@@ -309,50 +333,17 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			hoverinfo="skip",
 			name="BCC body-center bonds",
 		),
-		go.Scatter3d(
-			x=[point[0] for point in lattice_vertices],
-			y=[point[1] for point in lattice_vertices],
-			z=[point[2] for point in lattice_vertices],
-			mode="markers",
-			marker={
-				"size": 8,
-				"color": "rgba(65, 78, 91, 0.95)",
-				"line": {"color": "white", "width": 1},
-			},
-			customdata=[_site_key("vertex", point) for point in lattice_vertices],
-			text=[site_hover("vertex", point) for point in lattice_vertices],
-			hovertemplate="%{text}<extra></extra>",
-			name="Shared lattice vertices",
+		_site_capsule_trace(
+			[("vertex", point) for point in lattice_vertices],
+			vertex_contents,
+			"Shared lattice vertices",
+			"rgba(65, 145, 180, 1)",
 		),
-		go.Scatter3d(
-			x=[point[0] for point in bcc_centers],
-			y=[point[1] for point in bcc_centers],
-			z=[point[2] for point in bcc_centers],
-			mode="markers",
-			marker={
-				"size": 11,
-				"symbol": "diamond",
-				"color": "rgba(239, 157, 69, 1)",
-				"line": {"color": "white", "width": 1},
-			},
-			customdata=[_site_key("center", point) for point in bcc_centers],
-			text=[site_hover("center", point) for point in bcc_centers],
-			hovertemplate="%{text}<extra></extra>",
-			name="BCC centers",
-		),
-		go.Mesh3d(
-			x=capsule_x,
-			y=capsule_y,
-			z=capsule_z,
-			i=capsule_i,
-			j=capsule_j,
-			k=capsule_k,
-			color="rgba(100, 180, 215, 0.22)",
-			opacity=0.22,
-			flatshading=False,
-			hoverinfo="skip",
-			showlegend=True,
-			name="Lattice site capsules",
+		_site_capsule_trace(
+			[("center", point) for point in bcc_centers],
+			center_contents,
+			"BCC centers",
+			"rgba(220, 140, 55, 1)",
 		),
 		go.Scatter3d(
 			x=[],
@@ -400,9 +391,8 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 		"vertices": geometry[2],
 		"centers": geometry[3],
 		"site_contents": all_sites,
-		"capsules": geometry[4],
-		"nested_edges": geometry[5],
-		"nested_particles": geometry[6],
+		"nested_edges": geometry[4],
+		"nested_particles": geometry[5],
 	}
 
 
@@ -454,7 +444,7 @@ function updateNestedTraces(data) {
         'marker.color': [[], nodes.map(function(node) {
             return node.category.toLowerCase() === 'entity' ? '#4477aa' : '#cc6677';
         })]
-    }, [5, 6]);
+    }, [4, 5]);
 }
 function collapseSite() {
     if (changingView) return;
