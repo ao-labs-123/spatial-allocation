@@ -242,7 +242,12 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"Plain Event label 1",
 			},
 		)
-		self.assertNotIn("post_script", write_html.call_args.kwargs)
+		post_script = write_html.call_args.kwargs["post_script"]
+		self.assertIn("plotly_click", post_script)
+		self.assertIn("Lattice particle details", post_script)
+		self.assertIn("ID: ' + node.id", post_script)
+		self.assertIn('"entity-0"', post_script)
+		self.assertNotIn('"nested": false', post_script)
 
 
 if __name__ == "__main__":

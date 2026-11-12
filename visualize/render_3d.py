@@ -426,6 +426,90 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 def render_lattice(graph_data, output_path, seed=None):
 	geometry = _mixed_lattice_geometry(graph_data, seed)
 	figure = go.Figure(data=geometry["traces"])
+	site_details = {
+		key: {
+			"kind": data["kind"],
+			"nodes": [
+				{
+					field: node[field]
+					for field in (
+						"id",
+						"label",
+						"category",
+						"lattice_role",
+						"lattice_index",
+					)
+				}
+				for node in data["nodes"]
+				if node["nested"]
+			],
+		}
+		for key, data in geometry["site_graph_data"].items()
+	}
+	post_script = """
+var plot = document.getElementById('{plot_id}');
+var siteDetails = __SITE_DETAILS__;
+var panel = document.createElement('section');
+panel.setAttribute('role', 'dialog');
+panel.setAttribute('aria-label', 'Lattice particle details');
+panel.style.cssText = 'display:none;position:fixed;top:16px;right:16px;z-index:1000;width:min(360px,calc(100vw - 32px));max-height:70vh;overflow:auto;box-sizing:border-box;padding:16px;background:rgba(255,255,255,.97);border:1px solid #94a3b8;border-radius:10px;box-shadow:0 6px 24px rgba(15,23,42,.24);font:13px system-ui,sans-serif;color:#1e293b';
+var header = document.createElement('div');
+header.style.cssText = 'display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px';
+var heading = document.createElement('strong');
+heading.style.cssText = 'font-size:15px;line-height:1.4';
+var closeButton = document.createElement('button');
+closeButton.type = 'button';
+closeButton.textContent = 'Close';
+closeButton.setAttribute('aria-label', 'Close particle details');
+closeButton.style.cssText = 'flex:none;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;background:white;cursor:pointer';
+var particleList = document.createElement('div');
+header.appendChild(heading);
+header.appendChild(closeButton);
+panel.appendChild(header);
+panel.appendChild(particleList);
+document.body.appendChild(panel);
+closeButton.addEventListener('click', function() {
+    panel.style.display = 'none';
+});
+function appendText(parent, tagName, text, style) {
+    var element = document.createElement(tagName);
+    element.textContent = text;
+    if (style) element.style.cssText = style;
+    parent.appendChild(element);
+}
+plot.on('plotly_click', function(eventData) {
+    var points = eventData.points || [];
+    var point = points.find(function(candidate) {
+        return candidate.data.name === 'Shared lattice vertices' ||
+               candidate.data.name === 'BCC centers';
+    });
+    if (!point) return;
+    var siteKey = Array.isArray(point.customdata) ? point.customdata[0] : point.customdata;
+    var data = siteDetails[siteKey];
+    if (!data || !data.nodes.length) {
+        panel.style.display = 'none';
+        return;
+    }
+    heading.textContent = data.kind + ' [' + siteKey.split(':')[1] + '] · ' +
+        data.nodes.length + ' particle' + (data.nodes.length === 1 ? '' : 's');
+    particleList.replaceChildren();
+    data.nodes.forEach(function(node) {
+        var item = document.createElement('article');
+        item.style.cssText = 'padding:10px 0;border-top:1px solid #e2e8f0';
+        appendText(item, 'strong', node.label);
+        appendText(item, 'div', 'ID: ' + node.id, 'margin-top:4px;overflow-wrap:anywhere;color:#334155');
+        var metadata = [node.category || 'Uncategorized'];
+        if (node.lattice_role) metadata.push('Role: ' + node.lattice_role);
+        if (node.lattice_index) metadata.push('Index: ' + node.lattice_index);
+        appendText(item, 'div', metadata.join(' | '), 'margin-top:4px;color:#64748b');
+        particleList.appendChild(item);
+    });
+    panel.style.display = 'block';
+});
+""".replace(
+		"__SITE_DETAILS__",
+		json.dumps(site_details, ensure_ascii=False).replace("<", "\\u003c"),
+	)
 
 	cells_per_axis = geometry["cells_per_axis"]
 	figure.update_layout(
@@ -450,6 +534,7 @@ def render_lattice(graph_data, output_path, seed=None):
 		output_path,
 		include_plotlyjs=True,
 		full_html=True,
+		post_script=post_script,
 	)
 	if output_path.exists():
 		html_lines = output_path.read_text(encoding="utf-8").splitlines()
