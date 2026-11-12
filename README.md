@@ -16,7 +16,7 @@ The 3D allocator uses the input node attributes and directed morphisms as follow
 
 Each connected component is placed in a container particle, and its topology is embedded on a discrete inner lattice. A labeled `Entity` directly connected to an `Event` with non-empty `*_mapping` data becomes a core/index and is assigned to the BCC body-center site; mapped Events are assigned to vertex sites. Otherwise the component uses a simple cubic (SC) lattice, the neutral choice for unstructured topology. A component's `attributes.lattice_mode` may explicitly override the inferred mode with `simple_cubic`, `body_centered_cubic`, `sc`, or `bcc`. The allocator retains this topology-allocation output as `data/topological_graph_3d.json`.
 
-The GitHub Pages visualization renders each `Shared lattice vertex` and `BCC center` itself as a translucent 3D capsule sphere; there is no separate capsule layer. Graph particles and edges from `data/topological_graph.json` are positioned inside the corresponding site capsule and hidden until selected. SC components are nested only in shared lattice vertices. In BCC components, mapped `Entity` index particles occupy body-center capsules and the other graph particles occupy vertex capsules. Click a populated site capsule to zoom inside it and reveal its nested 3D topology; use Close or click the selected site again to hide the contents and restore the full lattice. The number of unit cells grows as needed to provide a cell for every connected component.
+The GitHub Pages visualization renders each `Shared lattice vertex` and `BCC center` itself as a translucent 3D capsule sphere; there is no separate capsule layer. Graph particles and edges from `data/topological_graph.json` are positioned inside their site capsules and visible from the start, so the topology can be seen within the full lattice without clicking. Hover over a particle for its label and details. SC components are nested only in shared lattice vertices. In BCC components, mapped `Entity` index particles occupy body-center capsules and the other graph particles occupy vertex capsules. The number of unit cells grows as needed to provide a cell for every connected component.
 
 ---
 
@@ -61,7 +61,7 @@ The renderer reads `data/topological_graph.json` and writes the interactive page
 ## Pipeline Workflow
 ```text
 [topological-mapper] -> data/topological_graph.json
-    -> python visualize/render_3d.py -> docs/index.html (expandable mixed SC/BCC lattice)
+    -> python visualize/render_3d.py -> docs/index.html (mixed SC/BCC lattice with visible nested topology)
     -> python src/allocator.py -> data/topological_graph_3d.json (optional topology allocation)
 ```
 ## Tech Stack

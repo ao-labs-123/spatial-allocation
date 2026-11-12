@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 
 from visualize.render_3d import (
-	CAPSULE_ZOOM_HALF_WIDTH,
 	MIN_CELLS_PER_AXIS,
 	NESTED_PARTICLE_RADIUS,
 	SITE_CAPSULE_RADIUS,
@@ -105,7 +104,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			2,
 		)
 
-	def test_shared_lattice_vertices_and_bcc_centers_are_the_clickable_capsules(self):
+	def test_shared_lattice_vertices_and_bcc_centers_are_the_capsules(self):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
 		self.assertEqual(geometry["vertices"].name, "Shared lattice vertices")
 		self.assertEqual(geometry["centers"].name, "BCC centers")
@@ -123,11 +122,10 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			len(geometry["centers"].customdata),
 			len(geometry["centers"].i),
 		)
-		self.assertTrue(any("Click to look inside" in text for text in geometry["vertices"].text))
-		self.assertTrue(any("Click to look inside" in text for text in geometry["centers"].text))
+		self.assertTrue(any("nested graph particles" in text for text in geometry["vertices"].text))
+		self.assertTrue(any("nested graph particles" in text for text in geometry["centers"].text))
 		self.assertAlmostEqual(SITE_CAPSULE_RADIUS, 0.28)
 		self.assertAlmostEqual(NESTED_PARTICLE_RADIUS, 0.16)
-		self.assertAlmostEqual(CAPSULE_ZOOM_HALF_WIDTH, 0.38)
 		self.assertEqual(len(geometry["traces"]), 6)
 		self.assertAlmostEqual(geometry["vertices"].x[0], 0)
 		self.assertAlmostEqual(geometry["vertices"].y[0], 0)
@@ -137,8 +135,12 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		)
 		self.assertEqual(geometry["nested_edges"].name, "Nested topology edges")
 		self.assertEqual(geometry["nested_particles"].name, "Nested topology particles")
-		self.assertFalse(geometry["nested_edges"].visible)
-		self.assertFalse(geometry["nested_particles"].visible)
+		self.assertTrue(geometry["nested_edges"].x)
+		self.assertEqual(
+			len(geometry["nested_particles"].x),
+			len(geometry["nested_nodes"]),
+		)
+		self.assertTrue(geometry["nested_particles"].x)
 
 	def test_lattice_bonds_are_connected_and_capsule_data_is_site_scoped(self):
 		geometry = _mixed_lattice_geometry(_graph_data(), seed=42)
@@ -190,7 +192,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				for edge in site_data["edges"]
 			))
 
-	def test_renderer_expands_three_dimensional_particles_inside_capsule(self):
+	def test_renderer_shows_three_dimensional_particles_without_clicking(self):
 		with patch(
 			"visualize.render_3d.go.Figure.write_html",
 			autospec=True,
@@ -210,6 +212,18 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			],
 		)
 		self.assertIn("3 x 3 x 3", figure.layout.title.text)
+		self.assertIn("visible nested topology", figure.layout.title.text)
+		site_data = _mixed_lattice_geometry(_graph_data(), seed=42)["site_graph_data"]
+		self.assertEqual(
+			len(figure.data[5].x),
+			sum(len(data["nodes"]) for data in site_data.values()),
+		)
+		self.assertEqual(
+			len(figure.data[4].x),
+			sum(3 * len(data["edges"]) for data in site_data.values()),
+		)
+		self.assertTrue(figure.data[4].x)
+		self.assertTrue(figure.data[5].x)
 		labels = {
 			label
 			for data in _mixed_lattice_geometry(_graph_data(), seed=42)["site_graph_data"].values()
@@ -228,17 +242,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 				"Plain Event label 1",
 			},
 		)
-		post_script = write_html.call_args.kwargs["post_script"]
-		self.assertIn("Shared lattice vertices", post_script)
-		self.assertIn("BCC centers", post_script)
-		self.assertIn("Plotly.restyle(plot", post_script)
-		self.assertEqual(post_script.count("Plotly.restyle(plot"), 1)
-		self.assertIn("Plotly.relayout(plot", post_script)
-		self.assertIn("[4, 5]", post_script)
-		self.assertIn("0.38", post_script)
-		self.assertIn("function collapseSite()", post_script)
-		self.assertIn("Close capsule", post_script)
-		self.assertNotIn("createElementNS", post_script)
+		self.assertNotIn("post_script", write_html.call_args.kwargs)
 
 
 if __name__ == "__main__":

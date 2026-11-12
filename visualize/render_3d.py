@@ -17,7 +17,6 @@ from src.allocator import allocate_coordinates
 MIN_CELLS_PER_AXIS = 3
 SITE_CAPSULE_RADIUS = 0.28
 NESTED_PARTICLE_RADIUS = 0.16
-CAPSULE_ZOOM_HALF_WIDTH = 0.38
 
 
 def _site_key(kind, coordinate):
@@ -94,10 +93,7 @@ def _site_capsule_trace(
 			face_count += 2 + 2 * (len(rings) - 1)
 
 		populated_count = len(populated_sites.get(key, []))
-		hover_text = (
-			f"{name}<br>{populated_count} nested graph particles"
-			+ ("<br>Click to look inside" if populated_count else "")
-		)
+		hover_text = f"{name}<br>{populated_count} nested graph particles"
 		face_customdata.extend([key] * face_count)
 		face_text.extend([hover_text] * face_count)
 
@@ -323,6 +319,23 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			],
 		}
 
+	nested_edge_x = []
+	nested_edge_y = []
+	nested_edge_z = []
+	nested_nodes = []
+	for site_data in site_graph_data.values():
+		for edge in site_data["edges"]:
+			nested_edge_x.extend(
+				[edge["source_position"][0], edge["target_position"][0], None]
+			)
+			nested_edge_y.extend(
+				[edge["source_position"][1], edge["target_position"][1], None]
+			)
+			nested_edge_z.extend(
+				[edge["source_position"][2], edge["target_position"][2], None]
+			)
+		nested_nodes.extend(site_data["nodes"])
+
 	geometry = [
 		go.Scatter3d(
 			x=sc_x,
@@ -355,28 +368,33 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			"rgba(220, 140, 55, 1)",
 		),
 		go.Scatter3d(
-			x=[],
-			y=[],
-			z=[],
+			x=nested_edge_x,
+			y=nested_edge_y,
+			z=nested_edge_z,
 			mode="lines",
 			line={"color": "rgba(47, 55, 64, 0.95)", "width": 5},
 			hoverinfo="skip",
 			showlegend=False,
-			visible=False,
 			name="Nested topology edges",
 		),
 		go.Scatter3d(
-			x=[],
-			y=[],
-			z=[],
-			mode="markers+text",
+			x=[node["position"][0] for node in nested_nodes],
+			y=[node["position"][1] for node in nested_nodes],
+			z=[node["position"][2] for node in nested_nodes],
+			mode="markers",
 			marker={
-				"size": 8,
+				"size": 7,
 				"line": {"color": "white", "width": 1},
+				"color": [
+					"#4477aa" if node["category"].lower() == "entity" else "#cc6677"
+					for node in nested_nodes
+				],
 			},
-			text=[],
-			textposition="top center",
-			customdata=[],
+			text=[node["label"] for node in nested_nodes],
+			customdata=[
+				[node["id"], node["category"], node["lattice_role"], node["lattice_index"]]
+				for node in nested_nodes
+			],
 			hovertemplate=(
 				"<b>%{text}</b><br>Category: %{customdata[1]}"
 				+ "<br>ID: %{customdata[0]}"
@@ -384,7 +402,6 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 				+ "<br>Index label: %{customdata[3]}<extra></extra>"
 			),
 			showlegend=False,
-			visible=False,
 			name="Nested topology particles",
 		),
 	]
@@ -400,6 +417,7 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 		"vertices": geometry[2],
 		"centers": geometry[3],
 		"site_contents": all_sites,
+		"nested_nodes": nested_nodes,
 		"nested_edges": geometry[4],
 		"nested_particles": geometry[5],
 	}
@@ -409,113 +427,10 @@ def render_lattice(graph_data, output_path, seed=None):
 	geometry = _mixed_lattice_geometry(graph_data, seed)
 	figure = go.Figure(data=geometry["traces"])
 
-	post_script = """
-var plot = document.getElementById('{plot_id}');
-var siteData = __SITE_GRAPH_DATA__;
-var plotHost = plot.parentNode;
-var control = document.createElement('div');
-control.style.cssText = 'display:none;position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:20;padding:8px 12px;background:rgba(255,255,255,.94);border:1px solid #94a3b8;border-radius:8px;box-shadow:0 4px 16px rgba(15,23,42,.2);font:13px system-ui,sans-serif;color:#1e293b';
-var controlText = document.createElement('span');
-var closeButton = document.createElement('button');
-closeButton.type = 'button';
-closeButton.textContent = 'Close capsule';
-closeButton.style.cssText = 'margin-left:12px;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;background:white;cursor:pointer';
-control.appendChild(controlText);
-control.appendChild(closeButton);
-plotHost.appendChild(control);
-var originalRanges = {
-    x: plot._fullLayout.scene.xaxis.range.slice(),
-    y: plot._fullLayout.scene.yaxis.range.slice(),
-    z: plot._fullLayout.scene.zaxis.range.slice()
-};
-var expandedSite = null;
-var changingView = false;
-function updateNestedTraces(data) {
-    var edges = data ? data.edges : [];
-    var nodes = data ? data.nodes : [];
-    var edgeX = [];
-    var edgeY = [];
-    var edgeZ = [];
-    edges.forEach(function(edge) {
-        edgeX.push(edge.source_position[0], edge.target_position[0], null);
-        edgeY.push(edge.source_position[1], edge.target_position[1], null);
-        edgeZ.push(edge.source_position[2], edge.target_position[2], null);
-    });
-    return Plotly.restyle(plot, {
-        x: [edgeX, nodes.map(function(node) { return node.position[0]; })],
-        y: [edgeY, nodes.map(function(node) { return node.position[1]; })],
-        z: [edgeZ, nodes.map(function(node) { return node.position[2]; })],
-        visible: [edges.length > 0, nodes.length > 0],
-        text: [[], nodes.map(function(node) { return node.label; })],
-        customdata: [[], nodes.map(function(node) {
-            return [node.id, node.category, node.lattice_role, node.lattice_index];
-        })],
-        'marker.color': [[], nodes.map(function(node) {
-            return node.category.toLowerCase() === 'entity' ? '#4477aa' : '#cc6677';
-        })]
-    }, [4, 5]);
-}
-function collapseSite() {
-    if (changingView) return;
-    control.style.display = 'none';
-    expandedSite = null;
-    changingView = true;
-    updateNestedTraces(null).then(function() {
-        return Plotly.relayout(plot, {
-            'scene.xaxis.range': originalRanges.x,
-            'scene.yaxis.range': originalRanges.y,
-            'scene.zaxis.range': originalRanges.z
-        });
-    }).then(function() {
-        changingView = false;
-    }, function(error) {
-        changingView = false;
-        controlText.textContent = 'Could not close capsule: ' + String(error);
-        control.style.display = 'block';
-    });
-}
-closeButton.addEventListener('click', collapseSite);
-plot.on('plotly_click', function(eventData) {
-    var point = eventData.points && eventData.points[0];
-    if (!point || changingView) return;
-    var isLatticeSite = point.data.name === 'Shared lattice vertices' ||
-                        point.data.name === 'BCC centers';
-    if (!isLatticeSite) return;
-    var siteKey = point.customdata;
-    var data = siteData[siteKey];
-    if (!data || !data.nodes.length) return;
-    if (expandedSite === siteKey) {
-        collapseSite();
-        return;
-    }
-    controlText.textContent = data.kind + ' [' + siteKey.split(':')[1] + '] · ' +
-        data.nodes.length + ' graph particles, ' + data.edges.length + ' edges';
-    control.style.display = 'block';
-    expandedSite = siteKey;
-    var center = siteKey.split(':')[1].split(',').map(Number);
-    changingView = true;
-    updateNestedTraces(data).then(function() {
-        return Plotly.relayout(plot, {
-            'scene.xaxis.range': [center[0] - __ZOOM_HALF_WIDTH__, center[0] + __ZOOM_HALF_WIDTH__],
-            'scene.yaxis.range': [center[1] - __ZOOM_HALF_WIDTH__, center[1] + __ZOOM_HALF_WIDTH__],
-            'scene.zaxis.range': [center[2] - __ZOOM_HALF_WIDTH__, center[2] + __ZOOM_HALF_WIDTH__]
-        });
-    }).then(function() {
-        changingView = false;
-    }, function(error) {
-        changingView = false;
-        controlText.textContent = 'Could not expand capsule: ' + String(error);
-    });
-});
-""".replace(
-		"__SITE_GRAPH_DATA__",
-		json.dumps(geometry["site_graph_data"]),
-	).replace("__ZOOM_HALF_WIDTH__", json.dumps(CAPSULE_ZOOM_HALF_WIDTH))
-
 	cells_per_axis = geometry["cells_per_axis"]
 	figure.update_layout(
 		title=(
-			"Mixed SC / BCC crystal lattice with expandable 3D capsules "
+			"Mixed SC / BCC crystal lattice with visible nested topology "
 			f"({cells_per_axis} x {cells_per_axis} x {cells_per_axis})"
 		),
 		margin={"l": 0, "r": 0, "t": 48, "b": 0},
@@ -535,7 +450,6 @@ plot.on('plotly_click', function(eventData) {
 		output_path,
 		include_plotlyjs=True,
 		full_html=True,
-		post_script=post_script,
 	)
 	if output_path.exists():
 		html_lines = output_path.read_text(encoding="utf-8").splitlines()
@@ -553,7 +467,7 @@ def main():
 		graph_data = json.load(input_file)
 	output_path.parent.mkdir(parents=True, exist_ok=True)
 	render_lattice(graph_data, output_path)
-	print(f"Saved expandable mixed crystal lattice visualization to {output_path}")
+	print(f"Saved mixed crystal lattice visualization to {output_path}")
 
 
 if __name__ == "__main__":
