@@ -2,7 +2,10 @@ import unittest
 from unittest.mock import patch
 
 from visualize.render_3d import (
+	CAPSULE_ZOOM_HALF_WIDTH,
 	MIN_CELLS_PER_AXIS,
+	NESTED_PARTICLE_RADIUS,
+	SITE_CAPSULE_RADIUS,
 	_mixed_lattice_geometry,
 	render_lattice,
 )
@@ -122,10 +125,16 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		)
 		self.assertTrue(any("Click to look inside" in text for text in geometry["vertices"].text))
 		self.assertTrue(any("Click to look inside" in text for text in geometry["centers"].text))
+		self.assertAlmostEqual(SITE_CAPSULE_RADIUS, 0.28)
+		self.assertAlmostEqual(NESTED_PARTICLE_RADIUS, 0.16)
+		self.assertAlmostEqual(CAPSULE_ZOOM_HALF_WIDTH, 0.38)
 		self.assertEqual(len(geometry["traces"]), 6)
 		self.assertAlmostEqual(geometry["vertices"].x[0], 0)
 		self.assertAlmostEqual(geometry["vertices"].y[0], 0)
-		self.assertAlmostEqual(geometry["vertices"].z[0], -0.4)
+		self.assertAlmostEqual(
+			geometry["vertices"].z[0],
+			-SITE_CAPSULE_RADIUS,
+		)
 		self.assertEqual(geometry["nested_edges"].name, "Nested topology edges")
 		self.assertEqual(geometry["nested_particles"].name, "Nested topology particles")
 		self.assertFalse(geometry["nested_edges"].visible)
@@ -170,7 +179,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 			))
 			self.assertTrue(all(
 				sum((node["position"][axis] - center[axis]) ** 2 for axis in range(3))
-				<= 0.24**2 + 1e-12
+				<= NESTED_PARTICLE_RADIUS**2 + 1e-12
 				for node in site_data["nodes"]
 			))
 			self.assertTrue(all(
@@ -226,7 +235,7 @@ class MixedLatticeGeometryTests(unittest.TestCase):
 		self.assertEqual(post_script.count("Plotly.restyle(plot"), 1)
 		self.assertIn("Plotly.relayout(plot", post_script)
 		self.assertIn("[4, 5]", post_script)
-		self.assertIn("0.52", post_script)
+		self.assertIn("0.38", post_script)
 		self.assertIn("function collapseSite()", post_script)
 		self.assertIn("Close capsule", post_script)
 		self.assertNotIn("createElementNS", post_script)

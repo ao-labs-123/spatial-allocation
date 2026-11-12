@@ -15,13 +15,22 @@ from src.allocator import allocate_coordinates
 
 
 MIN_CELLS_PER_AXIS = 3
+SITE_CAPSULE_RADIUS = 0.28
+NESTED_PARTICLE_RADIUS = 0.16
+CAPSULE_ZOOM_HALF_WIDTH = 0.38
 
 
 def _site_key(kind, coordinate):
 	return kind + ":" + ",".join(f"{value:g}" for value in coordinate)
 
 
-def _site_capsule_trace(sites, populated_sites, name, color, radius=0.4):
+def _site_capsule_trace(
+	sites,
+	populated_sites,
+	name,
+	color,
+	radius=SITE_CAPSULE_RADIUS,
+):
 	x_values = []
 	y_values = []
 	z_values = []
@@ -282,9 +291,9 @@ def _mixed_lattice_geometry(graph_data, seed=None):
 			z_unit = 1 - 2 * (index + 0.5) / node_count
 			radial_unit = math.sqrt(max(0.0, 1 - z_unit * z_unit))
 			node_positions_in_capsule[node["id"]] = [
-				center[0] + 0.24 * radial_unit * math.cos(angle),
-				center[1] + 0.24 * radial_unit * math.sin(angle),
-				center[2] + 0.24 * z_unit,
+				center[0] + NESTED_PARTICLE_RADIUS * radial_unit * math.cos(angle),
+				center[1] + NESTED_PARTICLE_RADIUS * radial_unit * math.sin(angle),
+				center[2] + NESTED_PARTICLE_RADIUS * z_unit,
 			]
 		site_graph_data[key] = {
 			"kind": "BCC center" if key.startswith("center:") else "Shared lattice vertex",
@@ -487,9 +496,9 @@ plot.on('plotly_click', function(eventData) {
     changingView = true;
     updateNestedTraces(data).then(function() {
         return Plotly.relayout(plot, {
-            'scene.xaxis.range': [center[0] - 0.52, center[0] + 0.52],
-            'scene.yaxis.range': [center[1] - 0.52, center[1] + 0.52],
-            'scene.zaxis.range': [center[2] - 0.52, center[2] + 0.52]
+            'scene.xaxis.range': [center[0] - __ZOOM_HALF_WIDTH__, center[0] + __ZOOM_HALF_WIDTH__],
+            'scene.yaxis.range': [center[1] - __ZOOM_HALF_WIDTH__, center[1] + __ZOOM_HALF_WIDTH__],
+            'scene.zaxis.range': [center[2] - __ZOOM_HALF_WIDTH__, center[2] + __ZOOM_HALF_WIDTH__]
         });
     }).then(function() {
         changingView = false;
@@ -498,7 +507,10 @@ plot.on('plotly_click', function(eventData) {
         controlText.textContent = 'Could not expand capsule: ' + String(error);
     });
 });
-""".replace("__SITE_GRAPH_DATA__", json.dumps(geometry["site_graph_data"]))
+""".replace(
+		"__SITE_GRAPH_DATA__",
+		json.dumps(geometry["site_graph_data"]),
+	).replace("__ZOOM_HALF_WIDTH__", json.dumps(CAPSULE_ZOOM_HALF_WIDTH))
 
 	cells_per_axis = geometry["cells_per_axis"]
 	figure.update_layout(
